@@ -1,5 +1,5 @@
 import React from "react";
-import { Routes, Route, Link } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import { About } from "./pages/About/About";
 import { Home } from "./pages/Home/Home";
 import { Notfound } from "./pages/Notfound/Notfound";
