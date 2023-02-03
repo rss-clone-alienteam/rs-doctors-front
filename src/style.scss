@@ -1,3 +1,7 @@
+@import url("./scss/normalize.scss");
+@import url("./scss/variables.scss");
+@import "./scss/variables";
+
 body {
   margin: 0;
   font-family:
@@ -24,4 +28,9 @@ code {
     "Consolas",
     "Courier New",
     monospace;
+}
+
+.active-link {
+  color: $activeLinkColor;
+  cursor: default;
 }

@@ -663,6 +663,7 @@
     "scss/at-if-closing-brace-newline-after": "always-last-in-chain",
     "scss/at-if-closing-brace-space-after": "always-intermediate",
     "scss/at-import-no-partial-leading-underscore": true,
+    "import-notation": null,
     "scss/at-mixin-argumentless-call-parentheses": "never",
     "scss/at-mixin-parentheses-space-before": "never",
     "scss/at-mixin-pattern": null,
