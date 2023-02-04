@@ -1,26 +1,10 @@
-import { NavLink, Outlet } from "react-router-dom";
+import { Outlet } from "react-router-dom";
+import { Header } from "../Header/Header";
 import style from "./Layout.module.scss";
-
-interface IActivePending {
-  isActive: boolean;
-  isPending: boolean;
-}
-
-const setActive = ({ isActive }: IActivePending) =>
-  isActive ? "active-link" : "";
-
 const Layout = () => {
   return (
     <>
-      <header className={style.header}>
-        <NavLink to="/" className={setActive}>
-          Home
-        </NavLink>
-        <NavLink to="/about" className={setActive}>
-          About us
-        </NavLink>
-      </header>
-
+      <Header />
       <main className={style.container}>
         <Outlet />
       </main>

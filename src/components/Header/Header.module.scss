@@ -1,0 +1,27 @@
+.header {
+  position: sticky;
+  display: flex;
+  justify-content: center;
+  background-color: rgb(255 255 255);
+}
+
+.headerWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 10px;
+  width: 100%;
+  max-width: 1150px;
+  font-family: "Roboto", sans-serif;
+  gap: 20px;
+}
+
+.navWrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo {
+  width: 300px;
+}
