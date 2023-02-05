@@ -3,6 +3,7 @@ import Box from "@mui/joy/Box";
 import { HeaderButton } from "./HeaderButton/HeaderButton";
 import style from "./Header.module.scss";
 import logo from "../../assets/logo.png";
+import Grid from "@mui/material/Grid";
 
 interface IActivePending {
   isActive: boolean;
@@ -14,20 +15,25 @@ const setActive = ({ isActive }: IActivePending) =>
 
 const Header = () => {
   return (
-    <Box className={style.header}>
-      <Box className={style.headerWrapper}>
-        <img className={style.logo} src={logo} alt="logo" />
-        <Box className={style.navWrapper}>
+    <Box component="header" className={style.header}>
+      <Grid container spacing={0} className={style.headerWrapper}>
+        <Grid
+          item
+          component="img"
+          sx={{ width: "250px" }}
+          src={logo}
+          alt="logo"
+        />
+        <Grid item className={style.navWrapper}>
           <NavLink to="/" className={setActive}>
             Home
           </NavLink>
           <NavLink to="/about" className={setActive}>
             About Us
           </NavLink>
-
           <HeaderButton />
-        </Box>
-      </Box>
+        </Grid>
+      </Grid>
     </Box>
   );
 };

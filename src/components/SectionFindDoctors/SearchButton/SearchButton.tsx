@@ -1,12 +1,13 @@
-import Button from "@mui/joy/Button";
-import KeyboardArrowRight from "@mui/icons-material/KeyboardArrowRight";
+import { Button } from "@mui/material";
+import SendIcon from "@mui/icons-material/Send";
 
 export const SearchButton = () => {
   return (
     <Button
-      variant="solid"
-      endDecorator={<KeyboardArrowRight />}
+      variant="contained"
       color="success"
+      size="large"
+      endIcon={<SendIcon />}
     >
       Search
     </Button>

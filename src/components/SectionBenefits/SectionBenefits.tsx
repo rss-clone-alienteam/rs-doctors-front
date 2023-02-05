@@ -1,16 +1,19 @@
-import Box from "@mui/joy/Box";
+import { Grid } from "@mui/material";
 import { Benefit } from "./Benefit/Benefit";
-import style from "./SectionBenefits.module.scss";
+import SearchIcon from "@mui/icons-material/Search";
+import EventAvailableIcon from "@mui/icons-material/EventAvailable";
+import AccessTimeIcon from "@mui/icons-material/AccessTime";
+import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 
 export const SectionBenefits = () => {
   return (
-    <Box className={style.container}>
+    <Grid container sx={{ mt: 1, px: "10px" }} spacing={2}>
       <Benefit
         caption={"Search Specialists"}
         text={
           "Choose among above 1000 specialists. Find out the opinions of other patients"
         }
-        iconClassName={"fa-solid fa-magnifying-glass"}
+        icon={SearchIcon}
       />
 
       <Benefit
@@ -18,20 +21,20 @@ export const SectionBenefits = () => {
         text={
           "Choose appropriate data and time, write your details and that's all"
         }
-        iconClassName={"fa-regular fa-calendar-check"}
+        icon={EventAvailableIcon}
       />
 
       <Benefit
         caption={"Come to the doctor's appointment"}
         text={"We will remind you about the selected date automatically"}
-        iconClassName={"fa-regular fa-clock"}
+        icon={AccessTimeIcon}
       />
 
       <Benefit
         caption={"Our services are free of charge"}
         text={"Use of our website it is completely free for patients"}
-        iconClassName={"fa-regular fa-lightbulb"}
+        icon={ThumbUpIcon}
       />
-    </Box>
+    </Grid>
   );
 };

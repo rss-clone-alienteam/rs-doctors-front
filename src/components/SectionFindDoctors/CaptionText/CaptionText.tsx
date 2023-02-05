@@ -1,4 +1,4 @@
-import Box from "@mui/joy/Box";
+import { Box } from "@mui/material";
 
 export const CaptionText = () => {
   return (
@@ -11,11 +11,14 @@ export const CaptionText = () => {
         fontWeight: 700,
         color: "#6bc1d0",
         lineHeight: 0.9,
-        width: "70%",
       }}
     >
-      <span style={{ fontSize: "5rem" }}>Find the doctor </span>
-      <span style={{ fontSize: "3rem" }}>and make an appointment</span>
+      <Box component="span" style={{ fontSize: "5rem" }}>
+        Find the doctor{" "}
+      </Box>
+      <Box component="span" style={{ fontSize: "3rem" }}>
+        and make an appointment
+      </Box>
     </Box>
   );
 };

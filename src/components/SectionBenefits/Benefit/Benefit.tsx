@@ -1,45 +1,33 @@
-import * as React from "react";
-import Card from "@mui/joy/Card";
-import Typography from "@mui/joy/Typography";
+import { Box, Grid, SvgIconTypeMap, Typography } from "@mui/material";
+import { OverridableComponent } from "@mui/material/OverridableComponent";
 
 interface IProps {
   caption: string;
   text: string;
-  iconClassName: string;
+  icon: OverridableComponent<SvgIconTypeMap<object, "svg">> & {
+    muiName: string;
+  };
 }
 
-export function Benefit({ caption, text, iconClassName }: IProps) {
+export function Benefit({ caption, text, icon }: IProps) {
+  const Icon = icon;
   return (
-    <Card
-      variant="outlined"
-      orientation="horizontal"
-      sx={{
-        width: 250,
-        gap: 2,
-      }}
-    >
-      <i
-        className={iconClassName}
-        style={{ color: "#3ab2e4", fontSize: "2rem" }}
-      ></i>
-      <div>
-        <Typography
-          level="h2"
-          fontSize="lg"
-          id="card-description"
-          mb={0.5}
-          style={{ color: "#3ab2e4" }}
-        >
+    <Grid item xs={12} md={6} lg={3}>
+      <Box sx={{ display: "flex", gap: 1, height: "55%" }}>
+        <Icon color="primary" />
+        <Typography color="primary" sx={{ width: "70%" }}>
           {caption}
         </Typography>
-        <Typography
-          fontSize="0.8rem"
-          aria-describedby="card-description"
-          mb={1}
-        >
-          {text}
-        </Typography>
-      </div>
-    </Card>
+      </Box>
+
+      <Typography
+        fontSize="0.8rem"
+        aria-describedby="card-description"
+        mb={1}
+        color="black"
+      >
+        {text}
+      </Typography>
+    </Grid>
   );
 }

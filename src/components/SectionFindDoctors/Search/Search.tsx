@@ -1,4 +1,4 @@
-import Box from "@mui/joy/Box";
+import { Box } from "@mui/material";
 import { SearchButton } from "../SearchButton/SearchButton";
 import SelectInput from "../SelectInput/SelectInput";
 
@@ -7,7 +7,6 @@ export const Search = () => {
     <Box
       sx={{
         height: "100px",
-        width: "60%",
         padding: "10px",
         backgroundColor: "rgba(0 0 0 /5%)",
         display: "flex",
@@ -17,7 +16,7 @@ export const Search = () => {
     >
       <SelectInput
         placeholder="Specialization"
-        options={["Syrgery", "Gynecology", "Neurology"]}
+        options={["Surgery", "Gynecology", "Neurology"]}
       />
       <SelectInput
         placeholder="City"

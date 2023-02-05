@@ -1,12 +1,12 @@
-import Button from "@mui/joy/Button";
+import Button from "@mui/material/Button";
 
 export const HeaderButton = () => {
   return (
     <Button
       color="primary"
-      size="md"
+      size="large"
       variant="outlined"
-      sx={{ marginLeft: " auto" }}
+      sx={{ ml: " auto" }}
     >
       Sign In
     </Button>
