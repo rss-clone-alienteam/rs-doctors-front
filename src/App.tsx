@@ -4,10 +4,12 @@ import { About } from "./pages/About/About";
 import { Home } from "./pages/Home/Home";
 import { Notfound } from "./pages/Notfound/Notfound";
 import { Layout } from "./components/Layout/Layout";
+import { ThemeProvider } from "@mui/material/styles";
+import { appTheme } from "./themes/appTheme";
 
 function App() {
   return (
-    <>
+    <ThemeProvider theme={appTheme}>
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />}></Route>
@@ -15,7 +17,7 @@ function App() {
           <Route path="*" element={<Notfound />}></Route>
         </Route>
       </Routes>
-    </>
+    </ThemeProvider>
   );
 }
 
