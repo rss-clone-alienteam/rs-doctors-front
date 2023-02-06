@@ -7,10 +7,12 @@ import { SignUpPatient } from "./pages/auth/SignUp/SignUpPatient";
 import { SignUpDoctor } from "./pages/auth/SignUp/SignUpDoctor";
 import { SignIn } from "./pages/auth/SignIn/SignIn";
 import { SignUpConfirmation } from "./pages/auth/SignUpConfirmation/SignUpConfirmation";
+import { ThemeProvider } from "@mui/material/styles";
+import { appTheme } from "./themes/appTheme";
 
 function App() {
   return (
-    <>
+    <ThemeProvider theme={appTheme}>
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />}></Route>
@@ -24,7 +26,7 @@ function App() {
           <Route path="*" element={<Notfound />}></Route>
         </Route>
       </Routes>
-    </>
+    </ThemeProvider>
   );
 }
 
