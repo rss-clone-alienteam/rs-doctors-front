@@ -31,7 +31,9 @@ const Header = () => {
           <NavLink to="/about" className={setActive}>
             About Us
           </NavLink>
-          <HeaderButton />
+          <NavLink to="/auth/sign-up-doctor">
+            <HeaderButton />
+          </NavLink>
         </Grid>
       </Grid>
     </Box>
