@@ -9,8 +9,10 @@ import { SignIn } from "./pages/auth/SignIn/SignIn";
 import { SignUpConfirmation } from "./pages/auth/SignUpConfirmation/SignUpConfirmation";
 import { ThemeProvider } from "@mui/material/styles";
 import { appTheme } from "./themes/appTheme";
+import { QueryClient, QueryClientProvider } from 'react-query';
 
 function App() {
+  const queryClient = new QueryClient();
   return (
     <ThemeProvider theme={appTheme}>
       <Routes>
@@ -18,10 +20,18 @@ function App() {
           <Route index element={<Home />}></Route>
           <Route path="about" element={<About />}></Route>
           <Route path="auth">
-            <Route path="sign-up-doctor" element={<SignUpDoctor />}></Route>
+            <Route path="sign-up-doctor" element={
+              <QueryClientProvider client={queryClient}>
+                <SignUpDoctor />
+              </QueryClientProvider>
+            }></Route>
             <Route path="sign-up-patient" element={<SignUpPatient />}></Route>
             <Route path="sign-in" element={<SignIn />}></Route>
-            <Route path="sign-up-confirmation" element={<SignUpConfirmation />}></Route>
+            <Route path="sign-up-confirmation" element={
+              <QueryClientProvider client={queryClient}>
+                <SignUpConfirmation />
+              </QueryClientProvider>
+            }></Route>
           </Route>
           <Route path="*" element={<Notfound />}></Route>
         </Route>

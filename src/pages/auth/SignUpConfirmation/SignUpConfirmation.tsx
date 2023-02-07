@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { useMutation } from 'react-query';
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { object, string } from "yup";
@@ -29,10 +30,17 @@ export const SignUpConfirmation = () => {
     }
   });
 
+  const mutation = useMutation((code: string) => {
+    return AuthService.confirmSignUp({ email, code });
+  }, {
+    onSuccess: () => {
+      navigate('/');
+    },
+  });
+
   const onSubmit = handleSubmit(async ({ code }) => {
     try {
-      await AuthService.confirmSignUp({ email, code });
-      navigate('/');
+      mutation.mutate(code)
     } catch (err) {
       console.log(err);
     }
@@ -46,4 +54,3 @@ export const SignUpConfirmation = () => {
     </form>
   );
 };
-

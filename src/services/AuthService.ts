@@ -29,8 +29,7 @@ export class AuthService {
   }
 
   static async confirmSignUp ({ email, code }: UserConfirmData) {
-    const data = await Auth.confirmSignUp(email, code);
-    return data;
+    await Auth.confirmSignUp(email, code);
   }
 
   static async getUser () {
