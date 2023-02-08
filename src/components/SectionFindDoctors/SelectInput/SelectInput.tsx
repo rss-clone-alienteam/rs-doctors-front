@@ -6,19 +6,16 @@ import {
   Select,
   SelectChangeEvent,
 } from "@mui/material";
-import React from "react";
+import { FC } from "react";
 
 interface IProps {
   placeholder: string;
   options: string[];
+  value: string;
+  onChange: (event: SelectChangeEvent) => void
 }
 
-export default function SelectInput({ placeholder, options }: IProps) {
-  const [text, setText] = React.useState("");
-
-  const handleChange = (event: SelectChangeEvent) => {
-    setText(event.target.value as string);
-  };
+export const SelectInput: FC<IProps> = ({ placeholder, options, onChange, value }) => {
 
   return (
     <Box sx={{ minWidth: 270, backgroundColor: "white" }}>
@@ -27,9 +24,9 @@ export default function SelectInput({ placeholder, options }: IProps) {
         <Select
           labelId="demo-simple-select-label"
           id="demo-simple-select"
-          value={text}
+          value={value}
           label={placeholder}
-          onChange={handleChange}
+          onChange={onChange}
         >
           {options.map((option, i) => (
             <MenuItem key={i} value={option}>

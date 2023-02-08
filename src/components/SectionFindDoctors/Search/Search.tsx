@@ -1,8 +1,14 @@
-import { Box } from "@mui/material";
+import { Box, SelectChangeEvent } from "@mui/material";
 import { SearchButton } from "../SearchButton/SearchButton";
-import SelectInput from "../SelectInput/SelectInput";
+import { SelectInput } from "../SelectInput/SelectInput";
+import { useState } from "react";
+import { getDoctors } from "../../../api/doctors";
 
 export const Search = () => {
+
+    const [specialization, setSpecialization] = useState('');
+    const [city, setCity] = useState('');
+
   return (
     <Box
       sx={{
@@ -16,14 +22,17 @@ export const Search = () => {
     >
       <SelectInput
         placeholder="Specialization"
-        options={["Surgery", "Gynecology", "Neurology"]}
+        options={["Alergolog", "Surgery", "Gynecology", "Neurology"]}
+        value={specialization}
+        onChange={(event: SelectChangeEvent) => setSpecialization(event.target.value)}
       />
       <SelectInput
         placeholder="City"
-        options={["Minsk", "Voronezh", "Warsaw"]}
+        options={["Krakow", "Minsk", "Voronezh", "Warsaw"]}
+        value={city}
+        onChange={(event: SelectChangeEvent) => setCity(event.target.value)}
       />
-
-      <SearchButton />
+      <SearchButton onClick={() => getDoctors(specialization, city)} />
     </Box>
   );
 };
