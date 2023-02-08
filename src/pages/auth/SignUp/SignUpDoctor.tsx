@@ -6,9 +6,16 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { object, string } from "yup";
 import { AuthService } from "../../../services/AuthService";
-import { Box, Grid, TextField } from "@mui/material";
+import {
+  Box,
+  FormHelperText,
+  Grid,
+  TextField,
+  useFormControl,
+} from "@mui/material";
 import { Button } from "@mui/material";
 import { Link } from "@mui/material";
+import React from "react";
 
 interface FormData {
   category: string;
@@ -47,7 +54,7 @@ export const SignUpDoctor = () => {
   const {
     register,
     handleSubmit,
-    // formState: { errors },
+    formState: { errors },
   } = useForm<FormData>({
     resolver: yupResolver(schema),
     defaultValues: {
@@ -130,11 +137,11 @@ export const SignUpDoctor = () => {
             <TextField
               fullWidth
               size="small"
-              helperText="Enter your specialization"
               required
               id="outlined-required"
               label="Category"
               defaultValue="Allergolog"
+              helperText={errors.category?.message}
               {...register("category")}
             />
           </Grid>
@@ -146,6 +153,7 @@ export const SignUpDoctor = () => {
               id="outlined-required"
               label="Name"
               defaultValue="Name"
+              helperText={errors.name?.message}
               {...register("name")}
             />
           </Grid>
@@ -157,6 +165,7 @@ export const SignUpDoctor = () => {
               id="outlined-required"
               label="Last name"
               defaultValue="Last name"
+              helperText={errors.surname?.message}
               {...register("surname")}
             />
           </Grid>
@@ -168,6 +177,7 @@ export const SignUpDoctor = () => {
               id="outlined-required"
               label="City"
               defaultValue="City"
+              helperText={errors.city?.message}
               {...register("city")}
             />
           </Grid>
@@ -180,6 +190,7 @@ export const SignUpDoctor = () => {
               id="outlined-required"
               label="Email"
               defaultValue="Email"
+              helperText={errors.email?.message}
               {...register("email")}
             />
           </Grid>
@@ -192,6 +203,7 @@ export const SignUpDoctor = () => {
               id="outlined-required"
               label="Password"
               defaultValue="Password"
+              helperText={errors.password?.message}
               {...register("password")}
             />
           </Grid>
