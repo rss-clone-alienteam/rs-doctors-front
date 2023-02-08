@@ -1,4 +1,4 @@
-import { Auth } from 'aws-amplify';
+import { Auth } from "aws-amplify";
 
 type Profile = "doctor" | "patient";
 
@@ -14,25 +14,25 @@ interface UserConfirmData {
 }
 
 export class AuthService {
-  static async signUp ({ email, password, profile }: UserAuthData) {
+  static async signUp({ email, password, profile }: UserAuthData) {
     const data = await Auth.signUp({
       username: email,
       password,
       attributes: {
-        profile
+        profile,
       },
       autoSignIn: {
         enabled: true,
-      }
+      },
     });
     return data;
   }
 
-  static async confirmSignUp ({ email, code }: UserConfirmData) {
+  static async confirmSignUp({ email, code }: UserConfirmData) {
     await Auth.confirmSignUp(email, code);
   }
 
-  static async getUser () {
+  static async getUser() {
     return Auth.currentUserInfo();
   }
 }
