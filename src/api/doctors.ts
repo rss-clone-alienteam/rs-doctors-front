@@ -5,11 +5,11 @@ export const getDoctors = async (specialization: string, city: string) => {
     const data = await API.get("rs-doctors-back", "/doctors/get-doctors", {
       queryStringParameters: {
         category: specialization,
-        city: city
-      }
+        city: city,
+      },
     });
     console.log(data);
   } catch (error) {
     console.log(error);
   }
-}
+};

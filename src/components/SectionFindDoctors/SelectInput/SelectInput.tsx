@@ -12,11 +12,15 @@ interface IProps {
   placeholder: string;
   options: string[];
   value: string;
-  onChange: (event: SelectChangeEvent) => void
+  onChange: (event: SelectChangeEvent) => void;
 }
 
-export const SelectInput: FC<IProps> = ({ placeholder, options, onChange, value }) => {
-
+export const SelectInput: FC<IProps> = ({
+  placeholder,
+  options,
+  onChange,
+  value,
+}) => {
   return (
     <Box sx={{ minWidth: 270, backgroundColor: "white" }}>
       <FormControl fullWidth>
@@ -37,4 +41,4 @@ export const SelectInput: FC<IProps> = ({ placeholder, options, onChange, value 
       </FormControl>
     </Box>
   );
-}
+};

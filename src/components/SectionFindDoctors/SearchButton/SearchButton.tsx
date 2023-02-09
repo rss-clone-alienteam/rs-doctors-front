@@ -1,6 +1,6 @@
-import { Button } from '@mui/material';
-import SendIcon from '@mui/icons-material/Send';
-import { FC } from 'react';
+import { Button } from "@mui/material";
+import SendIcon from "@mui/icons-material/Send";
+import { FC } from "react";
 
 interface IProps {
   onClick: () => void;

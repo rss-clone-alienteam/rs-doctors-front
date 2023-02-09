@@ -6,7 +6,7 @@ import "./style.scss";
 import { BrowserRouter } from "react-router-dom";
 import App from "./App";
 
-Amplify.configure(config)
+Amplify.configure(config);
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );

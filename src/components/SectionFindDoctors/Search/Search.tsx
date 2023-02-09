@@ -5,9 +5,8 @@ import { useState } from "react";
 import { getDoctors } from "../../../api/doctors";
 
 export const Search = () => {
-
-    const [specialization, setSpecialization] = useState('');
-    const [city, setCity] = useState('');
+  const [specialization, setSpecialization] = useState("");
+  const [city, setCity] = useState("");
 
   return (
     <Box
@@ -24,7 +23,9 @@ export const Search = () => {
         placeholder="Specialization"
         options={["Alergolog", "Surgery", "Gynecology", "Neurology"]}
         value={specialization}
-        onChange={(event: SelectChangeEvent) => setSpecialization(event.target.value)}
+        onChange={(event: SelectChangeEvent) =>
+          setSpecialization(event.target.value)
+        }
       />
       <SelectInput
         placeholder="City"
