@@ -1,10 +1,10 @@
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { useMutation } from 'react-query';
+import { useMutation } from "react-query";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { object, string } from "yup";
-import { AuthService } from '../../../services/AuthService';
+import { AuthService } from "../../../services/AuthService";
 
 interface ConfirmationData {
   code: string;
@@ -15,32 +15,39 @@ const schema = object({
 });
 
 export const SignUpConfirmation = () => {
-  const [ searchParams ] = useSearchParams();
+  const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const email = searchParams.get('email') || '';
+  const email = searchParams.get("email") || "";
   useEffect(() => {
     if (!email) {
-      navigate('/');
+      navigate("/");
     }
   }, [email, navigate]);
-  const { register, handleSubmit, formState: { errors } } = useForm<ConfirmationData>({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<ConfirmationData>({
     resolver: yupResolver(schema),
     defaultValues: {
-      code: ''
-    }
-  });
-
-  const mutation = useMutation((code: string) => {
-    return AuthService.confirmSignUp({ email, code });
-  }, {
-    onSuccess: () => {
-      navigate('/');
+      code: "",
     },
   });
 
+  const mutation = useMutation(
+    (code: string) => {
+      return AuthService.confirmSignUp({ email, code });
+    },
+    {
+      onSuccess: () => {
+        navigate("/");
+      },
+    }
+  );
+
   const onSubmit = handleSubmit(async ({ code }) => {
     try {
-      mutation.mutate(code)
+      mutation.mutate(code);
     } catch (err) {
       console.log(err);
     }

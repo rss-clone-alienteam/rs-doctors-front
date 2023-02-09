@@ -3,7 +3,7 @@ import SendIcon from "@mui/icons-material/Send";
 import { FC } from "react";
 
 interface IProps {
-  onClick: () => void
+  onClick: () => void;
 }
 
 export const SearchButton: FC<IProps> = ({ onClick }) => {

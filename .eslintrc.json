@@ -23,6 +23,8 @@
   },
   "plugins": ["@typescript-eslint", "react", "react-hooks", "import"],
   "rules": {
+    "semi": ["error", "always"],
+    "quotes": ["error", "double"],
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "warn",
     "comma-dangle": ["error", "only-multiline"],
