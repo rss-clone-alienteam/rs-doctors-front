@@ -13,6 +13,11 @@ interface UserConfirmData {
   code: string;
 }
 
+interface UserData {
+  email: string;
+  password: string
+}
+
 export class AuthService {
   static async signUp({ email, password, profile }: UserAuthData) {
     const data = await Auth.signUp({
@@ -34,5 +39,13 @@ export class AuthService {
 
   static async getUser() {
     return Auth.currentUserInfo();
+  }
+
+  static async signIn({ email, password }: UserData) {
+    return await Auth.signIn(email, password);
+  }
+
+  static async signOut() {
+    return await Auth.signOut();
   }
 }
