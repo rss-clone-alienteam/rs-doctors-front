@@ -1,4 +1,3 @@
-import style from "./FindDoctors.module.scss";
 import React, { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import { IDoctor } from "../../components/PageDoctors/CardDoctor";

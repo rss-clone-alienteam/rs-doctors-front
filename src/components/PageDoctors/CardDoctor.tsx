@@ -1,10 +1,8 @@
-import style from "./FindDoctors.module.scss";
 import React from "react";
 import Box from "@mui/material/Box";
 import { Avatar, Card, CardActions, CardContent, CardHeader, Grid, IconButton, Link, Rating, Typography } from "@mui/material";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import { useNavigate } from "react-router-dom";
-import { log } from "console";
 
 export interface IDoctor {
   aboutMe: string | null;
