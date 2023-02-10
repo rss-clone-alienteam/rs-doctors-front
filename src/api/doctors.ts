@@ -9,6 +9,7 @@ export const getDoctors = async (specialization: string, city: string) => {
       },
     });
     console.log(data);
+    return data;
   } catch (error) {
     console.log(error);
   }
