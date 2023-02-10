@@ -10,6 +10,8 @@ import { appTheme } from "./themes/appTheme";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { AskDoctor } from "./pages/AskDoctor/AskDoctor";
 import { SignUpConfirmation } from "./pages/auth/SignUpConfirmation/SignUpConfirmation";
+import { PatientAccount } from "./pages/PatientAccount/PatientAccount";
+import { DoctorAccount } from "./pages/DoctorAccount/DoctorAccount";
 
 function App() {
   const queryClient = new QueryClient();
@@ -29,6 +31,8 @@ function App() {
                 element={<SignUpConfirmation />}
               ></Route>
             </Route>
+            <Route path="patient-account/:id" element={<PatientAccount />}></Route>
+            <Route path="doctor-account/:id" element={<DoctorAccount />}></Route>
             <Route path="*" element={<Notfound />}></Route>
           </Route>
         </Routes>
