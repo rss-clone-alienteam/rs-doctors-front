@@ -6,7 +6,17 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { object, string } from "yup";
 import { AuthService } from "../../../services/AuthService";
-import { Box, Grid, TextField } from "@mui/material";
+import {
+  Box,
+  FormControl,
+  FormHelperText,
+  Grid,
+  InputLabel,
+  MenuItem,
+  Select,
+  SelectChangeEvent,
+  TextField,
+} from "@mui/material";
 import { Button } from "@mui/material";
 import { Link } from "@mui/material";
 import React from "react";
@@ -92,6 +102,15 @@ export const SignUpPatient = () => {
     }
   );
 
+  const [city, setCity] = React.useState("");
+
+  const handleChangeCity = (event: SelectChangeEvent) => {
+    setCity(event.target.value);
+    setErrorCity(false);
+  };
+
+  const [errorCity, setErrorCity] = React.useState(true);
+
   return (
     <>
       <Box component="form" onSubmit={onSubmit} className={style.form}>
@@ -123,12 +142,33 @@ export const SignUpPatient = () => {
           spacing={2}
         >
           <Grid item sx={{ width: "100%" }}>
+            <FormControl fullWidth required>
+              <InputLabel id="select-city">City</InputLabel>
+              <Select
+                error={Boolean(errors.city?.message)}
+                value={city}
+                label="city"
+                {...register("city")}
+                onChange={handleChangeCity}
+              >
+                <MenuItem value={"Warsaw"}>Warsaw</MenuItem>
+                <MenuItem value={"Krakow"}>Krakow</MenuItem>
+                <MenuItem value={"Minsk"}>Minsk</MenuItem>
+                <MenuItem value={"Gomel"}>Gomel</MenuItem>
+                <MenuItem value={"Voronezh"}>Voronezh</MenuItem>
+                <MenuItem value={"New York"}>New York</MenuItem>
+              </Select>
+              {errorCity && <FormHelperText>This is required!</FormHelperText>}
+            </FormControl>
+          </Grid>
+          <Grid item sx={{ width: "100%" }}>
             <TextField
               fullWidth
               size="small"
               required
               id="outlined-required"
               label="Name"
+              error={Boolean(errors.name?.message)}
               helperText={errors.lastName?.message}
               {...register("name")}
             />
@@ -140,19 +180,9 @@ export const SignUpPatient = () => {
               required
               id="outlined-required"
               label="Last name"
+              error={Boolean(errors.lastName?.message)}
               helperText={errors.lastName?.message}
               {...register("lastName")}
-            />
-          </Grid>
-          <Grid item sx={{ width: "100%" }}>
-            <TextField
-              fullWidth
-              size="small"
-              required
-              id="outlined-required"
-              label="City"
-              helperText={errors.city?.message}
-              {...register("city")}
             />
           </Grid>
           <Grid item sx={{ width: "100%" }}>
@@ -163,6 +193,7 @@ export const SignUpPatient = () => {
               type="email"
               id="outlined-required"
               label="Email"
+              error={Boolean(errors.email?.message)}
               helperText={errors.email?.message}
               {...register("email")}
             />
@@ -175,6 +206,7 @@ export const SignUpPatient = () => {
               type="password"
               id="outlined-required"
               label="Password"
+              error={Boolean(errors.password?.message)}
               helperText={errors.password?.message}
               {...register("password")}
             />
