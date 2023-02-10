@@ -2,11 +2,12 @@ import { Box, SelectChangeEvent } from "@mui/material";
 import { SearchButton } from "../SearchButton/SearchButton";
 import { SelectInput } from "../SelectInput/SelectInput";
 import { useState } from "react";
-import { getDoctors } from "../../../api/doctors";
+import { useNavigate } from "react-router-dom";
 
 export const Search = () => {
   const [specialization, setSpecialization] = useState("");
   const [city, setCity] = useState("");
+  const navigate = useNavigate();
 
   return (
     <Box
@@ -23,9 +24,7 @@ export const Search = () => {
         placeholder="Specialization"
         options={["Alergolog", "Surgery", "Gynecology", "Neurology"]}
         value={specialization}
-        onChange={(event: SelectChangeEvent) =>
-          setSpecialization(event.target.value)
-        }
+        onChange={(event: SelectChangeEvent) => setSpecialization(event.target.value)}
       />
       <SelectInput
         placeholder="City"
@@ -33,7 +32,12 @@ export const Search = () => {
         value={city}
         onChange={(event: SelectChangeEvent) => setCity(event.target.value)}
       />
-      <SearchButton onClick={() => getDoctors(specialization, city)} />
+      <SearchButton
+        onClick={async () => {
+          // const data = await getDoctors(specialization, city);
+          navigate(`/doctors?specialization=${specialization}&city=${city}`);
+        }}
+      />
     </Box>
   );
 };
