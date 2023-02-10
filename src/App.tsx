@@ -12,6 +12,8 @@ import { AskDoctor } from "./pages/AskDoctor/AskDoctor";
 import { SignUpConfirmation } from "./pages/auth/SignUpConfirmation/SignUpConfirmation";
 import { FindDoctors } from "./pages/FindDoctors/FindDoctors";
 import { DoctorCard } from "./pages/DoctorCard/DoctorCard";
+import { PatientAccount } from "./pages/PatientAccount/PatientAccount";
+import { DoctorAccount } from "./pages/DoctorAccount/DoctorAccount";
 
 function App() {
   const queryClient = new QueryClient();
@@ -30,6 +32,8 @@ function App() {
               <Route path="sign-in" element={<SignIn />}></Route>
               <Route path="sign-up-confirmation" element={<SignUpConfirmation />}></Route>
             </Route>
+            <Route path="patient-account/:id" element={<PatientAccount />}></Route>
+            <Route path="doctor-account/:id" element={<DoctorAccount />}></Route>
             <Route path="*" element={<Notfound />}></Route>
           </Route>
         </Routes>
