@@ -7,7 +7,22 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { object, string } from "yup";
 import { AuthService } from "../../../services/AuthService";
-import { Box, Grid, TextField, Button, Link, Snackbar, Alert } from "@mui/material";
+import {
+  Box,
+  Grid,
+  TextField,
+  Button,
+  Link,
+  Snackbar,
+  Alert,
+  SelectChangeEvent,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  FormHelperText,
+} from "@mui/material";
+import React from "react";
 
 interface FormData {
   category: string;
@@ -74,7 +89,7 @@ export const SignUpDoctor = () => {
   );
 
   const mutationAuth = useMutation(
-    async ({email, password}: {email: string, password: string}) => {
+    async ({ email, password }: { email: string; password: string }) => {
       return await AuthService.signUp({
         email,
         password,
@@ -90,30 +105,49 @@ export const SignUpDoctor = () => {
 
   const onSubmit = handleSubmit(
     async ({ email, password, name, surname, city, category }) => {
-      mutationAuth.mutateAsync({
-        email,
-        password,
-      }).then(data => {
-        mutationDB.mutate({
-          id: data.userSub,
-          name,
-          surname,
-          category,
+      mutationAuth
+        .mutateAsync({
           email,
-          city,
+          password,
+        })
+        .then((data) => {
+          mutationDB.mutate({
+            id: data.userSub,
+            name,
+            surname,
+            category,
+            email,
+            city,
+          });
+        })
+        .catch((error) => {
+          console.log(error);
         });
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-    },
+    }
   );
+
+  const [category, setCategory] = React.useState("");
+
+  const handleChangeCategory = (event: SelectChangeEvent) => {
+    setCategory(event.target.value);
+    setErrorCategory(false);
+  };
+
+  const [city, setCity] = React.useState("");
+
+  const handleChangeCity = (event: SelectChangeEvent) => {
+    setCity(event.target.value);
+    setErrorCity(false);
+  };
+
+  const [errorCity, setErrorCity] = React.useState(true);
+  const [errorCategory, setErrorCategory] = React.useState(true);
 
   return (
     <>
       {mutationDB.isLoading ? (
-         "Loading..."
-       ) : (
+        "Loading..."
+      ) : (
         <>
           <Box component="form" onSubmit={onSubmit} className={style.form}>
             <Box
@@ -125,7 +159,7 @@ export const SignUpDoctor = () => {
                 fontWeight: 300,
               }}
             >
-              <h1>Create an account</h1>
+              <h1>Create a doctor&apos;s account</h1>
             </Box>
             <Grid
               container
@@ -144,15 +178,47 @@ export const SignUpDoctor = () => {
               spacing={2}
             >
               <Grid item sx={{ width: "100%" }}>
-                <TextField
-                  fullWidth
-                  size="small"
-                  required
-                  id="doc-category"
-                  label="Category"
-                  helperText={errors.category?.message}
-                  {...register("category")}
-                />
+                <FormControl fullWidth required>
+                  <InputLabel id="select-category">Category</InputLabel>
+                  <Select
+                    required
+                    error={Boolean(errors.category?.message)}
+                    value={category}
+                    label="category"
+                    {...register("category")}
+                    onChange={handleChangeCategory}
+                  >
+                    <MenuItem value={"Gynecology"}>Gynecology</MenuItem>
+                    <MenuItem value={"Surgery"}>Surgery</MenuItem>
+                    <MenuItem value={"Cardiology"}>Cardiology</MenuItem>
+                    <MenuItem value={"Pediatrics"}>Pediatrics</MenuItem>
+                  </Select>
+                  {errorCategory && (
+                    <FormHelperText>This is required!</FormHelperText>
+                  )}
+                </FormControl>
+              </Grid>
+              <Grid item sx={{ width: "100%" }}>
+                <FormControl fullWidth required>
+                  <InputLabel id="select-city">City</InputLabel>
+                  <Select
+                    error={Boolean(errors.city?.message)}
+                    value={city}
+                    label="city"
+                    {...register("city")}
+                    onChange={handleChangeCity}
+                  >
+                    <MenuItem value={"Warsaw"}>Warsaw</MenuItem>
+                    <MenuItem value={"Krakow"}>Krakow</MenuItem>
+                    <MenuItem value={"Minsk"}>Minsk</MenuItem>
+                    <MenuItem value={"Gomel"}>Gomel</MenuItem>
+                    <MenuItem value={"Voronezh"}>Voronezh</MenuItem>
+                    <MenuItem value={"New York"}>New York</MenuItem>
+                  </Select>
+                  {errorCity && (
+                    <FormHelperText>This is required!</FormHelperText>
+                  )}
+                </FormControl>
               </Grid>
               <Grid item sx={{ width: "100%" }}>
                 <TextField
@@ -161,6 +227,7 @@ export const SignUpDoctor = () => {
                   required
                   id="doc-name"
                   label="Name"
+                  error={Boolean(errors.name?.message)}
                   helperText={errors.name?.message}
                   {...register("name")}
                 />
@@ -172,19 +239,9 @@ export const SignUpDoctor = () => {
                   required
                   id="doc-last-name"
                   label="Last name"
+                  error={Boolean(errors.surname?.message)}
                   helperText={errors.surname?.message}
                   {...register("surname")}
-                />
-              </Grid>
-              <Grid item sx={{ width: "100%" }}>
-                <TextField
-                  fullWidth
-                  size="small"
-                  required
-                  id="doc-city"
-                  label="City"
-                  helperText={errors.city?.message}
-                  {...register("city")}
                 />
               </Grid>
               <Grid item sx={{ width: "100%" }}>
@@ -195,6 +252,7 @@ export const SignUpDoctor = () => {
                   type="email"
                   id="doc-email"
                   label="Email"
+                  error={Boolean(errors.email?.message)}
                   helperText={errors.email?.message}
                   {...register("email")}
                 />
@@ -207,13 +265,18 @@ export const SignUpDoctor = () => {
                   type="password"
                   id="doc-password"
                   label="Password"
+                  error={Boolean(errors.password?.message)}
                   helperText={errors.password?.message}
                   {...register("password")}
                 />
               </Grid>
               <Grid
                 item
-                sx={{ width: "100%", display: "flex", justifyContent: "center" }}
+                sx={{
+                  width: "100%",
+                  display: "flex",
+                  justifyContent: "center",
+                }}
               >
                 <Button
                   variant="outlined"
@@ -227,9 +290,13 @@ export const SignUpDoctor = () => {
               </Grid>
             </Grid>
 
-            <Box sx={{ color: "black", mt: 2, mb: 2, display: "flex", gap: 0.5 }}>
+            <Box
+              sx={{ color: "black", mt: 2, mb: 2, display: "flex", gap: 0.5 }}
+            >
               <span>Already have an account?</span>
-              <Link to={"/auth/sign-in"} component={NavLink}>Sign In</Link>
+              <Link to={"/auth/sign-in"} component={NavLink}>
+                Sign In
+              </Link>
             </Box>
           </Box>
           <Snackbar
@@ -239,9 +306,9 @@ export const SignUpDoctor = () => {
             anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
           >
             <Alert onClose={() => setOpenErrorMessage(false)} severity="error">
-              {
-               mutationAuth.error instanceof Error ? mutationAuth.error.message : ""
-              }
+              {mutationAuth.error instanceof Error
+                ? mutationAuth.error.message
+                : ""}
             </Alert>
           </Snackbar>
         </>
