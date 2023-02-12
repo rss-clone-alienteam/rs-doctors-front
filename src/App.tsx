@@ -16,7 +16,13 @@ import { PatientAccount } from "./pages/PatientAccount/PatientAccount";
 import { DoctorAccount } from "./pages/DoctorAccount/DoctorAccount";
 
 function App() {
-  const queryClient = new QueryClient();
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        retry: false,
+      }
+    }
+});
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider theme={appTheme}>
