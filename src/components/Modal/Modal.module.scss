@@ -1,15 +1,15 @@
 .wrapper {
   position: fixed;
-  display: flex;
-  width: 80%;
-  height: 80%;
-  background: white;
-  padding: 30px;
-  top: 50%;
   left: 50%;
   right: auto;
+  top: 50%;
   bottom: auto;
-  transform: translate(-50%, -50%);
-  border-radius: 5px;
+  display: flex;
   overflow-y: scroll;
+  border-radius: 5px;
+  padding: 30px;
+  width: 80%;
+  height: 80%;
+  background: rgb(255 255 255);
+  transform: translate(-50%, -50%);
 }
