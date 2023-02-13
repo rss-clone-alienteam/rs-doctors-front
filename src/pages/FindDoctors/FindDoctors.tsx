@@ -26,7 +26,7 @@ const FindDoctors = () => {
 
   useEffect(() => {
     getData(specialization, city);
-  }, []);
+  }, [city, specialization]);
 
   return (
     <Box display={"flex"} flexDirection={"column"} align-items={"center"}>
