@@ -16,13 +16,13 @@ export const ModalReview = () => {
         <div>
           <Avatar
             alt="Avatar"
-            src="https://icdn.lenta.ru/images/2022/10/31/11/20221031114742010/square_1024_webp_8f466724f273b97b62416bb38f7c4ab3.webp"
+            src={data?.photo || "../../assets/default-avatar.png"}
             sx={{ width: 70, height: 70 }}
             variant="square"
           />
         </div>
         <div className={style.infoDoc}>
-          <div className={style.infoDocName}>{data?.name + " " + data?.surname}</div>
+          <div className={style.infoDocName}>{data?.nameDoctor + " " + data?.surname}</div>
           <div className={style.infoDocCategory}>{data?.category}</div>
         </div>
       </section>

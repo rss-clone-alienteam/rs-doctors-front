@@ -1,17 +1,21 @@
 import { useEffect } from "react";
 import { useForm, FormProvider } from "react-hook-form";
-import { API } from "aws-amplify";
-import { IDoctor } from "../../api/doctors";
+import { useMutation, useQueryClient  } from "react-query";
+import { IDoctor, updateDoctor } from "../../api/doctors";
 import { filterData, pick } from "../../utils/object";
 import { Grid, Box, Button } from "@mui/material";
 import { ControlledTextField } from "../../components/ControlledTextField/ControlledTextField";
+import { AlertType } from "./types";
 
 type EditDoctorModalProps = {
   data?: IDoctor;
   id?: string;
+  onClose: () => void;
+  setAlert: (alert: AlertType) => void;
 }
 
-export const EditDoctorModal = ({ data, id }: EditDoctorModalProps) => {
+export const EditDoctorModal = ({ data, id, setAlert, onClose }: EditDoctorModalProps) => {
+  const queryClient = useQueryClient();
   const form = useForm({
     defaultValues: filterData(data || {})
   });
@@ -22,27 +26,32 @@ export const EditDoctorModal = ({ data, id }: EditDoctorModalProps) => {
     }
   }, [form, data]);
 
-  const onSubmit = form.handleSubmit(async (formData) => {
-    try {
-      await API.patch("rs-doctors-back", `/doctors/update-doctor/${id}`, {
-        body: pick(formData, [
-          "nameDoctor",
-          "surname",
-          "city",
-          "address",
-          "phone",
-          "education",
-          "experience",
-          "servicesSector",
-          "price",
-          "paymentMethod",
-          "aboutMe",
-          "languages",
-        ]),
-      });
-    } catch (err) {
-      console.log(err);
+  const mutation = useMutation(
+    (data: Partial<IDoctor>) => updateDoctor(id, data),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries("doctor");
+        setAlert({ severity: "success", message: "Doctor's data has been successfully updated" });
+        onClose();
+      },
     }
+  );
+
+  const onSubmit = form.handleSubmit(async (formData) => {
+    mutation.mutate(pick(formData, [
+      "nameDoctor",
+      "surname",
+      "city",
+      "address",
+      "phone",
+      "education",
+      "experience",
+      "servicesSector",
+      "price",
+      "paymentMethod",
+      "aboutMe",
+      "languages",
+    ]));
   });
 
   return (

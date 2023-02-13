@@ -53,7 +53,7 @@ const AddressDoctor = ({ data }: AddressDoctorProp) => {
               <LocalPhoneIcon />
             </Grid>
             <Grid item display={"flex"}>
-              <Box component={"span"}>{number ? data.phone : `${data.phone.slice(0, -5)}...`}</Box>
+              <Box component={"span"}>{number ? data.phone : `${data?.phone?.slice(0, -5)}...`}</Box>
               <Button variant="text" onClick={() => setNumber((prev) => !prev)}>
                 {number ? "Hide" : "Show"}
               </Button>
