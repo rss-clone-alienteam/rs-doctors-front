@@ -11,9 +11,10 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import { AskDoctor } from "./pages/AskDoctor/AskDoctor";
 import { SignUpConfirmation } from "./pages/auth/SignUpConfirmation/SignUpConfirmation";
 import { FindDoctors } from "./pages/FindDoctors/FindDoctors";
-import { DoctorCard } from "./pages/DoctorCard/DoctorCard";
+import { DoctorProfile } from "./pages/DoctorProfile/DoctorProfile";
 import { PatientAccount } from "./pages/PatientAccount/PatientAccount";
 import { DoctorAccount } from "./pages/DoctorAccount/DoctorAccount";
+import { ModalReview } from "./pages/ModalReview/ModalReview";
 
 function App() {
   const queryClient = new QueryClient({
@@ -31,7 +32,8 @@ function App() {
             <Route index element={<Home />}></Route>
             <Route path="ask-doctor" element={<AskDoctor />}></Route>
             <Route path="doctors" element={<FindDoctors />}></Route>
-            <Route path="doctor/:id" element={<DoctorCard />}></Route>
+            <Route path="doctor/:id" element={<DoctorProfile />}></Route>
+            <Route path="review/:id" element={<ModalReview />}></Route>
             <Route path="auth">
               <Route path="sign-up-doctor" element={<SignUpDoctor />}></Route>
               <Route path="sign-up-patient" element={<SignUpPatient />}></Route>
