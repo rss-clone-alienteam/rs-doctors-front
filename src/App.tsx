@@ -17,7 +17,13 @@ import { DoctorAccount } from "./pages/DoctorAccount/DoctorAccount";
 import { ModalReview } from "./pages/ModalReview/ModalReview";
 
 function App() {
-  const queryClient = new QueryClient();
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        retry: false,
+      }
+    }
+});
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider theme={appTheme}>
