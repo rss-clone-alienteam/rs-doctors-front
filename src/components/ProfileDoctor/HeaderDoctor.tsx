@@ -1,6 +1,6 @@
 import { Avatar, Grid, Link, Rating } from "@mui/material";
 import { Box } from "@mui/system";
-import { IDoctor } from "../PageDoctors/CardDoctor";
+import { IDoctor } from "../../api/doctors";
 
 interface HeaderDoctorProp {
   data: IDoctor;
@@ -22,7 +22,7 @@ const HeaderDoctor = ({ data }: HeaderDoctorProp) => {
           <Box>
             <Grid container direction="column">
               <Grid item>
-                <Box component={"h1"}>{data.nameDoctor + " " + data.surname} </Box>
+                <Box component={"h1"}>{data.name + " " + data.surname} </Box>
               </Grid>
               <Grid item>
                 <Box component={"h2"}>{data.category}</Box>

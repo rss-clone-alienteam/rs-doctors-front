@@ -7,7 +7,7 @@ import { useState } from "react";
 import { AddressDoctor } from "./AddressDoctor";
 import { ReviewsDoctor } from "./ReviewsDoctor";
 import { ServicesDoctor } from "./ServicesDoctor";
-import { IDoctor } from "../PageDoctors/CardDoctor";
+import { IDoctor } from "../../api/doctors";
 
 interface InfoDoctorProp {
   data: IDoctor;

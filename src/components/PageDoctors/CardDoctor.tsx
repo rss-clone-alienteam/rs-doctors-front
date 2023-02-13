@@ -3,26 +3,7 @@ import Box from "@mui/material/Box";
 import { Avatar, Card, CardActions, CardContent, CardHeader, Grid, IconButton, Link, Rating, Typography } from "@mui/material";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import { useNavigate } from "react-router-dom";
-
-export interface IDoctor {
-  aboutMe: string;
-  address: string;
-  category: string;
-  city: string;
-  education: string;
-  email: string;
-  experience: string;
-  id: string;
-  languages: string;
-  nameDoctor: string;
-  paymentMethod: string;
-  phone: string;
-  photo: null | string;
-  price: string;
-  reviews: string[];
-  servicesSector: string;
-  surname: string;
-}
+import { IDoctor } from "../../api/doctors";
 
 interface DoctorProps {
   doctor: IDoctor;
@@ -45,7 +26,7 @@ export const CardDoctor = ({ doctor }: DoctorProps) => {
                 />
               }
               sx={{ cursor: "pointer" }}
-              title={`${doctor.nameDoctor} ${doctor.surname}`}
+              title={`${doctor.name} ${doctor.surname}`}
               subheader={
                 <>
                   <Typography variant="body2" color="text.secondary">

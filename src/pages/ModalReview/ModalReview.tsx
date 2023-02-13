@@ -2,12 +2,13 @@ import { Avatar, Button, Rating, TextField } from "@mui/material";
 import { useQuery } from "react-query";
 import { getDoctor } from "../../api/doctors";
 import style from "./ModalReview.module.scss";
+import { IDoctor } from "../../api/doctors";
 
 export const ModalReview = () => {
   const url = window.location.href;
   const id = url.slice(url.lastIndexOf("/") + 1);
 
-  const { data } = useQuery("doctor", () => getDoctor(id));
+  const { data } = useQuery<IDoctor>("doctor", () => getDoctor(id));
 
   return (
     <div className={style.modalContainer}>
@@ -21,8 +22,8 @@ export const ModalReview = () => {
           />
         </div>
         <div className={style.infoDoc}>
-          <div className={style.infoDocName}>{data.nameDoctor + " " + data.surname}</div>
-          <div className={style.infoDocCategory}>{data.category}</div>
+          <div className={style.infoDocName}>{data?.name + " " + data?.surname}</div>
+          <div className={style.infoDocCategory}>{data?.category}</div>
         </div>
       </section>
 

@@ -6,7 +6,7 @@ import LocalPhoneIcon from "@mui/icons-material/LocalPhone";
 import Button from "@mui/material/Button";
 import MedicalServicesIcon from "@mui/icons-material/MedicalServices";
 import { ServicesDoctor } from "./ServicesDoctor";
-import { IDoctor } from "../PageDoctors/CardDoctor";
+import { IDoctor } from "../../api/doctors";
 
 interface AddressDoctorProp {
   data: IDoctor;
