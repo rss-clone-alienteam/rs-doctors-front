@@ -1,20 +1,20 @@
 import { API, Storage } from "aws-amplify";
 
 export interface IDoctor {
-  aboutMe: string;
-  address: string;
+  aboutMe: string | null;
+  address: string | null;
   category: string;
   city: string;
-  education: string;
+  education: string | null;
   email: string;
-  experience: string;
+  experience: string | null;
   id: string;
-  languages: string;
+  languages: string | null;
   nameDoctor: string;
-  paymentMethod: string;
-  phone: string;
-  price: string;
-  servicesSector: string;
+  paymentMethod: string | null;
+  phone: string | null;
+  price: string | null;
+  servicesSector: string | null;
   surname: string;
   photo: string | null;
 }

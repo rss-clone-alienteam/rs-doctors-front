@@ -13,7 +13,7 @@ const HeaderDoctor = ({ data }: HeaderDoctorProp) => {
         <Grid item>
           <Avatar
             alt="Avatar"
-            src="https://icdn.lenta.ru/images/2022/10/31/11/20221031114742010/square_1024_webp_8f466724f273b97b62416bb38f7c4ab3.webp"
+            src={data.photo || "../../assets/default-avatar.png"}
             sx={{ width: 150, height: 150 }}
             variant="square"
           ></Avatar>
@@ -22,7 +22,7 @@ const HeaderDoctor = ({ data }: HeaderDoctorProp) => {
           <Box>
             <Grid container direction="column">
               <Grid item>
-                <Box component={"h1"}>{data.name + " " + data.surname} </Box>
+                <Box component={"h1"}>{data.nameDoctor + " " + data.surname} </Box>
               </Grid>
               <Grid item>
                 <Box component={"h2"}>{data.category}</Box>
