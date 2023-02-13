@@ -32,6 +32,7 @@ export const SignIn = () => {
   const mutation = useMutation(
     async ({ email, password }: UserData) => {
       const user = await AuthService.signIn({ email, password });
+      console.log(user);
       return user;
     },
     {
@@ -43,15 +44,11 @@ export const SignIn = () => {
     }
   );
 
-  const onSubmit = handleSubmit(async ({ email, password }) => {
-    try {
-      mutation.mutate({
-        email,
-        password
-      });
-    } catch (err) {
-      console.log(err);
-    }
+  const onSubmit = handleSubmit(({ email, password }) => {
+    mutation.mutate({
+      email,
+      password
+    });
   });
 
   return (

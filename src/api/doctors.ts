@@ -1,4 +1,4 @@
-import { API } from "aws-amplify";
+import { API, Storage } from "aws-amplify";
 
 export interface IDoctor {
   aboutMe: string;
@@ -10,12 +10,13 @@ export interface IDoctor {
   experience: string;
   id: string;
   languages: string;
-  name: string;
+  nameDoctor: string;
   paymentMethod: string;
   phone: string;
   price: string;
   servicesSector: string;
   surname: string;
+  photo: string | null;
 }
 
 export const getDoctors = async (specialization: string, city: string) => {
@@ -34,7 +35,31 @@ export const getDoctors = async (specialization: string, city: string) => {
 };
 
 export const getDoctor = async (id?: string): Promise<IDoctor> => {
-  const data = API.get("rs-doctors-back", `/doctors/get-doctor/${id}`, {});
+  const data = await API.get("rs-doctors-back", `/doctors/get-doctor/${id}`, {});
   console.log(data);
   return data;
+};
+
+export const updateDoctor = async (id?: string, body?: Partial<IDoctor>): Promise<IDoctor> => {
+  const data = await API.patch("rs-doctors-back", `/doctors/update-doctor/${id}`, {
+    body
+  });
+  return data;
+};
+
+export const updateDoctorImage = async (file: File, id?: string) => {
+  const list = await Storage.list(`doctors/${id}/photos/`, { level: "public" });
+  if (list.results.length) {
+    const item = list.results.find(result => result.key?.includes("/avatar."));
+    if (item?.key) {
+      await Storage.remove(item.key, { level: "public" });
+    }
+  }
+  const { key } = await Storage.put(`doctors/${id}/photos/avatar.${file.type.split("/")[1]}`, file, { level: "public", contentType: file.type });
+  const photo = (await Storage.get(key, { level: "public" })).split("?")[0];
+  await API.patch("rs-doctors-back", `/doctors/update-doctor/${id}`, {
+    body: {
+      photo
+    }
+  });
 };
