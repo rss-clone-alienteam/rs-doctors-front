@@ -26,7 +26,7 @@ const FindDoctors = () => {
 
   useEffect(() => {
     getData(specialization, city);
-  }, [city, specialization]);
+  }, []);
 
   return (
     <Box display={"flex"} flexDirection={"column"} align-items={"center"}>
@@ -45,8 +45,8 @@ const FindDoctors = () => {
         </YMaps>
       </Box>
       <Box width={"70vw"}>
-        {products.map((doc: IDoctor, index: number) => (
-          <CardDoctor doctor={doc} key={index} />
+        {products.map((doc: IDoctor) => (
+          <CardDoctor doctor={doc} key={doc.id} />
         ))}
       </Box>
     </Box>
