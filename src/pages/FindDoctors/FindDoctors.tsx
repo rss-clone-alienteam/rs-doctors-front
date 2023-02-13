@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
-import { IDoctor } from "../../components/PageDoctors/CardDoctor";
+import { IDoctor } from "../../api/doctors";
 import { CardDoctor } from "../../components/PageDoctors/CardDoctor";
 import { getDoctors } from "../../api/doctors";
 import { useSearchParams } from "react-router-dom";
