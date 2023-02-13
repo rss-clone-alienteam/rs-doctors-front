@@ -34,7 +34,6 @@ export const Search = () => {
       />
       <SearchButton
         onClick={async () => {
-          // const data = await getDoctors(specialization, city);
           navigate(`/doctors?specialization=${specialization}&city=${city}`);
         }}
       />

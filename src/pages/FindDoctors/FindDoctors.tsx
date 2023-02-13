@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
-import { IDoctor } from "../../components/PageDoctors/CardDoctor";
+import { IDoctor } from "../../api/doctors";
 import { CardDoctor } from "../../components/PageDoctors/CardDoctor";
 import { getDoctors } from "../../api/doctors";
 import { useSearchParams } from "react-router-dom";
@@ -45,8 +45,8 @@ const FindDoctors = () => {
         </YMaps>
       </Box>
       <Box width={"70vw"}>
-        {products.map((doc: IDoctor, index: number) => (
-          <CardDoctor doctor={doc} key={index} />
+        {products.map((doc: IDoctor) => (
+          <CardDoctor doctor={doc} key={doc.id} />
         ))}
       </Box>
     </Box>
