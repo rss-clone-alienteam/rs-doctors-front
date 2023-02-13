@@ -5,21 +5,23 @@ import LocationOnIcon from "@mui/icons-material/LocationOn";
 import { useNavigate } from "react-router-dom";
 
 export interface IDoctor {
-  aboutMe: string | null;
-  address: string | null;
-  category: string | null;
-  city: string | null;
-  education: string | null;
-  email: string | null;
-  experience: null;
-  id: string | null;
-  languages: null;
-  name: string | null;
-  paymentMethod: string | null;
-  phone: string | null;
-  price: string | null;
-  servicesSector: string | null;
-  surname: string | null;
+  aboutMe: string;
+  address: string;
+  category: string;
+  city: string;
+  education: string;
+  email: string;
+  experience: string;
+  id: string;
+  languages: string;
+  nameDoctor: string;
+  paymentMethod: string;
+  phone: string;
+  photo: null | string;
+  price: string;
+  reviews: string[];
+  servicesSector: string;
+  surname: string;
 }
 
 interface DoctorProps {
@@ -29,15 +31,9 @@ interface DoctorProps {
 export const CardDoctor = ({ doctor }: DoctorProps) => {
   const navigate = useNavigate();
 
-  // function selectDoc(doctor: IDoctor) {
-  //   console.log(doctor);
-
-  //   navigate(`/doctor/${doctor.name}`);
-  // }
-
   return (
     <Box display={"flex"}>
-      <Grid container justifyContent="center" alignItems="center" direction="column" spacing={1} sx={{ width: "50%" }}>
+      <Grid container justifyContent="center" alignItems="center" direction="column" spacing={1} sx={{ width: "100%" }}>
         <Grid item>
           <Card sx={{ maxWidth: "100%" }}>
             <CardHeader
@@ -48,7 +44,8 @@ export const CardDoctor = ({ doctor }: DoctorProps) => {
                   sx={{ width: 56, height: 56 }}
                 />
               }
-              title={`${doctor.name} ${doctor.name}`}
+              sx={{ cursor: "pointer" }}
+              title={`${doctor.nameDoctor} ${doctor.surname}`}
               subheader={
                 <>
                   <Typography variant="body2" color="text.secondary">
@@ -70,34 +67,46 @@ export const CardDoctor = ({ doctor }: DoctorProps) => {
               onClick={() => navigate(`/doctor/${doctor.id}`)}
             />
             <CardContent>
-              <Grid container mb={1} alignItems="center">
-                <Grid item xs={0.3}>
+              <Grid container mb={1} alignItems="center" display={"flex"} flexWrap={"nowrap"}>
+                <Grid item width={"20px"} mr={"5px"}>
                   <LocationOnIcon sx={{ display: "flex", alignItems: "center" }} />
                 </Grid>
-                <Grid item mr={1} ml={1}>
-                  {doctor.address}
+                <Grid item mr={1}>
+                  <Typography>{doctor.address}</Typography>
                 </Grid>
                 <Grid item>
                   <Link href="#" underline="hover">
                     Map
                   </Link>
+                  {/* <Box
+                    onClick={() => {
+                      console.log("13333");
+                      getMap();
+                    }}
+                  >
+                    Click me
+                  </Box> */}
                 </Grid>
               </Grid>
-              <Grid container mb={1}>
-                <Grid item xs={0.3} />
-                <Grid item mr={1} ml={1} color={"red"}>
-                  !!!name fo hospital
+
+              <Grid container mb={1} display={"flex"} flexWrap={"nowrap"}>
+                {/* <Grid item width={"20px"} mr={"5px"}>
+                  <LocationOnIcon sx={{ display: "flex", alignItems: "center" }} />
+                </Grid> */}
+                <Grid item ml={"25px"}>
+                  <Typography variant="body2"> {doctor.experience}</Typography>
                 </Grid>
               </Grid>
-              <Grid container mb={1} alignItems="center">
+
+              {/* <Grid container mb={1} alignItems="center">
                 <Grid item xs={0.3}></Grid>
-                <Grid item mr={1} ml={1} color={"red"}>
-                  !!!services
+                <Grid item mr={1} ml={1}>
+                  {doctor.experience}
                 </Grid>
                 <Grid item display={"flex"} justifyContent={"end"}>
-                  {`From ${doctor.price}`}
+                  {`${doctor.servicesSector} - ${doctor.price}`}
                 </Grid>
-              </Grid>
+              </Grid> */}
               <Typography variant="body2" color="text.secondary">
                 This impressive paella is a perfect party dish and a fun meal to cook together with your guests. Add 1 cup of frozen peas along with
                 the mussels, if you like.
