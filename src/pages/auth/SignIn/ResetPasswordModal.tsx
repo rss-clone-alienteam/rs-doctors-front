@@ -2,8 +2,11 @@ import { Button } from "@mui/material";
 import { Box } from "@mui/joy";
 import { AuthService } from "../../../services/AuthService";
 import { useState } from "react";
+import { useNavigate } from "react-router";
 
 export const ResetPasswordModal = () => {
+  const navigate = useNavigate();
+
   const [email, setEmail] = useState("");
   const [code, setCode] = useState("");
   const [newPassword, setNewPassword] = useState("");
@@ -24,7 +27,7 @@ export const ResetPasswordModal = () => {
   const submitNewPass = async () => {
     try {
       await AuthService.changePasswordSubmit({ email, code, newPassword });
-      alert("Password has changed");
+      navigate("/auth/sign-in");
     } catch {
       console.log("Something went wrong!");
     }
