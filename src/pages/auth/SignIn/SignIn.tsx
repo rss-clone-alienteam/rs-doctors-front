@@ -4,15 +4,19 @@ import { useNavigate } from "react-router-dom";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { object, string } from "yup";
 import { AuthService } from "../../../services/AuthService";
+import { Button } from "@mui/material";
+import { useState } from "react";
+import { ResetPasswordModal } from "./ResetPasswordModal";
+import { Modal } from "../../../components/Modal/Modal";
 
 interface UserData {
-  email: string
+  email: string;
   password: string;
 }
 
 const schema = object({
   email: string().email().required(),
-  password: string().required()
+  password: string().required(),
 });
 
 export const SignIn = () => {
@@ -38,28 +42,47 @@ export const SignIn = () => {
     {
       onSuccess: (user) => {
         user.attributes.profile === "doctor"
-        ? navigate(`/doctor-account/${user.attributes.sub}`)
-        : navigate(`/patient-account/${user.attributes.sub}`);
-      }
+          ? navigate(`/doctor-account/${user.attributes.sub}`)
+          : navigate(`/patient-account/${user.attributes.sub}`);
+      },
     }
   );
 
   const onSubmit = handleSubmit(({ email, password }) => {
     mutation.mutate({
       email,
-      password
+      password,
     });
   });
+
+  const [isOpen, setOpen] = useState(false);
+
+  const openPasswordRecoveryModal = () => setOpen(true);
+
+  const closePasswordRecoveryModal = () => setOpen(false);
 
   return (
     <>
       <form onSubmit={onSubmit}>
         <input type="email" placeholder="email" {...register("email")} />
         <p>{errors.email?.message}</p>
-        <input type="password" placeholder="password" {...register("password")} />
+        <input
+          type="password"
+          placeholder="password"
+          {...register("password")}
+        />
         <p>{errors.password?.message}</p>
         <button type="submit">Log in</button>
       </form>
+      <Button onClick={openPasswordRecoveryModal}>Forgot password</Button>
+      <Modal
+        open={isOpen}
+        onClose={closePasswordRecoveryModal}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <ResetPasswordModal />
+      </Modal>
     </>
   );
 };

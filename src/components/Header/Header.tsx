@@ -7,6 +7,8 @@ import Grid from "@mui/material/Grid";
 import RegisterButton from "./RegisterButton/RegisterButton";
 
 const Header = () => {
+  const text = "Sign In";
+
   return (
     <Box component="header" className={style.header}>
       <Grid container spacing={0} className={style.headerWrapper}>
@@ -23,7 +25,7 @@ const Header = () => {
         <Grid item className={style.navWrapper}>
           <RegisterButton />
           <NavLink to="/auth/sign-in">
-            <HeaderButton />
+            <HeaderButton text={text} />
           </NavLink>
         </Grid>
       </Grid>

@@ -5,7 +5,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { object, string } from "yup";
 import { AuthService } from "../../../services/AuthService";
-import { Snackbar, Alert } from "@mui/material";
+import { Snackbar, Alert, Button, Box } from "@mui/material";
 
 interface ConfirmationData {
   code: string;
@@ -46,8 +46,7 @@ export const SignUpConfirmation = () => {
       },
       onError: () => {
         setOpenErrorMessage(true);
-      }
-
+      },
     }
   );
 
@@ -59,6 +58,8 @@ export const SignUpConfirmation = () => {
     }
   });
 
+  const resend = () => AuthService.resendSignUp({ email });
+
   return (
     <>
       <form onSubmit={onSubmit}>
@@ -66,16 +67,19 @@ export const SignUpConfirmation = () => {
         <p>{errors.code?.message}</p>
         <button type="submit">Submit</button>
       </form>
+      <Box component={"span"} sx={{ color: "black" }}>
+        Did not get the code?
+      </Box>
+      <Button variant="contained" sx={{ color: "white" }} onClick={resend}>
+        Resend code
+      </Button>
       <Snackbar
         open={openErrorMessage}
         autoHideDuration={6000}
         onClose={() => setOpenErrorMessage(false)}
         anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
       >
-        <Alert
-        onClose={() => setOpenErrorMessage(false)}
-        severity="error"
-        >
+        <Alert onClose={() => setOpenErrorMessage(false)} severity="error">
           {mutation.error instanceof Error ? mutation.error.message : ""}
         </Alert>
       </Snackbar>
