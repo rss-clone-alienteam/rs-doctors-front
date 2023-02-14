@@ -15,7 +15,17 @@ interface UserConfirmData {
 
 interface UserData {
   email: string;
-  password: string
+  password: string;
+}
+
+interface UserEmailData {
+  email: string;
+}
+
+interface UserNewPassData {
+  email: string;
+  code: string;
+  newPassword: string;
 }
 
 export class AuthService {
@@ -37,12 +47,28 @@ export class AuthService {
     await Auth.confirmSignUp(email, code);
   }
 
+  static async resendSignUp({ email }: UserEmailData) {
+    await Auth.resendSignUp(email);
+  }
+
   static async getUser() {
     return Auth.currentUserInfo();
   }
 
   static async signIn({ email, password }: UserData) {
     return await Auth.signIn(email, password);
+  }
+
+  static async requestRecoveryPassword({ email }: UserEmailData) {
+    await Auth.forgotPassword(email);
+  }
+
+  static async changePasswordSubmit({
+    email,
+    code,
+    newPassword,
+  }: UserNewPassData) {
+    await Auth.forgotPasswordSubmit(email, code, newPassword);
   }
 
   static async signOut() {

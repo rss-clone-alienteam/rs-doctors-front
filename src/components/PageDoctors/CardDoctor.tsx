@@ -21,12 +21,12 @@ export const CardDoctor = ({ doctor }: DoctorProps) => {
               avatar={
                 <Avatar
                   alt="complex"
-                  src="https://i.pinimg.com/originals/ba/1e/dc/ba1edc6334faa704c42f69a0a77bdf84.jpg"
+                  src={doctor.photo || "../../assets/default-avatar.png"}
                   sx={{ width: 56, height: 56 }}
                 />
               }
               sx={{ cursor: "pointer" }}
-              title={`${doctor.name} ${doctor.surname}`}
+              title={`${doctor.nameDoctor} ${doctor.surname}`}
               subheader={
                 <>
                   <Typography variant="body2" color="text.secondary">
