@@ -61,7 +61,6 @@ export const SignUpPatient = () => {
     defaultValues: {
       name: "",
       lastName: "",
-      city: "",
       email: "",
       password: "",
     },
@@ -145,7 +144,7 @@ export const SignUpPatient = () => {
             <FormControl fullWidth required>
               <InputLabel id="select-city">City</InputLabel>
               <Select
-                error={Boolean(errors.city?.message)}
+                error={!!errors.city?.message}
                 value={city}
                 label="city"
                 {...register("city")}
@@ -168,7 +167,7 @@ export const SignUpPatient = () => {
               required
               id="outlined-required"
               label="Name"
-              error={Boolean(errors.name?.message)}
+              error={!!errors.name?.message}
               helperText={errors.lastName?.message}
               {...register("name")}
             />
@@ -180,7 +179,7 @@ export const SignUpPatient = () => {
               required
               id="outlined-required"
               label="Last name"
-              error={Boolean(errors.lastName?.message)}
+              error={!!errors.lastName?.message}
               helperText={errors.lastName?.message}
               {...register("lastName")}
             />
@@ -193,7 +192,7 @@ export const SignUpPatient = () => {
               type="email"
               id="outlined-required"
               label="Email"
-              error={Boolean(errors.email?.message)}
+              error={!!errors.email?.message}
               helperText={errors.email?.message}
               {...register("email")}
             />
@@ -206,7 +205,7 @@ export const SignUpPatient = () => {
               type="password"
               id="outlined-required"
               label="Password"
-              error={Boolean(errors.password?.message)}
+              error={!!errors.password?.message}
               helperText={errors.password?.message}
               {...register("password")}
             />

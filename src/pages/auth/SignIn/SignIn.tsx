@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { object, string } from "yup";
 import { AuthService } from "../../../services/AuthService";
-import { Box, Button, Grid, TextField } from "@mui/material";
+import { Box, Button, CircularProgress, Grid, TextField } from "@mui/material";
 import { useState } from "react";
 import { ResetPasswordModal } from "./ResetPasswordModal";
 import { Modal } from "../../../components/Modal/Modal";
@@ -34,10 +34,9 @@ export const SignIn = () => {
     },
   });
 
-  const mutation = useMutation(
+  const { isLoading, mutate } = useMutation(
     async ({ email, password }: UserData) => {
       const user = await AuthService.signIn({ email, password });
-      console.log(user);
       return user;
     },
     {
@@ -46,11 +45,14 @@ export const SignIn = () => {
           ? navigate(`/doctor-account/${user.attributes.sub}`)
           : navigate(`/patient-account/${user.attributes.sub}`);
       },
+      onError: (errorAuth) => {
+        console.log(errorAuth);
+      },
     }
   );
 
   const onSubmit = handleSubmit(({ email, password }) => {
-    mutation.mutate({
+    mutate({
       email,
       password,
     });
@@ -64,72 +66,80 @@ export const SignIn = () => {
 
   return (
     <>
-      <Box component="form" onSubmit={onSubmit} className={style.form}>
-        <Grid
-          container
-          sx={{
-            mt: 1,
-            pl: 2,
-            pr: 3.5,
-            pt: 3,
-            pb: 4,
-            width: "100%",
-            maxWidth: "400px",
-            boxShadow: "0px 0px 24px -11px rgba(0, 0, 0, 0.3);",
-            zIndex: 100,
-            borderRadius: 3,
-            display: "flex",
-            justifyContent: "center",
-          }}
-          spacing={2}
-        >
-          <Grid item sx={{ width: "100%" }}>
-            <TextField
-              fullWidth
-              size="small"
-              required
-              id="outlined-required"
-              label="Email"
-              error={Boolean(errors.email?.message)}
-              helperText={errors.email?.message}
-              {...register("email")}
-            />
-          </Grid>
-          <Grid item sx={{ width: "100%" }}>
-            <TextField
-              type={"password"}
-              fullWidth
-              size="small"
-              required
-              id="outlined-required"
-              label="Password"
-              error={Boolean(errors.password?.message)}
-              helperText={errors.password?.message}
-              {...register("password")}
-            />
-          </Grid>
-          <Button
-            variant="outlined"
-            type="submit"
-            size="large"
-            sx={{ mt: 2 }}
-            onClick={onSubmit}
+      {!isLoading && (
+        <Box component="form" onSubmit={onSubmit} className={style.form}>
+          <Grid
+            container
+            sx={{
+              mt: 1,
+              pl: 2,
+              pr: 3.5,
+              pt: 3,
+              pb: 4,
+              width: "100%",
+              maxWidth: "400px",
+              boxShadow: "0px 0px 24px -11px rgba(0, 0, 0, 0.3);",
+              zIndex: 100,
+              borderRadius: 3,
+              display: "flex",
+              justifyContent: "center",
+            }}
+            spacing={2}
           >
-            Log in
+            <Grid item sx={{ width: "100%" }}>
+              <TextField
+                fullWidth
+                size="small"
+                required
+                id="outlined-required"
+                label="Email"
+                error={Boolean(errors.email?.message)}
+                helperText={errors.email?.message}
+                {...register("email")}
+              />
+            </Grid>
+            <Grid item sx={{ width: "100%" }}>
+              <TextField
+                type={"password"}
+                fullWidth
+                size="small"
+                required
+                id="outlined-required"
+                label="Password"
+                error={Boolean(errors.password?.message)}
+                helperText={errors.password?.message}
+                {...register("password")}
+              />
+            </Grid>
+            <Button
+              variant="outlined"
+              type="submit"
+              size="large"
+              sx={{ mt: 2 }}
+              onClick={onSubmit}
+            >
+              Log in
+            </Button>
+          </Grid>
+          <Button sx={{ mr: 2 }} onClick={openPasswordRecoveryModal}>
+            Forgot password
           </Button>
-        </Grid>
-        <Button sx={{ mr: 2 }} onClick={openPasswordRecoveryModal}>
-          Forgot password
-        </Button>
-        <Modal
-          open={isOpen}
-          onClose={closePasswordRecoveryModal}
-          aria-labelledby="modal-modal-title"
-          aria-describedby="modal-modal-description"
-        >
-          <ResetPasswordModal />
-        </Modal>
-      </Box>
+          <Modal
+            open={isOpen}
+            onClose={closePasswordRecoveryModal}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description"
+          >
+            <ResetPasswordModal />
+          </Modal>
+        </Box>
+      )}
+      {isLoading && (
+        <CircularProgress
+          size={120}
+          sx={{ position: "fixed", top: "45vh", left: "45vw" }}
+        />
+      )}
     </>
   );
 };
