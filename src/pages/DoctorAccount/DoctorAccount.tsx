@@ -5,6 +5,7 @@ import { useParams } from "react-router-dom";
 import { IDoctor, getDoctor, updateDoctorImage } from "../../api/doctors";
 import { Modal } from "../../components/Modal/Modal";
 import { EditDoctorModal } from "./EditDoctorModal";
+import { EditDataModal } from "./EditDateModal";
 import { PhotoWithUpload } from "../../components/PhotoWithUpload/PhotoWithUpload";
 import { DescriptionField } from "./components/DescriptionField";
 import { AlertType } from "./types";
@@ -37,7 +38,11 @@ export const DoctorAccount = () => {
 
   const [alert, setAlert] = useState<AlertType | null>(null);
   const [isModalOpen, setModalOpen] = useState(false);
-  const handleModalOpen = () => setModalOpen(true);
+  const [typeModal, setTypeModal] = useState("");
+  const handleModalOpen = (event: React.MouseEvent) => {
+    setTypeModal(`${event.currentTarget.id}`);
+    setModalOpen(true);
+  };
   const handleModalClose = () => setModalOpen(false);
 
   return (
@@ -48,7 +53,7 @@ export const DoctorAccount = () => {
           {data?.nameDoctor} {data?.surname}
         </Typography>
       </Box>
-      <Button onClick={handleModalOpen}>Edit</Button>
+      <Button id={"edit"} onClick={handleModalOpen}>Edit</Button>
       <Box className={style.infoBlock} mb={4} mt={1}>
        <DescriptionField icon={MedicalInformation} caption={"Category:"} text={data?.category}/>
        <DescriptionField icon={LocationCity} caption={"City:"} text={data?.city}/>
@@ -58,7 +63,7 @@ export const DoctorAccount = () => {
           <Typography>About me:</Typography>
         </Grid>
         <Grid className={style.infoBlock} item xs>
-          <Button>Сhoice of appointment time</Button>
+          <Button id={"time"} onClick={handleModalOpen}>Сhoice of appointment time</Button>
         </Grid>
       </Grid>
       <Modal
@@ -67,7 +72,13 @@ export const DoctorAccount = () => {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <EditDoctorModal data={data} id={id} onClose={handleModalClose} setAlert={setAlert} />
+        {
+          typeModal === "edit"
+          ? <EditDoctorModal data={data} id={id} onClose={handleModalClose} setAlert={setAlert} />
+          : typeModal === "time"
+            ? <EditDataModal />
+            : <></>
+        }
       </Modal>
       <Snackbar
         open={!!alert}
