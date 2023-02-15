@@ -1,11 +1,9 @@
-import { TabPanel } from "@mui/joy";
 import { Box, Tab, Tabs, Typography } from "@mui/material";
 import { Auth } from "aws-amplify";
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { useQuery } from "react-query";
 import { useParams } from "react-router-dom";
 import { getPatient } from "../../api/patients";
-import { Context } from "../../Context/ContextProvider";
 import { AuthService } from "../../services/AuthService";
 import style from "./PatientAccount.module.scss";
 
