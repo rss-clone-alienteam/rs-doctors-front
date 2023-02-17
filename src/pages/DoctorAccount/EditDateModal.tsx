@@ -9,6 +9,7 @@ import { useMutation, useQueryClient } from "react-query";
 
 
 export const EditDataModal = ({ data }: {data: IAppointments} ) => {
+  console.log(data);
   const queryClient = useQueryClient();
   const { id } = useParams();
   const [date, setData] = useState<Dayjs | null>(null);

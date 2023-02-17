@@ -47,6 +47,7 @@ export const DoctorAccount = () => {
     useQuery<ISchedule, Error>(["schedule", id], () => getSchedule(id), {onError: () => {
       setAlert({ severity: "error", message: "Error during fetching data" });
     }});
+    console.log(infoAppointments?.schedule);
 
   const [alert, setAlert] = useState<AlertType | null>(null);
   const [isModalOpen, setModalOpen] = useState(false);
@@ -99,7 +100,7 @@ export const DoctorAccount = () => {
         {
           typeModal === "edit"
           ? <EditDoctorModal data={doctor} id={id} onClose={handleModalClose} setAlert={setAlert} />
-          : typeModal === "time" && infoAppointments
+          : typeModal === "time" && isSuccessSchedule
             ? <EditDataModal data={infoAppointments.schedule}/>
             : <></>
         }
