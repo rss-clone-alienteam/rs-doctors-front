@@ -35,9 +35,8 @@ export const getDoctors = async (specialization: string, city: string) => {
 };
 
 export const getDoctor = async (id?: string): Promise<IDoctor> => {
-  const data = await API.get("rs-doctors-back", `/doctors/get-doctor/${id}`, {});
-  console.log(data);
-  return data;
+  const doctor: IDoctor = await API.get("rs-doctors-back", `/doctors/get-doctor/${id}`, {});
+  return doctor;
 };
 
 export const getMap = async (address: string) => {
