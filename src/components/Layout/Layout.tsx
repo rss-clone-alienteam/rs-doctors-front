@@ -10,7 +10,7 @@ const Layout = () => {
         <Outlet />
       </Container>
 
-      <footer className={style.footer}>2023</footer>
+      <footer className={style.footer}></footer>
     </>
   );
 };
