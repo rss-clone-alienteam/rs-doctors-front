@@ -45,7 +45,7 @@ export const SignIn = () => {
     {
       onSuccess: (user) => {
         setIsUserLogIn(true);
-        setUserEmail(user.attributes.sub);
+        setUserID(user.attributes.sub);
         setUserEmail(user.attributes.email);
         user.attributes.profile === "doctor"
           ? navigate(`/doctor-account/${user.attributes.sub}`)
