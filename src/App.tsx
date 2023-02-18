@@ -66,24 +66,12 @@ function App() {
               <Route path="review/:id" element={<ModalReview />}></Route>
               <Route path="auth">
                 <Route path="sign-up-doctor" element={<SignUpDoctor />}></Route>
-                <Route
-                  path="sign-up-patient"
-                  element={<SignUpPatient />}
-                ></Route>
+                <Route path="sign-up-patient" element={<SignUpPatient />}></Route>
                 <Route path="sign-in" element={<SignIn />}></Route>
-                <Route
-                  path="sign-up-confirmation"
-                  element={<SignUpConfirmation />}
-                ></Route>
+                <Route path="sign-up-confirmation" element={<SignUpConfirmation />}></Route>
               </Route>
-              <Route
-                path="patient-account/:id"
-                element={<PatientAccount />}
-              ></Route>
-              <Route
-                path="doctor-account/:id"
-                element={<DoctorAccount />}
-              ></Route>
+              <Route path="patient-account/:id" element={<PatientAccount />}></Route>
+              <Route path="doctor-account/:id" element={<DoctorAccount />}></Route>
               <Route path="*" element={<Notfound />}></Route>
             </Route>
           </Routes>
