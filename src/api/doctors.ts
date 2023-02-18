@@ -1,4 +1,3 @@
-import axios from "axios";
 import { API, Storage } from "aws-amplify";
 
 export interface IDoctor {
@@ -42,12 +41,27 @@ export const getDoctor = async (id?: string): Promise<IDoctor> => {
 };
 
 export const getMap = async (address: string) => {
-  const key = "c28eb37a-b0c8-44bd-b589-29629cb89fa2";
+  // const key = "c28eb37a-b0c8-44bd-b589-29629cb89fa2";
   // const key = "76383793-1243-485a-97a8-100f5e2d036f";
-  const data = await axios.get(`https://geocode-maps.yandex.ru/1.x/?apikey=${key}&geocode=${address}&format=json`);
-  const cords = data.data.response.GeoObjectCollection.featureMember[0].GeoObject.Point.pos.split(" ").reverse();
-  return cords;
+  const key = "97861e46-e717-499b-903a-d604643b259f"; //втрой мой
+
+  const data = await fetch(`https://geocode-maps.yandex.ru/1.x/?apikey=${key}&geocode=${address}&format=json`);
+  const res = await data.json();
+
+  const coords = res.response.GeoObjectCollection.featureMember[0].GeoObject.Point.pos.split(" ").reverse();
+  const newCoords = coords.map((item: string) => Number(item));
+  return newCoords;
 };
+
+export async function getCords(data: IDoctor[]) {
+  if (data == undefined) return;
+  const newData = await Promise.all(
+    data.map(async (doc: IDoctor) => {
+      if (doc.address !== null) return await getMap(doc.address);
+    }),
+  );
+  return newData;
+}
 
 export const updateDoctor = async (id?: string, body?: Partial<IDoctor>): Promise<IDoctor> => {
   const data = await API.patch("rs-doctors-back", `/doctors/update-doctor/${id}`, {
