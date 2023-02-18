@@ -60,7 +60,7 @@ export const PatientAccount = () => {
     <Box className={style.containerTop}>
       <Box className={style.caption}>
         <Typography className={style.text}>
-          You logged in as <h1 className={style.h1}>{userEmail}</h1>
+          You logged in as {userEmail}
         </Typography>
         <Button color="error" variant="contained" onClick={() => logOut()}>
           Log Out

@@ -23,7 +23,7 @@ const schema = object({
 
 export const SignIn = () => {
   const navigate = useNavigate();
-  const { setIsUserLogIn } = useContext(Context);
+  const { setIsUserLogIn, setUserEmail, setUserID } = useContext(Context);
 
   const {
     register,
@@ -45,6 +45,8 @@ export const SignIn = () => {
     {
       onSuccess: (user) => {
         setIsUserLogIn(true);
+        setUserEmail(user.attributes.sub);
+        setUserEmail(user.attributes.email);
         user.attributes.profile === "doctor"
           ? navigate(`/doctor-account/${user.attributes.sub}`)
           : navigate(`/patient-account/${user.attributes.sub}`);
