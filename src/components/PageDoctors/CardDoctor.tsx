@@ -1,7 +1,7 @@
 import React from "react";
 import style from "./CardDoctor.module.scss";
 import Box from "@mui/material/Box";
-import { Avatar, Card, CardActions, CardContent, CardHeader, CircularProgress, Grid, IconButton, Link, Rating, Typography } from "@mui/material";
+import { Avatar, Card, CardContent, CardHeader, CircularProgress, Grid, Link, Rating, Typography } from "@mui/material";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import { useNavigate } from "react-router-dom";
 import { IDoctor } from "../../api/doctors";
@@ -63,7 +63,7 @@ export const CardDoctor = ({ doctor, coords }: DoctorProps) => {
                     </Grid>
                     <Grid item container direction="column" alignItems="flex-start">
                       <Grid item container direction="row">
-                        <Grid item>
+                        <Grid item marginRight="7px">
                           <Typography className={style.addressJob}>{doctor.address}</Typography>
                         </Grid>
                         <Grid item>
