@@ -1,21 +1,9 @@
-import { Box, Tab, Tabs, Typography, Button } from "@mui/material";
-import { useContext, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { Context } from "../../Context/Context";
-import { AuthService } from "../../services/AuthService";
+import { Box, Tab, Tabs, Typography } from "@mui/material";
+import { useState } from "react";
+import { LogOutBanner } from "../../components/LogOutBanner/LogOutBanner";
 import style from "./PatientAccount.module.scss";
 
 export const PatientAccount = () => {
-  const { userEmail } = useContext(Context);
-
-  const { setIsUserLogIn } = useContext(Context);
-  const navigate = useNavigate();
-
-  const logOut = () => {
-    AuthService.signOut();
-    setIsUserLogIn(false);
-    navigate("/");
-  };
 
   interface TabPanelProps {
     children?: React.ReactNode;
@@ -58,14 +46,7 @@ export const PatientAccount = () => {
 
   return (
     <Box className={style.containerTop}>
-      <Box className={style.caption}>
-        <Typography className={style.text}>
-          You logged in as {userEmail}
-        </Typography>
-        <Button color="error" variant="contained" onClick={() => logOut()}>
-          Log Out
-        </Button>
-      </Box>
+      <LogOutBanner />
       <Box
         sx={{
           flexGrow: 1,

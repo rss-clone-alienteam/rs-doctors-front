@@ -23,6 +23,7 @@ function App() {
   const [isUserLogIn, setIsUserLogIn] = useState(false);
   const [userID, setUserID] = useState("");
   const [userEmail, setUserEmail] = useState("");
+  const [profile, setProfile] = useState("");
 
   const queryClient = new QueryClient({
     defaultOptions: {
@@ -34,10 +35,11 @@ function App() {
   });
 
   const checkAuth = async () => {
-    const { isLogIn, userID, mail } = await getUserInfo();
+    const { isLogIn, userID, mail, profile } = await getUserInfo();
     setIsUserLogIn(isLogIn);
     setUserID(userID);
     setUserEmail(mail);
+    setProfile(profile);
   };
 
   useEffect(() => {
@@ -53,6 +55,8 @@ function App() {
         setUserID,
         userEmail,
         setUserEmail,
+        profile,
+        setProfile
       }}
     >
       <QueryClientProvider client={queryClient}>
