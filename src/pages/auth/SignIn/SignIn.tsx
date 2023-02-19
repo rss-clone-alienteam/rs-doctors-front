@@ -5,10 +5,11 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { object, string } from "yup";
 import { AuthService } from "../../../services/AuthService";
 import { Box, Button, CircularProgress, Grid, TextField } from "@mui/material";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { ResetPasswordModal } from "./ResetPasswordModal";
 import { Modal } from "../../../components/Modal/Modal";
 import style from "./SignIn.module.scss";
+import { Context } from "../../../Context/Context";
 
 interface UserData {
   email: string;
@@ -22,6 +23,8 @@ const schema = object({
 
 export const SignIn = () => {
   const navigate = useNavigate();
+  const { setIsUserLogIn, setUserEmail, setUserID } = useContext(Context);
+
   const {
     register,
     handleSubmit,
@@ -41,12 +44,16 @@ export const SignIn = () => {
     },
     {
       onSuccess: (user) => {
+        setIsUserLogIn(true);
+        setUserID(user.attributes.sub);
+        setUserEmail(user.attributes.email);
         user.attributes.profile === "doctor"
           ? navigate(`/doctor-account/${user.attributes.sub}`)
           : navigate(`/patient-account/${user.attributes.sub}`);
       },
       onError: (errorAuth) => {
         console.log(errorAuth);
+        setIsUserLogIn(false);
       },
     }
   );

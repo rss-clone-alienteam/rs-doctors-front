@@ -5,9 +5,11 @@ import style from "./Header.module.scss";
 import logo from "../../assets/logo.png";
 import Grid from "@mui/material/Grid";
 import RegisterButton from "./RegisterButton/RegisterButton";
+import { useContext } from "react";
+import { Context } from "../../Context/Context";
 
 const Header = () => {
-  const text = "Sign In";
+  const { isUserLogIn, userID } = useContext(Context);
 
   return (
     <Box component="header" className={style.header}>
@@ -24,9 +26,15 @@ const Header = () => {
         <NavLink to="/ask-doctor">Ask the Doctor</NavLink>
         <Grid item className={style.navWrapper}>
           <RegisterButton />
-          <NavLink to="/auth/sign-in">
-            <HeaderButton text={text} />
-          </NavLink>
+          {isUserLogIn ? (
+            <NavLink to={`/patient-account/${userID}`}>
+              <HeaderButton text="My Profile" />
+            </NavLink>
+          ) : (
+            <NavLink to="/auth/sign-in">
+              <HeaderButton text="Sign In" />
+            </NavLink>
+          )}
         </Grid>
       </Grid>
     </Box>
