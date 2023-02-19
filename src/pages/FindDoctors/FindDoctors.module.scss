@@ -1,0 +1,31 @@
+%flex-column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.container {
+  width: 100%;
+  color: rgb(0 0 0);
+
+  @extend %flex-column;
+}
+
+.mapYandex {
+  justify-content: center;
+  margin-bottom: 50px;
+  height: 250px;
+  min-width: 300px;
+  max-width: 100%;
+
+  @extend %flex-column;
+}
+
+.modalHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  border: 1px solid rgb(33 33 33);
+  border-radius: 10px;
+  padding: 10px 0;
+}

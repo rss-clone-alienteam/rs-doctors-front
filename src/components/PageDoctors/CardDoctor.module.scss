@@ -1,0 +1,61 @@
+%flex-column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+%flex-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.container {
+  overflow: hidden;
+  border-radius: 20px;
+  width: 100%;
+  box-shadow: 0 2px 1px -1px rgb(0 0 0 / 20%), 0 1px 1px 0 rgb(0 0 0 / 14%), 0 1px 3px 0 rgb(0 0 0 / 12%);
+  color: rgb(0 0 0);
+
+  // transition: box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+
+  @extend %flex-row;
+}
+
+.container *::-webkit-scrollbar {
+  width: 0;
+  background: transparent;
+}
+
+.avatarFeedback {
+  margin-left: 10px;
+
+  @extend %flex-row;
+}
+
+.infoMapIconContainer {
+  align-items: flex-start;
+  width: 20px;
+
+  @extend %flex-row;
+}
+
+.infoMapIcon {
+  width: 30px;
+
+  @extend %flex-row;
+}
+
+.addressBlock {
+  @extend %flex-column;
+}
+
+.containerAddress {
+  // justify-content: flex-start;
+
+  @extend %flex-row;
+}
+
+.MuiGrid-root.MuiGrid-item.MuiGrid-grid-xs-6.css-1rqumj0-MuiGrid-root {
+  height: auto;
+}
