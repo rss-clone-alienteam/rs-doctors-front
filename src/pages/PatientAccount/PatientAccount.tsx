@@ -1,23 +1,21 @@
-import { Box, Tab, Tabs, Typography } from "@mui/material";
-import { Auth } from "aws-amplify";
-import { useState } from "react";
-import { useQuery } from "react-query";
-import { useParams } from "react-router-dom";
-import { getPatient } from "../../api/patients";
+import { Box, Tab, Tabs, Typography, Button } from "@mui/material";
+import { useContext, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Context } from "../../Context/Context";
 import { AuthService } from "../../services/AuthService";
 import style from "./PatientAccount.module.scss";
 
 export const PatientAccount = () => {
-  const { id } = useParams();
-  const { data } = useQuery("patient", () => getPatient(id));
+  const { userEmail } = useContext(Context);
 
-  const signedUser = async () => {
-    console.log(await Auth.currentAuthenticatedUser());
-    console.log(await AuthService.getUser());
+  const { setIsUserLogIn } = useContext(Context);
+  const navigate = useNavigate();
+
+  const logOut = () => {
+    AuthService.signOut();
+    setIsUserLogIn(false);
+    navigate("/");
   };
-  signedUser();
-
-  // console.log(Auth.currentAuthenticatedUser());
 
   interface TabPanelProps {
     children?: React.ReactNode;
@@ -59,11 +57,14 @@ export const PatientAccount = () => {
   };
 
   return (
-    <div>
+    <Box className={style.containerTop}>
       <Box className={style.caption}>
-        <Typography className={style.h1}>
-          You logged in as {data?.email}
+        <Typography className={style.text}>
+          You logged in as {userEmail}
         </Typography>
+        <Button color="error" variant="contained" onClick={() => logOut()}>
+          Log Out
+        </Button>
       </Box>
       <Box
         sx={{
@@ -95,6 +96,6 @@ export const PatientAccount = () => {
           Item Three
         </TabPanel>
       </Box>
-    </div>
+    </Box>
   );
 };
