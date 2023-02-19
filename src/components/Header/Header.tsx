@@ -9,7 +9,7 @@ import { useContext } from "react";
 import { Context } from "../../Context/Context";
 
 const Header = () => {
-  const { isUserLogIn, userID } = useContext(Context);
+  const { isUserLogIn, userID, profile } = useContext(Context);
 
   return (
     <Box component="header" className={style.header}>
@@ -27,7 +27,7 @@ const Header = () => {
         <Grid item className={style.navWrapper}>
           <RegisterButton />
           {isUserLogIn ? (
-            <NavLink to={`/patient-account/${userID}`}>
+            <NavLink to={`/${profile}-account/${userID}`}>
               <HeaderButton text="My Profile" />
             </NavLink>
           ) : (

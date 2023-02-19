@@ -9,6 +9,8 @@ export interface IContext {
   setUserID: SetValue<string>;
   userEmail: string;
   setUserEmail: SetValue<string>;
+  profile: string;
+  setProfile: SetValue<string>;
 }
 
 export const Context = createContext<IContext>({} as IContext);
