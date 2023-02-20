@@ -6,30 +6,36 @@ import { CardDoctor } from "../../components/PageDoctors/CardDoctor";
 import { getDoctors } from "../../api/doctors";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { YMaps, Map, Placemark } from "@pbe/react-yandex-maps";
-import { useQuery } from "react-query";
-import { CircularProgress, Grid } from "@mui/material";
-
-const defaultState = {
-  center: [55.751574, 37.573856],
-  zoom: 10,
-};
+import { Grid } from "@mui/material";
+import { Search } from "../../components/SectionFindDoctors/Search/Search";
 
 const FindDoctors = () => {
-  const navigate = useNavigate();
   const [coordsData, setCoordsData] = useState<[number, number][]>([]);
+  const [data, setData] = useState<IDoctor[]>([]);
+  const [defaultState, setDefaultState] = useState({
+    center: [55.751574, 37.573856],
+    zoom: 10,
+  });
   const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
 
-  const city = searchParams.get("city") || "";
-  const specialization = searchParams.get("specialization") || "";
-  console.log(city, specialization);
-
-  const { isLoading, data } = useQuery("doctors", () => getDoctors(specialization, city));
+  // const { isLoading, data } = useQuery("doctors", () => getDoctors(specialization, city));
 
   useEffect(() => {
-    async function getCoords(data: IDoctor[]) {
-      if (data == undefined) return;
+    console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAa");
+
+    const city = searchParams.get("city") || "";
+    const specialization = searchParams.get("specialization") || "";
+
+    async function getCoords() {
+      const dataDoc = await getDoctors(specialization, city);
+
+      data.toString() !== dataDoc.toString() ? setData(dataDoc) : true;
+
+      if (dataDoc == undefined) return;
+
       const newData: [number, number][] = await Promise.all(
-        data
+        dataDoc
           .filter((doc: IDoctor) => doc.address !== null)
           .map(async (doc: IDoctor) => {
             if (doc.address !== null) {
@@ -37,23 +43,35 @@ const FindDoctors = () => {
             }
           }),
       );
+
       setCoordsData(newData);
+      setDefaultState({ center: newData[0], zoom: 10 });
     }
-    getCoords(data);
-  }, [data]);
 
-  if (coordsData.length) defaultState.center = coordsData[0];
+    getCoords();
+  }, [data, searchParams]);
 
-  if (isLoading) return <CircularProgress size={120} sx={{ position: "fixed", top: "45vh", left: "45vw" }} />;
+  // if (isLoading) return <CircularProgress size={120} sx={{ position: "fixed", top: "45vh", left: "45vw" }} />;
 
   return (
-    <Box className={style.container}>
-      {
-        <Box width={"100%"}>
+    <>
+      <Box>
+        <Search />
+      </Box>
+      <Box className={style.container}>
+        <Grid container spacing={5} flexDirection="column" alignContent={"center"} width="70%">
+          {data !== undefined &&
+            data.map((doc: IDoctor, index: number) => (
+              <Grid item key={doc.id}>
+                <CardDoctor doctor={doc} key={doc.id} coords={coordsData[index]} />
+              </Grid>
+            ))}
+        </Grid>
+        <Box width={"30%"} marginLeft={"30px"}>
           <YMaps>
-            <Map defaultState={defaultState} className={style.mapYandex}>
-              {coordsData.length &&
-                coordsData.map((item: [number, number], index: number) => (
+            {defaultState && (
+              <Map defaultState={defaultState} className={style.mapYandex}>
+                {coordsData.map((item: [number, number], index: number) => (
                   <Placemark
                     geometry={item}
                     key={index}
@@ -66,18 +84,12 @@ const FindDoctors = () => {
                     onClick={() => navigate(`/doctor/${data[index].id}`)}
                   />
                 ))}
-            </Map>
+              </Map>
+            )}
           </YMaps>
         </Box>
-      }
-      <Grid container xs={12} spacing={5} flexDirection="column" alignContent={"center"}>
-        {data.map((doc: IDoctor, index: number) => (
-          <Grid item key={doc.id}>
-            <CardDoctor doctor={doc} key={doc.id} coords={coordsData[index]} />
-          </Grid>
-        ))}
-      </Grid>
-    </Box>
+      </Box>
+    </>
   );
 };
 
