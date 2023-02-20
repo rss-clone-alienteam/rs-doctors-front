@@ -1,6 +1,9 @@
 import { Box, Tab, Tabs, Typography } from "@mui/material";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { useQuery } from "react-query";
+import { getPatient } from "../../api/patients";
 import { LogOutBanner } from "../../components/LogOutBanner/LogOutBanner";
+import { Context } from "../../Context/Context";
 import style from "./PatientAccount.module.scss";
 
 export const PatientAccount = () => {
@@ -44,6 +47,12 @@ export const PatientAccount = () => {
     setValue(newValue);
   };
 
+  const { userID } = useContext(Context);
+  const { data } = useQuery("patient", () => getPatient(userID));
+  console.log(userID, data);
+
+
+
   return (
     <Box className={style.containerTop}>
       <LogOutBanner />
@@ -67,16 +76,16 @@ export const PatientAccount = () => {
           <Tab label="Questions" {...a11yProps(1)} />
           <Tab label="Settings" {...a11yProps(2)} />
         </Tabs>
-        <TabPanel value={value} index={0}>
-          Item One
+        <TabPanel value={value} index={0} >
+          <Box sx={{ color: "red" }}>You dont have any appointments yet</Box>
         </TabPanel>
         <TabPanel value={value} index={1}>
-          Item Two
+          <Box sx={{ color: "red" }}>{data?.email}</Box>
         </TabPanel>
         <TabPanel value={value} index={2}>
-          Item Three
+          <Box sx={{ color: "red" }}> {data?.name}</Box>
         </TabPanel>
-      </Box>
-    </Box>
+      </Box >
+    </Box >
   );
 };
