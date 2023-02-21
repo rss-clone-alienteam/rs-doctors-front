@@ -3,7 +3,7 @@ import { IAppointments } from "../../api/schedule";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 export const SectionSchedule = ({ data, onClick }: { data: IAppointments; onClick: () => void }) => {
-  console.log(data);
+  console.log(13, data);
   return (
     <Box>
       {Object.entries(data)

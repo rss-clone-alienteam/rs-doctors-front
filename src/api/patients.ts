@@ -1,4 +1,5 @@
 import { API } from "aws-amplify";
+import { IAppointments } from "./schedule";
 
 type Appointment = {
   appointments: {
@@ -25,7 +26,7 @@ export const getPatient = async (id?: string): Promise<IPatient> => {
 export const updatePatient = async (
   id?: string,
   body?: Appointment
-): Promise<IPatient> => {
+): Promise<Appointment> => {
   const data = await API.patch(
     "rs-doctors-back",
     `/patients/update-patient/${id}`,
