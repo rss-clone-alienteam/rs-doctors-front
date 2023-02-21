@@ -19,11 +19,12 @@ const DoctorProfile = () => {
   console.log(data);
 
   const addReview = () => {
-    isUserLogIn ?
-      navigate(`/review/${data?.id}`)
-    :
+    if (!isUserLogIn) {
       setOpenMessage(true);
       setTimeout(() => navigate("/auth/sign-in"), 2000);
+    } else {
+      navigate(`/review/${data?.id}`);
+    }
   };
 
   return (
