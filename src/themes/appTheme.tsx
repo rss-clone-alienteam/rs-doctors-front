@@ -11,4 +11,9 @@ export const appTheme = createTheme({
       light: "#FF0000",
     },
   },
+  typography: {
+    h5: {
+      color: "#181823",
+    }
+  }
 });
