@@ -1,21 +1,20 @@
 import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "react-query";
-import { useParams } from "react-router-dom";
-import { IDoctor, getDoctor, updateDoctorImage } from "../../api/doctors";
-import { ISchedule, getSchedule } from "../../api/schedule";
-import { Modal } from "../../components/Modal/Modal";
-import { EditDoctorModal } from "./EditDoctorModal";
+import { useNavigate, useParams } from "react-router-dom";
+import { IDoctor, getDoctor, updateDoctorImage } from "../../../api/doctors";
+import { ISchedule, getSchedule } from "../../../api/schedule";
+import { Modal } from "../../../components/Modal/Modal";
 import { EditDataModal } from "./EditDateModal";
-import { PhotoWithUpload } from "../../components/PhotoWithUpload/PhotoWithUpload";
+import { PhotoWithUpload } from "../../../components/PhotoWithUpload/PhotoWithUpload";
 import { DescriptionField } from "./components/DescriptionField";
-import { SectionSchedule } from "../../components/SectionSchedule/SectionSchedule";
-import { AlertType } from "./types";
+import { SectionSchedule } from "../../../components/SectionSchedule/SectionSchedule";
+import { AlertType } from "../types";
 import { Button, Snackbar, Alert, Box, Typography, Grid } from "@mui/material";
 import MedicalInformation from "@mui/icons-material/MedicalInformation";
 import LocationCity from "@mui/icons-material/LocationCity";
 import CircularProgress from "@mui/material/CircularProgress";
 import style from "./DoctorAccount.module.scss";
-import { LogOutBanner } from "../../components/LogOutBanner/LogOutBanner";
+import { LogOutBanner } from "../../../components/LogOutBanner/LogOutBanner";
 
 const openModal = () => {
   console.log("");
@@ -24,6 +23,7 @@ const openModal = () => {
 export const DoctorAccount = () => {
   const { id } = useParams();
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
 
   const mutation = useMutation(
     (data: File) => updateDoctorImage(data, id),
@@ -52,7 +52,6 @@ export const DoctorAccount = () => {
         setAlert({ severity: "error", message: "Error during fetching data" });
       }
     });
-  console.log(infoAppointments?.schedule);
 
   const [alert, setAlert] = useState<AlertType | null>(null);
   const [isModalOpen, setModalOpen] = useState(false);
@@ -74,7 +73,7 @@ export const DoctorAccount = () => {
             {doctor?.nameDoctor} {doctor?.surname}
           </Typography>
         </Box>
-        <Button id={"edit"} onClick={handleModalOpen}>Edit</Button>
+        <Button onClick={() => navigate("edit")}>Edit</Button>
         <Box className={style.infoBlock} mb={4} mt={1}>
           <DescriptionField icon={MedicalInformation} caption={"Category:"} text={doctor?.category} />
           <DescriptionField icon={LocationCity} caption={"City:"} text={doctor?.city} />
@@ -90,12 +89,12 @@ export const DoctorAccount = () => {
                 <CircularProgress />
               </Box>
             ) : (
-              <>
+              <Box sx={{height: "300px", overflowY: "scroll"}}>
                 {isSuccessSchedule && infoAppointments ? (
                   <SectionSchedule data={infoAppointments.schedule} onClick={openModal} />
                 ) : (<Typography mb={2}>{"No saved appointment time"}</Typography>)
                 }
-              </>
+              </Box>
             )}
           </Grid>
         </Grid>
@@ -106,11 +105,9 @@ export const DoctorAccount = () => {
           aria-describedby="modal-modal-description"
         >
           {
-            typeModal === "edit"
-              ? <EditDoctorModal data={doctor} id={id} onClose={handleModalClose} setAlert={setAlert} />
-              : typeModal === "time" && isSuccessSchedule
-                ? <EditDataModal data={infoAppointments.schedule} />
-                : <></>
+            typeModal === "time" && isSuccessSchedule
+            ? <EditDataModal data={infoAppointments.schedule} />
+            : <></>
           }
         </Modal>
         <Snackbar

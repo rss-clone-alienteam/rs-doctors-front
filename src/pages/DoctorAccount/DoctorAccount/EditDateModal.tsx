@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Dayjs } from "dayjs";
-import { BasicDatePicker, BasicTimePicker } from "./components/DatePicker";
+import { BasicDatePicker, BasicTimePicker } from "./DatePicker";
 import { SelectChangeEvent, Box, Typography, Grid, Button, Chip } from "@mui/material";
-import { SelectInput } from "../../components/SectionFindDoctors/SelectInput/SelectInput";
-import { ITimes, addSchedule, IAppointments } from "../../api/schedule";
+import { SelectInput } from "../../../components/SectionFindDoctors/SelectInput/SelectInput";
+import { ITimes, addSchedule, IAppointments } from "../../../api/schedule";
 import { useMutation, useQueryClient } from "react-query";
 
 
