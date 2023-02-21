@@ -86,7 +86,7 @@ export const CardDoctor = ({ doctor, coords }: DoctorProps) => {
                     </Grid>
                     <Grid item container direction="column" alignItems="flex-start">
                       <Grid item>
-                        <Typography>{doctor.servicesSector}</Typography>
+                        <Typography>{`${doctor.services[0].name} • ${doctor.services[0].price}`}</Typography>
                       </Grid>
                     </Grid>
                   </Grid>
