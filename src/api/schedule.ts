@@ -15,7 +15,6 @@ export type ISchedule = {
 
 export const getSchedule = async (id?: string): Promise<ISchedule> => {
   const data: ISchedule = await API.get("rs-doctors-back", `/schedule/get-schedule/${id}`, {});
-  console.log(data);
   return data;
 };
 

@@ -13,8 +13,9 @@ import { SignUpConfirmation } from "./pages/auth/SignUpConfirmation/SignUpConfir
 import { FindDoctors } from "./pages/FindDoctors/FindDoctors";
 import { DoctorProfile } from "./pages/DoctorProfile/DoctorProfile";
 import { PatientAccount } from "./pages/PatientAccount/PatientAccount";
-import { DoctorAccount } from "./pages/DoctorAccount/DoctorAccount";
+import { DoctorAccount } from "./pages/DoctorAccount/DoctorAccount/DoctorAccount";
 import { ModalReview } from "./pages/ModalReview/ModalReview";
+import { EditDoctor } from "./pages/DoctorAccount/EditDoctor/EditDoctor";
 import { Context } from "./Context/Context";
 import { useEffect, useState } from "react";
 import { getUserInfo } from "./utils/getUserInfo";
@@ -74,8 +75,11 @@ function App() {
                 <Route path="sign-in" element={<SignIn />}></Route>
                 <Route path="sign-up-confirmation" element={<SignUpConfirmation />}></Route>
               </Route>
+              <Route path="doctor-account/:id">
+                <Route path="" element={<DoctorAccount />} />
+                <Route path="edit" element={<EditDoctor />} />
+              </Route>
               <Route path="patient-account/:id" element={<PatientAccount />}></Route>
-              <Route path="doctor-account/:id" element={<DoctorAccount />}></Route>
               <Route path="*" element={<Notfound />}></Route>
             </Route>
           </Routes>

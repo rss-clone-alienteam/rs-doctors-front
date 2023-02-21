@@ -1,5 +1,13 @@
 import { API, Storage } from "aws-amplify";
 
+export interface IReview {
+  id: string,
+  date: string,
+  namePatient: string
+  review: string,
+  rating: number | null
+}
+
 export interface IDoctor {
   aboutMe: string | null;
   address: string | null;
@@ -17,6 +25,7 @@ export interface IDoctor {
   servicesSector: string | null;
   surname: string;
   photo: string | null;
+  reviews: Array<IReview> | null;
 }
 
 export const getDoctors = async (specialization: string, city: string) => {
