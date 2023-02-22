@@ -89,7 +89,7 @@ export const DoctorAccount = () => {
                 <CircularProgress />
               </Box>
             ) : (
-              <Box sx={{height: "300px", overflowY: "scroll"}}>
+              <Box sx={{ height: "300px", overflowY: "scroll" }}>
                 {isSuccessSchedule && infoAppointments ? (
                   <SectionSchedule data={infoAppointments.schedule} onClick={openModal} />
                 ) : (<Typography mb={2}>{"No saved appointment time"}</Typography>)
@@ -106,8 +106,8 @@ export const DoctorAccount = () => {
         >
           {
             typeModal === "time" && isSuccessSchedule
-            ? <EditDataModal data={infoAppointments.schedule} />
-            : <></>
+              ? <EditDataModal data={infoAppointments.schedule} />
+              : <></>
           }
         </Modal>
         <Snackbar
