@@ -91,7 +91,7 @@ export const DoctorAccount = () => {
             ) : (
               <Box sx={{ height: "300px", overflowY: "scroll" }}>
                 {isSuccessSchedule && infoAppointments ? (
-                  <SectionSchedule data={infoAppointments.schedule} onClick={openModal} doctor={""} />
+                  <SectionSchedule data={infoAppointments.schedule} onClick={openModal} />
                 ) : (<Typography mb={2}>{"No saved appointment time"}</Typography>)
                 }
               </Box>
