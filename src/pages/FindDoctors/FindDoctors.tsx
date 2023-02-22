@@ -8,6 +8,8 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { YMaps, Map, Placemark } from "@pbe/react-yandex-maps";
 import { Grid } from "@mui/material";
 import { Search } from "../../components/SectionFindDoctors/Search/Search";
+import { Modal } from "../../components/Modal/Modal";
+import { MakeAppointmentModal } from "../../components/SectionSchedule/MakeAppointmentModal";
 
 const FindDoctors = () => {
   const [coordsData, setCoordsData] = useState<[number, number][]>([]);
@@ -16,6 +18,8 @@ const FindDoctors = () => {
     center: [55.751574, 37.573856],
     zoom: 10,
   });
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
 
@@ -63,7 +67,7 @@ const FindDoctors = () => {
           {data !== undefined &&
             data.map((doc: IDoctor, index: number) => (
               <Grid item key={doc.id}>
-                <CardDoctor doctor={doc} key={doc.id} coords={coordsData[index]} />
+                <CardDoctor doctor={doc} key={doc.id} coords={coordsData[index]} modalHandler={setIsModalOpen} />
               </Grid>
             ))}
         </Grid>
@@ -88,6 +92,14 @@ const FindDoctors = () => {
             )}
           </YMaps>
         </Box>
+        <Modal
+          open={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+        >
+          <MakeAppointmentModal close={() => setIsModalOpen(false)} />
+        </Modal>
       </Box>
     </>
   );

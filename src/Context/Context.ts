@@ -1,6 +1,13 @@
 import { createContext } from "react";
+import { IDoctor } from "../api/doctors";
 
 type SetValue<T> = (val: T) => void;
+
+export interface IPatientAppointment {
+  date: string;
+  time: string;
+  doctor: IDoctor;
+}
 
 export interface IContext {
   isUserLogIn: boolean;
@@ -11,6 +18,8 @@ export interface IContext {
   setUserEmail: SetValue<string>;
   profile: string;
   setProfile: SetValue<string>;
+  appointment: IPatientAppointment;
+  setAppointment: SetValue<IPatientAppointment>;
 }
 
 export const Context = createContext<IContext>({} as IContext);

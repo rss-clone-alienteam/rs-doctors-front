@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import style from "./CardDoctor.module.scss";
 import Box from "@mui/material/Box";
 import { Avatar, Card, CardContent, CardHeader, CircularProgress, Grid, Link, Rating, Typography } from "@mui/material";
@@ -9,16 +9,27 @@ import { getSchedule } from "../../api/schedule";
 import { SectionSchedule } from "../SectionSchedule/SectionSchedule";
 import { useQuery } from "react-query";
 import MedicalServicesIcon from "@mui/icons-material/MedicalServices";
+import { Context } from "../../Context/Context";
 
 interface DoctorProps {
   doctor: IDoctor;
   coords: [number, number];
+  modalHandler: (val: boolean) => void;
 }
 
-export const CardDoctor = ({ doctor, coords }: DoctorProps) => {
+export const CardDoctor = ({ doctor, coords, modalHandler }: DoctorProps) => {
   const navigate = useNavigate();
 
+  const { setAppointment } = useContext(Context);
+
   const { isLoading, data } = useQuery("schedule", () => getSchedule(doctor.id));
+
+  const clickHandler = (date: string, time: string) => {
+    setAppointment({
+      doctor, date, time
+    });
+    modalHandler(true);
+  };
 
   return (
     <Box className={style.container}>
@@ -97,7 +108,7 @@ export const CardDoctor = ({ doctor, coords }: DoctorProps) => {
         </Grid>
         <Grid item xs={6} sx={{ width: "50%", height: "300px", overflow: "scroll", position: "relative" }}>
           {isLoading && <CircularProgress size={80} sx={{ position: "absolute", top: "40%", left: "45%" }} />}
-          {data !== undefined && <SectionSchedule data={data.schedule} onClick={() => console.log("12300")} key={data.id} />}
+          {data !== undefined && <SectionSchedule data={data.schedule} onClick={() => modalHandler(true)} onClickAppointment={clickHandler} key={data.id} />}
         </Grid>
       </Grid>
     </Box>
