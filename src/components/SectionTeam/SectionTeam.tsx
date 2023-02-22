@@ -1,6 +1,6 @@
 import { Chip, Divider, Grid } from "@mui/material";
 import Typography from "@mui/material/Typography";
-import team1pic from "../../assets/team1.png";
+// import team1pic from "../../assets/team1.png";
 import style from "./SectionTeam.module.scss";
 import { Box } from "@mui/system";
 
@@ -12,7 +12,7 @@ export const SectionTeam = () => {
           <Box className={style.img}
             component="img"
             height="140"
-            src={team1pic}
+            // src={team1pic}
             alt="ShArP"
           />
         </Grid>
