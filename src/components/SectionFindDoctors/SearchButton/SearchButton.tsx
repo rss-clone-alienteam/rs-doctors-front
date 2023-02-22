@@ -10,7 +10,7 @@ export const SearchButton: FC<IProps> = ({ onClick }) => {
   return (
     <Button
       variant="contained"
-      color="success"
+      color="secondary"
       size="large"
       endIcon={<SendIcon />}
       onClick={onClick}

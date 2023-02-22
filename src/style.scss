@@ -34,3 +34,10 @@ code {
   font-weight: 500;
   cursor: default;
 }
+
+#root {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100vh;
+}
