@@ -8,17 +8,13 @@ import { EditDataModal } from "./EditDateModal";
 import { PhotoWithUpload } from "../../../components/PhotoWithUpload/PhotoWithUpload";
 import { DescriptionField } from "./components/DescriptionField";
 import { SectionSchedule } from "../../../components/SectionSchedule/SectionSchedule";
+import { LogOutBanner } from "../../../components/LogOutBanner/LogOutBanner";
 import { AlertType } from "../types";
 import { Button, Snackbar, Alert, Box, Typography, Grid } from "@mui/material";
 import MedicalInformation from "@mui/icons-material/MedicalInformation";
 import LocationCity from "@mui/icons-material/LocationCity";
 import CircularProgress from "@mui/material/CircularProgress";
 import style from "./DoctorAccount.module.scss";
-import { LogOutBanner } from "../../../components/LogOutBanner/LogOutBanner";
-
-const openModal = () => {
-  console.log("");
-};
 
 export const DoctorAccount = () => {
   const { id } = useParams();
@@ -62,28 +58,32 @@ export const DoctorAccount = () => {
   };
   const handleModalClose = () => setModalOpen(false);
 
+  const openModal = () => {
+    setModalOpen(true);
+  };
+
 
   return (
     <>
       <LogOutBanner />
       <Box className={style.wrapper}>
-        <Box sx={{ display: "flex", alignItems: "center" }} mb={3}>
+        <Box className={style.photoBlock}>
           <PhotoWithUpload isLoading={isLoadingDoctor} onUpload={onUploadAvatar} image={doctor?.photo} />
           <Typography variant="h3" color={"primary"}>
             {doctor?.nameDoctor} {doctor?.surname}
           </Typography>
         </Box>
-        <Button onClick={() => navigate("edit")}>Edit</Button>
-        <Box className={style.infoBlock} mb={4} mt={1}>
+        <Box className={style.infoBlock} mb={2} mt={1}>
           <DescriptionField icon={MedicalInformation} caption={"Category:"} text={doctor?.category} />
           <DescriptionField icon={LocationCity} caption={"City:"} text={doctor?.city} />
         </Box>
-        <Grid container gap={2}>
+        <Button onClick={() => navigate("edit")} sx={{fontSize: "16px"}}>Edit</Button>
+        <Grid className={style.containerInfo} container gap={2}>
           <Grid className={style.infoBlock} item xs>
             <Typography>About me:</Typography>
           </Grid>
           <Grid className={style.infoBlock} item xs>
-            <Button id={"time"} onClick={handleModalOpen}>Сhoice of appointment time</Button>
+            <Button id={"time"} onClick={handleModalOpen} sx={{marginBottom: "10px"}}>Сhoice of appointment time</Button>
             {isLoadingSchedule ? (
               <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", height: "200px" }}>
                 <CircularProgress />
