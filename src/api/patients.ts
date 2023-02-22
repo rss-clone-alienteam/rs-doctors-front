@@ -1,12 +1,10 @@
 import { API } from "aws-amplify";
-import { IAppointments } from "./schedule";
 
-type Appointment = {
-  appointments: {
-    doctorID: string;
-    day: string;
-    time: string;
-  };
+export type Appointment = {
+  doctorID: string;
+  doctorName: string;
+  day: string;
+  time: string;
 };
 
 export interface IPatient {
@@ -15,7 +13,7 @@ export interface IPatient {
   id: string;
   name: string;
   surname: string;
-  appointments: Appointment;
+  appointments: Appointment[];
 }
 
 export const getPatient = async (id?: string): Promise<IPatient> => {
@@ -25,7 +23,7 @@ export const getPatient = async (id?: string): Promise<IPatient> => {
 
 export const updatePatient = async (
   id?: string,
-  body?: Appointment
+  body?: Partial<IPatient>
 ): Promise<Appointment> => {
   const data = await API.patch(
     "rs-doctors-back",

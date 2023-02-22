@@ -1,14 +1,17 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 import style from "./CardDoctor.module.scss";
 import Box from "@mui/material/Box";
-import { Avatar, Card, CardContent, CardHeader, CircularProgress, Grid, Link, Rating, Typography } from "@mui/material";
+import { Avatar, Card, CardContent, CardHeader, CircularProgress, Grid, Link, Rating, Snackbar, Typography } from "@mui/material";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import { useNavigate } from "react-router-dom";
 import { IDoctor } from "../../api/doctors";
 import { getSchedule } from "../../api/schedule";
 import { SectionSchedule } from "../SectionSchedule/SectionSchedule";
-import { useQuery } from "react-query";
+import { useQuery, useQueryClient } from "react-query";
 import MedicalServicesIcon from "@mui/icons-material/MedicalServices";
+import { getPatient, IPatient, updatePatient } from "../../api/patients";
+import { Context } from "../../Context/Context";
+import { Alert } from "@mui/lab";
 
 interface DoctorProps {
   doctor: IDoctor;
@@ -17,6 +20,76 @@ interface DoctorProps {
 
 export const CardDoctor = ({ doctor, coords }: DoctorProps) => {
   const navigate = useNavigate();
+
+  const { userID, isUserLogIn } = useContext(Context);
+  const [alert, setAlert] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [open, setOpen] = useState(false);
+  const handleClick = () => setOpen(true);
+
+  const handleClose = (
+    event?: React.SyntheticEvent | Event,
+    reason?: string
+  ) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpen(false);
+  };
+
+  const { data: dataPatient } = useQuery<IPatient>("patient", () => getPatient(userID));
+
+  const clientQuery = useQueryClient();
+
+  const makeAppointment = async (day: string, time: string) => {
+    console.log(dataPatient?.appointments);
+    const patientAppointments = dataPatient?.appointments || [];
+    console.log(patientAppointments);
+
+    if (!isUserLogIn) {
+      setErrorMessage("Please sign in");
+      setAlert(true);
+      handleClick();
+      setTimeout(() => {
+        navigate("/auth/sign-in");
+      }, 1000);
+      return;
+    }
+
+    console.log(patientAppointments);
+
+    const checkDuplicateAppointment = async () => {
+      const body = [...patientAppointments, {
+        doctorID: doctor.id,
+        doctorName: doctor.nameDoctor,
+        day: day,
+        time: time
+      }]
+        .map((appointment) => appointment.doctorID);
+
+      const checkDuplication = new Set(body);
+
+      if (checkDuplication.size !== body.length) {
+        setAlert(true);
+        setErrorMessage("Please cancel appointment before make the new one!");
+        handleClick();
+        return false;
+      }
+      console.log("goes");
+      const data = await updatePatient(userID, {
+        appointments: [...patientAppointments, {
+          doctorID: doctor.id,
+          doctorName: doctor.nameDoctor,
+          day: day,
+          time: time
+        }]
+      });
+      clientQuery.invalidateQueries(["patient"]);
+      handleClick();
+      return data;
+    };
+    checkDuplicateAppointment();
+  };
 
   const { isLoading, data } = useQuery("schedule", () => getSchedule(doctor.id));
 
@@ -97,7 +170,16 @@ export const CardDoctor = ({ doctor, coords }: DoctorProps) => {
         </Grid>
         <Grid item xs={6} sx={{ width: "50%", height: "300px", overflow: "scroll", position: "relative" }}>
           {isLoading && <CircularProgress size={80} sx={{ position: "absolute", top: "40%", left: "45%" }} />}
-          {data !== undefined && <SectionSchedule data={data.schedule} onClick={() => console.log("12300")} key={data.id} />}
+          {data !== undefined && <SectionSchedule data={data.schedule} onClick={makeAppointment} key={data.id} doctor={doctor.nameDoctor} />}
+          <Snackbar
+            open={open}
+            autoHideDuration={3000}
+            anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+            onClose={handleClose}
+          >
+            {alert ? (<Alert onClose={handleClose} severity="error" sx={{ width: "100%" }}>{errorMessage}</Alert>)
+              : (<Alert onClose={handleClose} severity="success" sx={{ width: "100%" }}>Success</Alert>)}
+          </Snackbar>
         </Grid>
       </Grid>
     </Box>

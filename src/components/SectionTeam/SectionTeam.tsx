@@ -18,25 +18,27 @@ export const SectionTeam = () => {
         </Grid>
         <Grid>
           <Typography gutterBottom variant="h5" color="text.secondary">
-            Alexey
-          </Typography>
-        </Grid>
-        <Divider className={style.divider}>
-          <Chip label="Main contribution" variant="outlined" />
-        </Divider>
-        <Grid>
-          <Typography variant="body2" color="text.secondary">
-            Main page
+            testtesttest
           </Typography>
         </Grid>
         <Grid>
+          <Divider className={style.divider}>
+            <Chip label="testtesttesttest" variant="outlined" />
+          </Divider>
+        </Grid>
+        <Grid>
           <Typography variant="body2" color="text.secondary">
-            Authorization
+            testtesttesttest
           </Typography>
         </Grid>
         <Grid>
           <Typography variant="body2" color="text.secondary">
-            Patient profile
+            testtesttest
+          </Typography>
+        </Grid>
+        <Grid>
+          <Typography variant="body2" color="text.secondary">
+            testtesttest
           </Typography>
         </Grid>
       </Grid>

@@ -1,7 +1,8 @@
-import { Box, Tab, Tabs, Typography } from "@mui/material";
+import { Box, Button, CircularProgress, Tab, Tabs, Typography } from "@mui/material";
+import Chip from "@mui/material/Chip";
 import { useContext, useState } from "react";
-import { useQuery } from "react-query";
-import { getPatient } from "../../api/patients";
+import { useMutation, useQuery, useQueryClient } from "react-query";
+import { getPatient, IPatient, updatePatient } from "../../api/patients";
 import { LogOutBanner } from "../../components/LogOutBanner/LogOutBanner";
 import { Context } from "../../Context/Context";
 import style from "./PatientAccount.module.scss";
@@ -48,9 +49,30 @@ export const PatientAccount = () => {
   };
 
   const { userID } = useContext(Context);
-  const { data } = useQuery("patient", () => getPatient(userID));
-  console.log(userID, data);
+  const { data, isSuccess } = useQuery<IPatient>("patient", () => getPatient(userID));
 
+  const deleteAppointment = async (doctorID: string) => {
+    const body = data?.appointments.filter((appointment) => appointment.doctorID !== doctorID);
+    console.log(data?.appointments, body);
+
+    const d = await updatePatient(userID, {
+      appointments: body
+    });
+    console.log(d);
+    return data;
+  };
+
+  const clientQuery = useQueryClient();
+
+  const mutation = useMutation(
+    deleteAppointment,
+    {
+      onSuccess: () => {
+        clientQuery.invalidateQueries(["patient"]);
+      },
+      onError: () => console.log("Something goes wrong, try again!"),
+    }
+  );
 
 
   return (
@@ -77,7 +99,19 @@ export const PatientAccount = () => {
           <Tab label="Settings" {...a11yProps(2)} />
         </Tabs>
         <TabPanel value={value} index={0} >
-          <Box sx={{ color: "red" }}>You dont have any appointments yet</Box>
+          <Box sx={{ color: "red", display: "flex", flexDirection: "column", gap: 3 }}>
+            {data?.appointments.length === 0 && <Box>You don&apos;t have appointments yet</Box>}
+            {mutation.isLoading && <CircularProgress size={120} sx={{ position: "fixed", top: "45vh", left: "45vw" }} />}
+            {isSuccess && data.appointments.map((appointment, i) =>
+              <Box sx={{ color: "red", display: "flex", gap: 2 }} key={i}>
+                <Chip label={`${appointment.doctorName}`} color="primary" />
+                <Chip label={`${appointment.day}`} color="success" />
+                <Chip label={`${appointment.time}`} color="success" />
+                <Button variant="contained" color="error" onClick={() => mutation.mutate(appointment.doctorID)}>Cancel</Button>
+              </Box>
+            )}
+
+          </Box>
         </TabPanel>
         <TabPanel value={value} index={1}>
           <Box sx={{ color: "red" }}>{data?.email}</Box>
