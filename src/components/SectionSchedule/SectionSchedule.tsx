@@ -2,7 +2,14 @@ import { Box, Typography, Chip, Accordion, AccordionSummary, AccordionDetails } 
 import { IAppointments } from "../../api/schedule";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
-export const SectionSchedule = ({ data, onClick }: { data: IAppointments; onClick: () => void }) => {
+interface IProps {
+  data: IAppointments;
+  onClick: () => void;
+  onClickAppointment?: (date: string, time: string) => void;
+}
+
+export const SectionSchedule = ({ data, onClick, onClickAppointment }: IProps) => {
+
   return (
     <Box>
       {Object.entries(data)
@@ -22,9 +29,9 @@ export const SectionSchedule = ({ data, onClick }: { data: IAppointments; onClic
                 )
                 .map(([time, patientId]) =>
                   patientId !== null ? (
-                    <Chip key={`${date}-${time}`} sx={{ cursor: "pointer" }} label={time} onClick={onClick} />
+                    <Chip key={`${date}-${time}`} sx={{ cursor: "pointer" }} label={time} onClick={() => onClickAppointment ? onClickAppointment(date, time) : onClick()} />
                   ) : (
-                    <Chip key={`${date}-${time}`} sx={{ cursor: "pointer", margin: "5px" }} label={time} variant="outlined" onClick={onClick} />
+                    <Chip key={`${date}-${time}`} sx={{ cursor: "pointer", margin: "5px" }} label={time} variant="outlined" onClick={() => onClickAppointment ? onClickAppointment(date, time) : onClick()} />
                   ),
                 )}
             </AccordionDetails>

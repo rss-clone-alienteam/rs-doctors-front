@@ -9,6 +9,8 @@ import { YMaps, Map, Placemark } from "@pbe/react-yandex-maps";
 import { CircularProgress, Grid } from "@mui/material";
 import { Search } from "../../components/SectionFindDoctors/Search/Search";
 import { useQuery } from "react-query";
+import { Modal } from "../../components/Modal/Modal";
+import { MakeAppointmentModal } from "../../components/SectionSchedule/MakeAppointmentModal";
 
 interface ICoordinates {
   center: [number, number];
@@ -18,6 +20,7 @@ interface ICoordinates {
 const FindDoctors = () => {
   const [coordsData, setCoordsData] = useState<[number, number][]>();
   const [defaultState, setDefaultState] = useState<ICoordinates>();
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const [searchParams] = useSearchParams();
 
@@ -75,7 +78,7 @@ const FindDoctors = () => {
             listCoords !== undefined &&
             listDoctors.map((doc: IDoctor, index: number) => (
               <Grid item key={doc.id}>
-                <CardDoctor doctor={doc} key={doc.id} coords={listCoords[index]} />
+                <CardDoctor doctor={doc} key={doc.id} coords={listCoords[index]} modalHandler={setIsModalOpen} />
               </Grid>
             ))}
         </Grid>
@@ -103,6 +106,14 @@ const FindDoctors = () => {
             )}
           </YMaps>
         </Box>
+        <Modal
+          open={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+        >
+          <MakeAppointmentModal close={() => setIsModalOpen(false)} />
+        </Modal>
       </Box>
     </>
   );

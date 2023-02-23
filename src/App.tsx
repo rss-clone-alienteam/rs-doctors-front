@@ -16,7 +16,7 @@ import { PatientAccount } from "./pages/PatientAccount/PatientAccount";
 import { DoctorAccount } from "./pages/DoctorAccount/DoctorAccount/DoctorAccount";
 import { ModalReview } from "./pages/ModalReview/ModalReview";
 import { EditDoctor } from "./pages/DoctorAccount/EditDoctor/EditDoctor";
-import { Context } from "./Context/Context";
+import { Context, IPatientAppointment } from "./Context/Context";
 import { useEffect, useState } from "react";
 import { getUserInfo } from "./utils/getUserInfo";
 
@@ -25,6 +25,7 @@ function App() {
   const [userID, setUserID] = useState("");
   const [userEmail, setUserEmail] = useState("");
   const [profile, setProfile] = useState("");
+  const [appointment, setAppointment] = useState({} as IPatientAppointment);
 
   const queryClient = new QueryClient({
     defaultOptions: {
@@ -57,7 +58,9 @@ function App() {
         userEmail,
         setUserEmail,
         profile,
-        setProfile
+        setProfile,
+        appointment,
+        setAppointment
       }}
     >
       <QueryClientProvider client={queryClient}>
