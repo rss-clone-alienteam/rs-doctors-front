@@ -23,7 +23,7 @@ const Header = () => {
             alt="logo"
           />
         </NavLink>
-        <NavLink to="/ask-doctor">Ask the Doctor</NavLink>
+        {/* <NavLink to="/ask-doctor">Ask the Doctor</NavLink> */}
         <Grid item className={style.navWrapper}>
           <RegisterButton />
           {isUserLogIn ? (

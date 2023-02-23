@@ -1,11 +1,12 @@
 
-import { Alert, Box, Button, Snackbar, Typography } from "@mui/material";
-import { useContext, useState } from "react";
+import { Box, Button, Typography } from "@mui/material";
+import { useContext } from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useNavigate } from "react-router-dom";
 import { getPatient, IPatient, updatePatient } from "../../api/patients";
 import { addSchedule, getSchedule, ISchedule, IAppointments } from "../../api/schedule";
 import { Context } from "../../Context/Context";
+import { showToastMessage } from "../../utils/showToastMessage";
 
 interface IProps {
   close: () => void
@@ -17,31 +18,13 @@ export const MakeAppointmentModal = ({ close }: IProps) => {
 
   const { userID, isUserLogIn } = useContext(Context);
 
-  const [alert, setAlert] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
-  const [open, setOpen] = useState(false);
-  const handleClick = () => setOpen(true);
-
-  const handleClose = (
-    event?: React.SyntheticEvent | Event,
-    reason?: string
-  ) => {
-    if (reason === "clickaway") {
-      return;
-    }
-    setOpen(false);
-  };
-
-
   const { appointment } = useContext(Context);
 
   const { data: dataPatient } = useQuery<IPatient>("patient", () => getPatient(userID));
   const { data: scheduleDoctor } =
     useQuery<ISchedule>("schedule-doctor", () => getSchedule(appointment.doctor.id), {
       onError: () => {
-        setErrorMessage("Error during fetching schedule");
-        setAlert(true);
-        handleClick();
+        showToastMessage("Error during fetching schedule", "error");
       }
     });
 
@@ -52,7 +35,7 @@ export const MakeAppointmentModal = ({ close }: IProps) => {
   );
 
   const addAppointmentSchedule = () => {
-    if(scheduleDoctor) {
+    if (scheduleDoctor) {
       const schedule = scheduleDoctor.schedule;
       schedule[appointment.date][appointment.time] = userID;
       mutationSchedule.mutate(schedule);
@@ -65,12 +48,8 @@ export const MakeAppointmentModal = ({ close }: IProps) => {
     console.log(patientAppointments);
 
     if (!isUserLogIn) {
-      setErrorMessage("Please sign in");
-      setAlert(true);
-      handleClick();
-      setTimeout(() => {
-        navigate("/auth/sign-in");
-      }, 1000);
+      showToastMessage("Please sign in", "error");
+      navigate("/auth/sign-in");
       return;
     }
 
@@ -88,9 +67,7 @@ export const MakeAppointmentModal = ({ close }: IProps) => {
       const checkDuplication = new Set(body);
 
       if (checkDuplication.size !== body.length) {
-        setAlert(true);
-        setErrorMessage("Please cancel appointment before make the new one!");
-        handleClick();
+        showToastMessage("Please cancel appointment before make the new one!", "error");
         return false;
       }
       console.log("goes");
@@ -102,8 +79,8 @@ export const MakeAppointmentModal = ({ close }: IProps) => {
           time: appointment.time
         }]
       });
+      showToastMessage("Success!", "success");
       clientQuery.invalidateQueries(["patient"]);
-      handleClick();
       return data;
     };
     checkDuplicateAppointment();
@@ -123,15 +100,6 @@ export const MakeAppointmentModal = ({ close }: IProps) => {
       }
       }>Confirm</Button>
       <Button variant="contained" color="error" onClick={close}>Cancel</Button>
-      <Snackbar
-        open={open}
-        autoHideDuration={3000}
-        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-        onClose={handleClose}
-      >
-        {alert ? (<Alert onClose={handleClose} severity="error" sx={{ width: "100%" }}>{errorMessage}</Alert>)
-          : (<Alert onClose={handleClose} severity="success" sx={{ width: "100%" }}>Success</Alert>)}
-      </Snackbar>
     </Box>
   );
 };
