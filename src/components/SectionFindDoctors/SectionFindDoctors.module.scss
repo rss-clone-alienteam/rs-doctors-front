@@ -1,11 +1,19 @@
 .container {
   display: flex;
   flex-direction: column;
-  padding: 10px 10px 40px;
+  align-items: flex-end;
+  padding: 10px;
   width: 100%;
   height: 500px;
   max-width: 1150px;
-  background: no-repeat url("../../assets/doctor-main.jpg");
+  background: no-repeat url("../../assets/doctors_2.png");
   background-position: right;
-  background-size: 57%;
+  background-size: 50%;
+}
+
+.leftContainer {
+  display: flex;
+  flex-direction: column;
+  margin-top: auto;
+  gap: 100px;
 }

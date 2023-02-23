@@ -33,7 +33,7 @@ export const Search = () => {
         onChange={(event: SelectChangeEvent) => setCity(event.target.value)}
       />
       <SearchButton
-        onClick={async () => {
+        onClick={() => {
           navigate(`/doctors?specialization=${specialization}&city=${city}`);
         }}
       />
