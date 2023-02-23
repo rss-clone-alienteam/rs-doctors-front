@@ -4,7 +4,7 @@ import Box from "@mui/material/Box";
 import { Avatar, Card, CardContent, CardHeader, CircularProgress, Grid, Link, Rating, Typography } from "@mui/material";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import { useNavigate } from "react-router-dom";
-import { IDoctor } from "../../api/doctors";
+import { IDoctor, IReview } from "../../api/doctors";
 import { getSchedule } from "../../api/schedule";
 import { SectionSchedule } from "../SectionSchedule/SectionSchedule";
 import { useQuery } from "react-query";
@@ -20,13 +20,14 @@ interface DoctorProps {
 export const CardDoctor = ({ doctor, coords, modalHandler }: DoctorProps) => {
   const navigate = useNavigate();
 
+  const { isLoading, data } = useQuery(`schedule-${doctor.id}`, () => getSchedule(doctor.id));
   const { setAppointment } = useContext(Context);
-
-  const { isLoading, data } = useQuery("schedule", () => getSchedule(doctor.id));
 
   const clickHandler = (date: string, time: string) => {
     setAppointment({
-      doctor, date, time
+      doctor,
+      date,
+      time,
     });
     modalHandler(true);
   };
@@ -40,7 +41,6 @@ export const CardDoctor = ({ doctor, coords, modalHandler }: DoctorProps) => {
               <CardHeader
                 avatar={<Avatar alt="complex" src={doctor.photo || "../../assets/default-avatar.png"} sx={{ width: 65, height: 65 }} />}
                 sx={{ cursor: "pointer", fontSize: "31px" }}
-                // title={`${doctor.nameDoctor} ${doctor.surname}`}
                 title={
                   <Typography variant="body2" color="black" fontSize="17px">
                     {`${doctor.nameDoctor} ${doctor.surname}`}
@@ -53,14 +53,26 @@ export const CardDoctor = ({ doctor, coords, modalHandler }: DoctorProps) => {
                     </Typography>
                     <Grid container>
                       <Grid item>
-                        <Rating name="read-only" value={5} readOnly />
+                        <Rating
+                          name="read-only"
+                          precision={0.5}
+                          value={
+                            doctor.reviews
+                              ? Number(doctor.reviews?.map((item: IReview) => item.rating).reduce((item, acc) => Number(item) + Number(acc), 0)) /
+                                doctor.reviews.length
+                              : 0
+                          }
+                          readOnly
+                        />
                       </Grid>
-                      <Grid item className={style.avatarFeedback}>
-                        <Box component="span" sx={{ color: "red" }}>
-                          !!!!!Amount
-                        </Box>
-                        Feedback
-                      </Grid>
+                      {doctor.reviews && (
+                        <Grid item container className={style.avatarFeedback} ml={1}>
+                          <Grid item mr={0.5}>
+                            <Box component="span">{doctor.reviews.length}</Box>
+                          </Grid>
+                          <Box component="span">Feedback</Box>
+                        </Grid>
+                      )}
                     </Grid>
                   </>
                 }
@@ -108,7 +120,9 @@ export const CardDoctor = ({ doctor, coords, modalHandler }: DoctorProps) => {
         </Grid>
         <Grid item xs={6} sx={{ width: "50%", height: "300px", overflow: "scroll", position: "relative" }}>
           {isLoading && <CircularProgress size={80} sx={{ position: "absolute", top: "40%", left: "45%" }} />}
-          {data !== undefined && <SectionSchedule data={data.schedule} onClick={() => modalHandler(true)} onClickAppointment={clickHandler} key={data.id} />}
+          {data !== undefined && (
+            <SectionSchedule data={data.schedule} onClick={() => modalHandler(true)} onClickAppointment={clickHandler} key={data.id} />
+          )}
         </Grid>
       </Grid>
     </Box>

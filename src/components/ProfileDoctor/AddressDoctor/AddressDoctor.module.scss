@@ -1,0 +1,20 @@
+.container {
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  color: rgb(0 0 0 / 60%);
+}
+
+.containerTitle {
+  border-bottom: 0.06667rem solid rgb(0 0 0 / 8%);
+}
+
+.title {
+  font-size: 20px;
+  color: rgb(0 0 0);
+}
+
+.infoMapIconContainer {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  width: 20px;
+}
