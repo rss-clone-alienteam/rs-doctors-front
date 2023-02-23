@@ -49,6 +49,8 @@ export const PatientAccount = () => {
   };
 
   const { userID } = useContext(Context);
+
+
   const { data, isSuccess } = useQuery<IPatient>("patient", () => getPatient(userID));
 
   const deleteAppointment = async (doctorID: string) => {
@@ -73,7 +75,6 @@ export const PatientAccount = () => {
       onError: () => console.log("Something goes wrong, try again!"),
     }
   );
-
 
   return (
     <Box className={style.containerTop}>
@@ -119,7 +120,7 @@ export const PatientAccount = () => {
         <TabPanel value={value} index={2}>
           <Box sx={{ color: "red" }}> {data?.name}</Box>
         </TabPanel>
-      </Box >
-    </Box >
+      </Box>
+    </Box>
   );
 };
