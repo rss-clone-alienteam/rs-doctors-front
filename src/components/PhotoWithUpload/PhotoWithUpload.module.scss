@@ -4,4 +4,8 @@
   padding: 30px;
   width: 296px;
   height: 240px;
+
+  @media screen and (max-width: 760px) {
+    margin-right: 0;
+  }
 }

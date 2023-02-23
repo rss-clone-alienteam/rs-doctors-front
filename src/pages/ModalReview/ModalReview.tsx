@@ -1,7 +1,7 @@
 import { Avatar, Button, Rating, TextField, Box, Typography, Container, Snackbar, Alert } from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
 import { useQuery, useMutation } from "react-query";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useContext, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { Context } from "../../Context/Context";
@@ -18,9 +18,8 @@ type AlertType = {
 export const ModalReview = () => {
   const [alert, setAlert] = useState<AlertType | null>(null);
   const { id } = useParams();
-  const { userID, isUserLogIn } = useContext(Context);
+  const { userID } = useContext(Context);
   const { control, register, formState: { errors }, handleSubmit } = useForm();
-  const navigate = useNavigate();
 
   const { data: doctor, isLoading: isLoadingDoctor } =
     useQuery<IDoctor>("doctor", () => getDoctor(id), {
@@ -49,14 +48,12 @@ export const ModalReview = () => {
         date: new Date().toLocaleDateString(),
         namePatient: patient?.name || "",
         review: review,
-        rating: rating
+        rating: Number(rating)
       };
       const data = doctor?.reviews ? [...doctor.reviews, newReview] : [newReview];
-      isUserLogIn
-      ? mutation.mutate({
-          reviews: data
-        })
-      : navigate("/auth/sign-in");
+      mutation.mutate({
+        reviews: data
+      });
     }
   );
 

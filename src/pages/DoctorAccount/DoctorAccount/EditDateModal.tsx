@@ -2,14 +2,14 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Dayjs } from "dayjs";
 import { BasicDatePicker, BasicTimePicker } from "./DatePicker";
-import { SelectChangeEvent, Box, Typography, Grid, Button, Chip } from "@mui/material";
+import { AlertType } from "../types";
+import { SelectChangeEvent, Box, Typography, Grid, Button, Chip, Alert, Snackbar } from "@mui/material";
 import { SelectInput } from "../../../components/SectionFindDoctors/SelectInput/SelectInput";
 import { ITimes, addSchedule, IAppointments } from "../../../api/schedule";
 import { useMutation, useQueryClient } from "react-query";
 
 
 export const EditDataModal = ({ data }: {data: IAppointments} ) => {
-  console.log(data);
   const queryClient = useQueryClient();
   const { id } = useParams();
   const [date, setData] = useState<Dayjs | null>(null);
@@ -18,14 +18,14 @@ export const EditDataModal = ({ data }: {data: IAppointments} ) => {
   const periodOptions = ["10", "15", "20", "30", "60"];
   const [period, setPeriod] = useState(periodOptions[2]);
   const [times, setTimes] = useState<ITimes>({});
-  const [appointments, setAppointments] = useState(data ? {...data} : {});
-  console.log(appointments);
+  const [alert, setAlert] = useState<AlertType | null>(null);
 
   const mutation = useMutation(
-    () => addSchedule(appointments, id),
+    (appointments: IAppointments) => addSchedule(appointments, id),
     {
       onSuccess: () => {
         queryClient.invalidateQueries(["schedule", id]);
+        setAlert({ severity: "success", message: "The schedule for the selected date has been successfully added" });
       }
     }
   );
@@ -53,27 +53,36 @@ export const EditDataModal = ({ data }: {data: IAppointments} ) => {
   }, [startTime, endTime, period]);
 
   const deleteItem = (item: string) => () => {
-    setTimes(Object.fromEntries(Object.entries(times).filter((time) => time[0] !== item)));
+    Object.keys(times).length ?
+      setTimes(Object.fromEntries(Object.entries(times).filter((time) => time[0] !== item)))
+    : date ?
+      setTimes(Object.fromEntries(Object.entries(data[date.format("DD-MM-YYYY")])
+        .sort((time1, time2) =>
+          Number(time1[0]?.split(":")[0]) * 60 + Number(time1[0]?.split(":")[1])
+          - (Number(time2[0]?.split(":")[0]) * 60 + Number(time2[0]?.split(":")[1]))
+        )
+        .filter((time) => time[0] !== item)))
+      : false;
   };
 
-  const saveTime = () => {
-    if(date) {
-      const appointmentsTmp = {[date.format("DD-MM-YYYY")]: times};
-      setAppointments((appointments) => ({...appointments, ...appointmentsTmp}));
-    }
+  const saveSchedule = () => {
+    const appointments = date ? {[date.format("DD-MM-YYYY")]: times} : {};
+    const schedule = data ? {...data, ...appointments} : {};
+    mutation.mutate(schedule);
   };
 
   return (
     <Box sx={{display: "flex", flexDirection: "column"}}>
-      <Box sx={{display: "flex"}}>
+      <Alert severity="info" sx={{fontSize: "18px", marginBottom: "50px"}}>
+        {"Select the date, time of work and duration of one appointment"}
+      </Alert>
+      <Box sx={{display: "flex", alignItems: "center"}} mb={5}>
         <Box
           sx={{
-            height: "320px",
-            padding: "20px",
-            backgroundColor: "rgba(0 0 0 /5%)",
+            marginRight: "20px",
             display: "flex",
             flexDirection: "column",
-            gap: "15px",
+            gap: "20px",
           }}
         >
           <BasicDatePicker
@@ -105,25 +114,64 @@ export const EditDataModal = ({ data }: {data: IAppointments} ) => {
             display: "flex",
             flexDirection: "column",
             alignItems: "center"
-          }}>
-          <Typography mb={2}>{date ? date.format("DD-MM-YYYY") : "Date has not chosen yet"}</Typography>
-          <Grid container spacing={1} mb={2} sx={{width: "400px"}}>
+          }}
+          >
             {
-              Object.keys(times).map((item, index) =>
-                <Grid item xs={3} key={index}>
-                  <Chip
-                    label={item}
-                    variant="outlined"
-                    onDelete={deleteItem(item)}
-                  />
-                </Grid>
-              )
+              date ?
+                <>
+                  <Typography mb={1.5}>{date.format("DD-MM-YYYY")}</Typography>
+                  {
+                    Object.prototype.hasOwnProperty.call(data, date.format("DD-MM-YYYY"))
+                    && !Object.keys(times).length
+                    ?
+                      <>
+                        <Alert severity="error" sx={{marginBottom: "20px"}}>
+                          {"You already have a schedule for the selected date, check appointments"}
+                        </Alert>
+                        <Grid container spacing={1} mb={2} sx={{width: "400px"}}>
+                          {Object.keys(data[date.format("DD-MM-YYYY")])
+                          .sort((time1, time2) =>
+                            Number(time1?.split(":")[0]) * 60 + Number(time1?.split(":")[1])
+                            - (Number(time2?.split(":")[0]) * 60 + Number(time2?.split(":")[1]))
+                          )
+                          .map((item, index) =>
+                            <Grid item xs={3} key={index}>
+                              <Chip
+                                label={item}
+                                variant="outlined"
+                                onDelete={deleteItem(item)}
+                              />
+                            </Grid>
+                          )}
+                        </Grid>
+                      </>
+                    :
+                      <Grid container spacing={1} mb={2} sx={{width: "400px"}}>
+                        {Object.keys(times).map((item, index) =>
+                          <Grid item xs={3} key={index}>
+                            <Chip
+                              label={item}
+                              variant="outlined"
+                              onDelete={deleteItem(item)}
+                            />
+                          </Grid>
+                        )}
+                      </Grid>
+                  }
+                </>
+              : <Alert severity="info" sx={{fontSize: "18px"}}>{"No selected dates yet"}</Alert>
             }
-          </Grid>
-          {Object.keys(times).length ? <Button onClick={saveTime}>Ok</Button> : null}
+          {Object.keys(times).length ? <Button sx={{fontSize: "18px"}} onClick={saveSchedule}>Update</Button> : null}
         </Box>
       </Box>
-      <Button onClick={() => mutation.mutate()}>Update</Button>
+      <Snackbar
+        open={!!alert}
+        autoHideDuration={3000}
+        onClose={() => setAlert(null)}
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+      >
+        <Alert onClose={() => setAlert(null)} severity={alert?.severity || "success"}>{alert?.message}</Alert>
+      </Snackbar>
     </Box>
   );
 };

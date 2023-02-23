@@ -2,10 +2,16 @@ import { Box, Button, CircularProgress, Tab, Tabs, Typography } from "@mui/mater
 import Chip from "@mui/material/Chip";
 import { useContext, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
-import { getPatient, IPatient, updatePatient } from "../../api/patients";
+import { Appointment, getPatient, IPatient, updatePatient } from "../../api/patients";
+import { getSchedule, addSchedule, IAppointments } from "../../api/schedule";
 import { LogOutBanner } from "../../components/LogOutBanner/LogOutBanner";
 import { Context } from "../../Context/Context";
 import style from "./PatientAccount.module.scss";
+
+interface IDataSchedule {
+  schedule: IAppointments
+  id: string,
+}
 
 export const PatientAccount = () => {
 
@@ -53,21 +59,12 @@ export const PatientAccount = () => {
 
   const { data, isSuccess } = useQuery<IPatient>("patient", () => getPatient(userID));
 
-  const deleteAppointment = async (doctorID: string) => {
-    const body = data?.appointments.filter((appointment) => appointment.doctorID !== doctorID);
-    console.log(data?.appointments, body);
-
-    const d = await updatePatient(userID, {
-      appointments: body
-    });
-    console.log(d);
-    return data;
-  };
-
   const clientQuery = useQueryClient();
 
-  const mutation = useMutation(
-    deleteAppointment,
+  const mutationPatient = useMutation(
+    (body: Appointment[]) => updatePatient(userID, {
+      appointments: body
+    }),
     {
       onSuccess: () => {
         clientQuery.invalidateQueries(["patient"]);
@@ -75,6 +72,24 @@ export const PatientAccount = () => {
       onError: () => console.log("Something goes wrong, try again!"),
     }
   );
+
+  const mutationSchedule = useMutation(
+    (data: IDataSchedule) => addSchedule(data.schedule, data.id),
+  );
+
+  const deleteAppointment = async (doctorID: string, day: string, time: string) => {
+    const scheduleDoctor = await getSchedule(doctorID);
+    scheduleDoctor.schedule[day][time] = null;
+    console.log(scheduleDoctor.schedule);
+    mutationSchedule.mutate({
+      schedule: scheduleDoctor.schedule,
+      id: doctorID,
+    });
+    if (data) {
+      const body = data.appointments.filter((appointment) => appointment.doctorID !== doctorID);
+      mutationPatient.mutate(body);
+    }
+  };
 
   return (
     <Box className={style.containerTop}>
@@ -102,13 +117,19 @@ export const PatientAccount = () => {
         <TabPanel value={value} index={0} >
           <Box sx={{ color: "red", display: "flex", flexDirection: "column", gap: 3 }}>
             {data?.appointments.length === 0 && <Box>You don&apos;t have appointments yet</Box>}
-            {mutation.isLoading && <CircularProgress size={120} sx={{ position: "fixed", top: "45vh", left: "45vw" }} />}
+            {mutationPatient.isLoading && <CircularProgress size={120} sx={{ position: "fixed", top: "45vh", left: "45vw" }} />}
             {isSuccess && data.appointments.map((appointment, i) =>
               <Box sx={{ color: "red", display: "flex", gap: 2 }} key={i}>
                 <Chip label={`${appointment.doctorName}`} color="primary" />
                 <Chip label={`${appointment.day}`} color="success" />
                 <Chip label={`${appointment.time}`} color="success" />
-                <Button variant="contained" color="error" onClick={() => mutation.mutate(appointment.doctorID)}>Cancel</Button>
+                <Button
+                  variant="contained"
+                  color="error"
+                  onClick={() => deleteAppointment(appointment.doctorID, appointment.day, appointment.time)}
+                >
+                  Cancel
+                </Button>
               </Box>
             )}
 
