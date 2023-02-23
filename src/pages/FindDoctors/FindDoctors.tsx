@@ -6,36 +6,38 @@ import { CardDoctor } from "../../components/PageDoctors/CardDoctor";
 import { getDoctors } from "../../api/doctors";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { YMaps, Map, Placemark } from "@pbe/react-yandex-maps";
-import { Grid } from "@mui/material";
+import { CircularProgress, Grid } from "@mui/material";
 import { Search } from "../../components/SectionFindDoctors/Search/Search";
+import { useQuery } from "react-query";
+
+interface ICoordinates {
+  center: [number, number];
+  zoom: number;
+}
 
 const FindDoctors = () => {
-  const [coordsData, setCoordsData] = useState<[number, number][]>([]);
-  const [data, setData] = useState<IDoctor[]>([]);
-  const [defaultState, setDefaultState] = useState({
-    center: [55.751574, 37.573856],
-    zoom: 10,
-  });
+  const [coordsData, setCoordsData] = useState<[number, number][]>();
+  const [defaultState, setDefaultState] = useState<ICoordinates>();
+
   const [searchParams] = useSearchParams();
+
+  const city = searchParams.get("city") || "";
+  const specialization = searchParams.get("specialization") || "";
+  console.log(city, specialization);
+
   const navigate = useNavigate();
 
-  // const { isLoading, data } = useQuery("doctors", () => getDoctors(specialization, city));
+  const { isLoading: doctorsIsLoading, data: listDoctors, refetch: refreshListDoctors } = useQuery("doctors", () => getDoctors(specialization, city));
 
-  useEffect(() => {
-    console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAa");
-
-    const city = searchParams.get("city") || "";
-    const specialization = searchParams.get("specialization") || "";
-
-    async function getCoords() {
-      const dataDoc = await getDoctors(specialization, city);
-
-      data.toString() !== dataDoc.toString() ? setData(dataDoc) : true;
-
-      if (dataDoc == undefined) return;
-
+  const {
+    isLoading: CoordsIsLoading,
+    data: listCoords,
+    refetch: refreshListCoords,
+  } = useQuery(
+    "coords",
+    async () => {
       const newData: [number, number][] = await Promise.all(
-        dataDoc
+        listDoctors
           .filter((doc: IDoctor) => doc.address !== null)
           .map(async (doc: IDoctor) => {
             if (doc.address !== null) {
@@ -43,15 +45,24 @@ const FindDoctors = () => {
             }
           }),
       );
+      return newData;
+    },
+    {
+      enabled: !!listDoctors,
+      onSuccess(data) {
+        console.log(data);
+        setCoordsData(data);
+        setDefaultState({ center: data[0], zoom: 10 });
+      },
+    },
+  );
 
-      setCoordsData(newData);
-      setDefaultState({ center: newData[0], zoom: 10 });
-    }
+  useEffect(() => {
+    if (listDoctors) refreshListDoctors();
+    if (listCoords) refreshListCoords();
+  }, [listCoords, listDoctors, refreshListCoords, refreshListDoctors, searchParams]);
 
-    getCoords();
-  }, [data, searchParams]);
-
-  // if (isLoading) return <CircularProgress size={120} sx={{ position: "fixed", top: "45vh", left: "45vw" }} />;
+  if (doctorsIsLoading || CoordsIsLoading) return <CircularProgress size={120} sx={{ position: "fixed", top: "45vh", left: "45vw" }} />;
 
   return (
     <>
@@ -60,30 +71,34 @@ const FindDoctors = () => {
       </Box>
       <Box className={style.container}>
         <Grid container spacing={5} flexDirection="column" alignContent={"center"} width="70%">
-          {data !== undefined &&
-            data.map((doc: IDoctor, index: number) => (
+          {listDoctors !== undefined &&
+            listCoords !== undefined &&
+            listDoctors.map((doc: IDoctor, index: number) => (
               <Grid item key={doc.id}>
-                <CardDoctor doctor={doc} key={doc.id} coords={coordsData[index]} />
+                <CardDoctor doctor={doc} key={doc.id} coords={listCoords[index]} />
               </Grid>
             ))}
         </Grid>
         <Box width={"30%"} marginLeft={"30px"}>
           <YMaps>
-            {defaultState && (
-              <Map defaultState={defaultState} className={style.mapYandex}>
-                {coordsData.map((item: [number, number], index: number) => (
-                  <Placemark
-                    geometry={item}
-                    key={index}
-                    options={{
-                      preset: "islands#darkGreenStretchyIcon",
-                    }}
-                    properties={{
-                      iconContent: `${data[index].nameDoctor} ${data[index].surname}`,
-                    }}
-                    onClick={() => navigate(`/doctor/${data[index].id}`)}
-                  />
-                ))}
+            {defaultState?.center !== undefined && (
+              <Map state={defaultState} className={style.mapYandex}>
+                {coordsData != undefined &&
+                  listDoctors != undefined &&
+                  listDoctors.length &&
+                  coordsData.map((item: [number, number], index: number) => (
+                    <Placemark
+                      geometry={item}
+                      key={listDoctors[index]?.id}
+                      options={{
+                        preset: "islands#darkGreenStretchyIcon",
+                      }}
+                      properties={{
+                        iconContent: `${listDoctors[index]?.nameDoctor} ${listDoctors[index]?.surname}`,
+                      }}
+                      onClick={() => navigate(`/doctor/${listDoctors[index]?.id}`)}
+                    />
+                  ))}
               </Map>
             )}
           </YMaps>
