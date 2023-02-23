@@ -1,22 +1,19 @@
 import style from "./Notfound.module.scss";
 import { Link } from "react-router-dom";
+import img404 from "../../assets/404_mountains.png";
+import { Box } from "@mui/material";
 
 const Notfound = () => {
   return (
-    <div>
-      <h1 className={style.text}>
+    <Box className={style.container}>
+      <Box component={"img"} src={img404} className={style.img}></Box>
+      <Box component={"h1"} className={style.text}>
         This page does not exist. Go{" "}
         <Link to="/" className={style.link}>
           Home
         </Link>
-      </h1>
-      <p>
-        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Molestiae enim
-        distinctio facilis sequi facere. Minus, ipsum inventore eius, voluptatum
-        quos sit, suscipit cumque tempore iusto ad accusamus aperiam itaque
-        doloremque.
-      </p>
-    </div>
+      </Box>
+    </Box>
   );
 };
 
