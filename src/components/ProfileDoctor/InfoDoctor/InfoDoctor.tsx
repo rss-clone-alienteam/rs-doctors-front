@@ -1,13 +1,14 @@
+import style from "./InfoDoctor.module.scss";
 import { Box } from "@mui/system";
 import Tab from "@mui/material/Tab";
 import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
 import { useState } from "react";
-import { AddressDoctor } from "./AddressDoctor";
-import { ReviewsDoctor } from "./ReviewsDoctor";
-import { ServicesDoctor } from "./ServicesDoctor";
-import { IDoctor } from "../../api/doctors";
+import { AddressDoctor } from "../AddressDoctor/AddressDoctor";
+import { ReviewsDoctor } from "../ReviewsDoctor/ReviewsDoctor";
+import { ServicesDoctor } from "../ServicesDoctor/ServicesDoctor";
+import { IDoctor } from "../../../api/doctors";
 
 interface InfoDoctorProp {
   data: IDoctor;
@@ -19,8 +20,9 @@ const InfoDoctor = ({ data }: InfoDoctorProp) => {
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
   };
+
   return (
-    <Box sx={{ width: "100%", typography: "body1" }}>
+    <Box className={style.container}>
       <TabContext value={value}>
         <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
           <TabList onChange={handleChange} aria-label="lab API tabs example">
@@ -31,13 +33,13 @@ const InfoDoctor = ({ data }: InfoDoctorProp) => {
           </TabList>
         </Box>
         <TabPanel value="1">
-          <AddressDoctor data={data} />
+          <AddressDoctor data={data} onShowAll={handleChange} />
         </TabPanel>
         <TabPanel value="2">
-          <ServicesDoctor />
+          <ServicesDoctor data={data} />
         </TabPanel>
         <TabPanel value="3">
-          <ReviewsDoctor />
+          <ReviewsDoctor data={data} />
         </TabPanel>
         <TabPanel value="4">Item 4</TabPanel>
       </TabContext>
