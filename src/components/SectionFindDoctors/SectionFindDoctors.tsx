@@ -7,14 +7,7 @@ import style from "./SectionFindDoctors.module.scss";
 export const SectionFindDoctors = () => {
   return (
     <Grid container className={style.container}>
-      <Box
-        sx={{
-          marginTop: "auto",
-          display: "flex",
-          flexDirection: "column",
-          gap: "30px",
-        }}
-      >
+      <Box className={style.leftContainer}>
         <CaptionText />
         <Search />
       </Box>

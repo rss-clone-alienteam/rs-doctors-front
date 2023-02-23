@@ -2,17 +2,18 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-bottom: 30px;
   padding-top: 35px;
+  gap: 50px;
 }
 
 .img {
+  align-self: center;
   width: 150px;
   object-fit: contain;
 }
 
 .card {
-  // display: flex;
-  // flex-shrink: 0;
   flex-direction: column;
   justify-content: center;
   border-radius: 10px;
@@ -20,7 +21,7 @@
   width: 250px;
   max-width: 250px;
   box-shadow: -2px 14px 9px -14px rgb(0 0 0 / 22%);
-  background-color: #f6f6f6;
+  background-color: #fafafa;
   gap: 10px;
 
   &:hover {
@@ -31,4 +32,11 @@
 .divider {
   font-weight: 300;
   color: rgb(91 91 91);
+}
+
+.bottomText {
+  display: "flex";
+  flex-direction: "column";
+  justify-content: center;
+  gap: 10px;
 }

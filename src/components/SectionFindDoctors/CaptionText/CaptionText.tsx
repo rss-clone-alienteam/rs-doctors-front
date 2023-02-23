@@ -1,18 +1,9 @@
 import { Box } from "@mui/material";
+import style from "./CaptionText.module.scss";
 
 export const CaptionText = () => {
   return (
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        height: "max-content",
-        fontFamily: "Roboto",
-        fontWeight: 700,
-        color: "#6bc1d0",
-        lineHeight: 0.9,
-      }}
-    >
+    <Box className={style.container}>
       <Box component="span" style={{ fontSize: "5rem" }}>
         Find the doctor{" "}
       </Box>
