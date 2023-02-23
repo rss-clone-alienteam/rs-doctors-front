@@ -6,7 +6,6 @@ import { ControlledTextField } from "../../../components/ControlledTextField/Con
 
 export const DoctorServices = () => {
   const { fields, append, remove } = useFieldArray({
-    // control,
     name: "services"
   });
 

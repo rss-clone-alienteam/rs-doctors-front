@@ -5,6 +5,7 @@ import { IDoctor, getDoctor, updateDoctorImage } from "../../../api/doctors";
 import { ISchedule, getSchedule } from "../../../api/schedule";
 import { Modal } from "../../../components/Modal/Modal";
 import { EditDataModal } from "./EditDateModal";
+import { AppointmentModal } from "./AppointmentModal";
 import { PhotoWithUpload } from "../../../components/PhotoWithUpload/PhotoWithUpload";
 import { DescriptionField } from "./components/DescriptionField";
 import { SectionSchedule } from "../../../components/SectionSchedule/SectionSchedule";
@@ -52,13 +53,17 @@ export const DoctorAccount = () => {
   const [alert, setAlert] = useState<AlertType | null>(null);
   const [isModalOpen, setModalOpen] = useState(false);
   const [typeModal, setTypeModal] = useState("");
+  const [time, setTime] = useState("");
+
   const handleModalOpen = (event: React.MouseEvent) => {
     setTypeModal(`${event.currentTarget.id}`);
     setModalOpen(true);
   };
   const handleModalClose = () => setModalOpen(false);
 
-  const openModal = () => {
+  const openModal = (event: React.MouseEvent) => {
+    setTime(event.currentTarget.id);
+    setTypeModal("appointment");
     setModalOpen(true);
   };
 
@@ -107,7 +112,9 @@ export const DoctorAccount = () => {
           {
             typeModal === "time" && isSuccessSchedule
               ? <EditDataModal data={infoAppointments.schedule} />
-              : <></>
+              : typeModal === "appointment" && isSuccessSchedule
+                  ? <AppointmentModal data={infoAppointments.schedule} dateTime={time}/>
+                  : <></>
           }
         </Modal>
         <Snackbar
