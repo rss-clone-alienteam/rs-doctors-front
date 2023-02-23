@@ -38,6 +38,7 @@ export const SignIn = () => {
   });
 
   const { isLoading, mutate } = useMutation(
+
     async ({ email, password }: UserData) => {
       const user = await AuthService.signIn({ email, password });
       return user;
@@ -51,7 +52,10 @@ export const SignIn = () => {
 
         user.attributes.profile === "doctor"
           ? navigate(`/doctor-account/${user.attributes.sub}`)
-          : navigate(`/patient-account/${user.attributes.sub}`);
+          : window.sessionStorage.getItem("path") ?
+            navigate(`${window.sessionStorage.getItem("path")}`)
+            :
+            navigate(`/patient-account/${user.attributes.sub}`);
       },
       onError: (errorAuth) => {
         console.log(errorAuth);
@@ -61,6 +65,7 @@ export const SignIn = () => {
   );
 
   const onSubmit = handleSubmit(({ email, password }) => {
+    email = email.toLowerCase();
     mutate({
       email,
       password,

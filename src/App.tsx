@@ -68,7 +68,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Layout />}>
               <Route index element={<Home />}></Route>
-              <Route path="ask-doctor" element={<AskDoctor />}></Route>
+              {/* <Route path="ask-doctor" element={<AskDoctor />}></Route> */}
               <Route path="doctors" element={<FindDoctors />}></Route>
               <Route path="doctor/:id" element={<DoctorProfile />}></Route>
               <Route path="review/:id" element={<ModalReview />}></Route>

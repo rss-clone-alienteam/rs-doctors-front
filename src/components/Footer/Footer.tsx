@@ -15,7 +15,7 @@ const Footer = () => {
             <RssLogo />
           </NavLink>
         </Grid>
-        <Grid sx={{ display: "flex", gap: 3 }}>
+        <Grid sx={{ display: "flex", gap: 1 }}>
           <NavLink to={"https://github.com/ShArPman13"}>
             <Box className={style.gitBox}>
               <GitLogo />
