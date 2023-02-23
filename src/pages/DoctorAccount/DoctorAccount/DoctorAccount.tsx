@@ -10,6 +10,7 @@ import { PhotoWithUpload } from "../../../components/PhotoWithUpload/PhotoWithUp
 import { DescriptionField } from "./components/DescriptionField";
 import { SectionSchedule } from "../../../components/SectionSchedule/SectionSchedule";
 import { LogOutBanner } from "../../../components/LogOutBanner/LogOutBanner";
+import { InfoDoctor } from "../../../components/ProfileDoctor/InfoDoctor/InfoDoctor";
 import { AlertType } from "../types";
 import { Button, Snackbar, Alert, Box, Typography, Grid } from "@mui/material";
 import MedicalInformation from "@mui/icons-material/MedicalInformation";
@@ -32,7 +33,7 @@ export const DoctorAccount = () => {
     }
   );
 
-  const { data: doctor, isLoading: isLoadingDoctor } =
+  const { data: doctor, isLoading: isLoadingDoctor, isSuccess: isSuccessDoctor } =
     useQuery<IDoctor, Error>(["doctor", id], () => getDoctor(id), {
       onError: () => {
         setAlert({ severity: "error", message: "Error during fetching data" });
@@ -54,6 +55,7 @@ export const DoctorAccount = () => {
   const [isModalOpen, setModalOpen] = useState(false);
   const [typeModal, setTypeModal] = useState("");
   const [time, setTime] = useState("");
+  console.log(time);
 
   const handleModalOpen = (event: React.MouseEvent) => {
     setTypeModal(`${event.currentTarget.id}`);
@@ -70,62 +72,66 @@ export const DoctorAccount = () => {
 
   return (
     <>
-      <LogOutBanner />
-      <Box className={style.wrapper}>
-        <Box className={style.photoBlock}>
-          <PhotoWithUpload isLoading={isLoadingDoctor} onUpload={onUploadAvatar} image={doctor?.photo} />
-          <Typography variant="h3" color={"primary"}>
-            {doctor?.nameDoctor} {doctor?.surname}
-          </Typography>
-        </Box>
-        <Box className={style.infoBlock} mb={2} mt={1}>
-          <DescriptionField icon={MedicalInformation} caption={"Category:"} text={doctor?.category} />
-          <DescriptionField icon={LocationCity} caption={"City:"} text={doctor?.city} />
-        </Box>
-        <Button onClick={() => navigate("edit")} sx={{fontSize: "16px"}}>Edit</Button>
-        <Grid className={style.containerInfo} container gap={2}>
-          <Grid className={style.infoBlock} item xs>
-            <Typography>About me:</Typography>
-          </Grid>
-          <Grid className={style.infoBlock} item xs>
-            <Button id={"time"} onClick={handleModalOpen} sx={{marginBottom: "10px"}}>Сhoice of appointment time</Button>
-            {isLoadingSchedule ? (
-              <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", height: "200px" }}>
-                <CircularProgress />
-              </Box>
-            ) : (
-              <Box sx={{ height: "300px", overflowY: "scroll" }}>
-                {isSuccessSchedule && infoAppointments ? (
-                  <SectionSchedule data={infoAppointments.schedule} onClick={openModal} />
-                ) : (<Typography mb={2}>{"No saved appointment time"}</Typography>)
-                }
-              </Box>
-            )}
-          </Grid>
-        </Grid>
-        <Modal
-          open={isModalOpen}
-          onClose={handleModalClose}
-          aria-labelledby="modal-modal-title"
-          aria-describedby="modal-modal-description"
-        >
-          {
-            typeModal === "time" && isSuccessSchedule
-              ? <EditDataModal data={infoAppointments.schedule} />
-              : typeModal === "appointment" && isSuccessSchedule
-                  ? <AppointmentModal data={infoAppointments.schedule} dateTime={time}/>
-                  : <></>
-          }
-        </Modal>
-        <Snackbar
-          open={!!alert}
-          autoHideDuration={3000}
-          onClose={() => setAlert(null)}
-          anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-        >
-          <Alert onClose={() => setAlert(null)} severity={alert?.severity || "success"}>{alert?.message}</Alert>
-        </Snackbar>
-      </Box>
+      {isSuccessDoctor && (
+        <>
+          <LogOutBanner />
+          <Box className={style.wrapper}>
+            <Box className={style.photoBlock}>
+              <PhotoWithUpload isLoading={isLoadingDoctor} onUpload={onUploadAvatar} image={doctor.photo} />
+              <Typography variant="h3" color={"primary"}>
+                {doctor.nameDoctor} {doctor.surname}
+              </Typography>
+            </Box>
+            <Box className={style.infoBlock} mb={2} mt={1}>
+              <DescriptionField icon={MedicalInformation} caption={"Category:"} text={doctor.category} />
+              <DescriptionField icon={LocationCity} caption={"City:"} text={doctor.city} />
+            </Box>
+            <Button onClick={() => navigate("edit")} sx={{fontSize: "16px"}}>Edit</Button>
+            <Grid className={style.containerInfo} container gap={2}>
+              <Grid className={style.infoBlock} item xs>
+                <InfoDoctor data={doctor}></InfoDoctor>
+              </Grid>
+              <Grid className={style.infoBlock} item xs>
+                <Button id={"time"} onClick={handleModalOpen} sx={{marginBottom: "10px"}}>Сhoice of appointment time</Button>
+                {isLoadingSchedule ? (
+                  <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", height: "200px" }}>
+                    <CircularProgress />
+                  </Box>
+                ) : (
+                  <Box sx={{ height: "300px", overflowY: "scroll" }}>
+                    {isSuccessSchedule && infoAppointments ? (
+                      <SectionSchedule data={infoAppointments.schedule} onClick={openModal} />
+                    ) : (<Typography mb={2}>{"No saved appointment time"}</Typography>)
+                    }
+                  </Box>
+                )}
+              </Grid>
+            </Grid>
+          </Box>
+        </>
+      )}
+      <Modal
+        open={isModalOpen}
+        onClose={handleModalClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        {
+          typeModal === "time" && isSuccessSchedule
+            ? <EditDataModal data={infoAppointments.schedule} />
+            : typeModal === "appointment" && isSuccessSchedule
+                ? <AppointmentModal />
+                : <></>
+        }
+      </Modal>
+      <Snackbar
+        open={!!alert}
+        autoHideDuration={3000}
+        onClose={() => setAlert(null)}
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+      >
+        <Alert onClose={() => setAlert(null)} severity={alert?.severity || "success"}>{alert?.message}</Alert>
+      </Snackbar>
     </>
   );
 };

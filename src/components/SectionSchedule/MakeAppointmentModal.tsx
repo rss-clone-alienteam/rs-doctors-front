@@ -1,9 +1,10 @@
 
 import { Alert, Box, Button, Snackbar, Typography } from "@mui/material";
 import { useContext, useState } from "react";
-import { useQuery, useQueryClient } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useNavigate } from "react-router-dom";
 import { getPatient, IPatient, updatePatient } from "../../api/patients";
+import { addSchedule, getSchedule, ISchedule, IAppointments } from "../../api/schedule";
 import { Context } from "../../Context/Context";
 
 interface IProps {
@@ -35,8 +36,28 @@ export const MakeAppointmentModal = ({ close }: IProps) => {
   const { appointment } = useContext(Context);
 
   const { data: dataPatient } = useQuery<IPatient>("patient", () => getPatient(userID));
+  const { data: scheduleDoctor } =
+    useQuery<ISchedule>("schedule-doctor", () => getSchedule(appointment.doctor.id), {
+      onError: () => {
+        setErrorMessage("Error during fetching schedule");
+        setAlert(true);
+        handleClick();
+      }
+    });
 
   const clientQuery = useQueryClient();
+
+  const mutationSchedule = useMutation(
+    (schedule: IAppointments) => addSchedule(schedule, appointment.doctor.id),
+  );
+
+  const addAppointmentSchedule = () => {
+    if(scheduleDoctor) {
+      const schedule = scheduleDoctor.schedule;
+      schedule[appointment.date][appointment.time] = userID;
+      mutationSchedule.mutate(schedule);
+    }
+  };
 
   const makeAppointment = async () => {
     console.log(dataPatient?.appointments);
@@ -93,6 +114,7 @@ export const MakeAppointmentModal = ({ close }: IProps) => {
       <Typography>{`You are trying to make an appointment on ${appointment.date} at ${appointment.time}. Your doctor is ${appointment.doctor.nameDoctor}`}</Typography>
       <Typography>Do you confirm your appointment?</Typography>
       <Button variant="contained" color="success" onClick={() => {
+        addAppointmentSchedule();
         makeAppointment();
         setTimeout(() => {
           close();
