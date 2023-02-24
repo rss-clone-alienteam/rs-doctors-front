@@ -76,10 +76,10 @@ export const EditDataModal = ({ data }: {data: IAppointments} ) => {
       <Alert severity="info" sx={{fontSize: "18px", marginBottom: "50px"}}>
         {"Select the date, time of work and duration of one appointment"}
       </Alert>
-      <Box sx={{display: "flex", alignItems: "center"}} mb={5}>
+      <Box sx={{display: "flex", flexDirection: {xs: "column", md: "row"}, alignItems: "center"}}>
         <Box
           sx={{
-            marginRight: "20px",
+            margin: {xs: "0 0 10px 0", md: "0 30px 0 0"},
             display: "flex",
             flexDirection: "column",
             gap: "20px",
@@ -108,7 +108,6 @@ export const EditDataModal = ({ data }: {data: IAppointments} ) => {
           />
         </Box>
         <Box
-          pl={3}
           sx={{
             color:"black",
             display: "flex",
@@ -128,14 +127,14 @@ export const EditDataModal = ({ data }: {data: IAppointments} ) => {
                         <Alert severity="error" sx={{marginBottom: "20px"}}>
                           {"You already have a schedule for the selected date, check appointments"}
                         </Alert>
-                        <Grid container spacing={1} mb={2} sx={{width: "400px"}}>
+                        <Grid container spacing={1} mb={2} sx={{width: {sm: "400px"}}}>
                           {Object.keys(data[date.format("DD-MM-YYYY")])
                           .sort((time1, time2) =>
                             Number(time1?.split(":")[0]) * 60 + Number(time1?.split(":")[1])
                             - (Number(time2?.split(":")[0]) * 60 + Number(time2?.split(":")[1]))
                           )
                           .map((item, index) =>
-                            <Grid item xs={3} key={index}>
+                            <Grid item xs={4} key={index}>
                               <Chip
                                 label={item}
                                 variant="outlined"
@@ -146,9 +145,9 @@ export const EditDataModal = ({ data }: {data: IAppointments} ) => {
                         </Grid>
                       </>
                     :
-                      <Grid container spacing={1} mb={2} sx={{width: "400px"}}>
+                      <Grid container spacing={1} mb={2} sx={{width: {sm: "400px"}}}>
                         {Object.keys(times).map((item, index) =>
-                          <Grid item xs={3} key={index}>
+                          <Grid item xs={4} key={index}>
                             <Chip
                               label={item}
                               variant="outlined"

@@ -12,12 +12,12 @@ interface IProps {
 export function DescriptionField({ caption, text, icon }: IProps) {
   const Icon = icon;
   return (
-    <Box sx={{ display: "flex", gap: 1, height: "55%" }}>
+    <Box sx={{ display: "flex", gap: 1, alignItems: "center", height: "55%"}}>
       <Icon color="primary" />
       <Typography color="primary">
         {caption}
       </Typography>
-      <Typography>
+      <Typography sx={{fontSize: {xs: "14px", sm: "16px"}}}>
         {text}
       </Typography>
     </Box>
