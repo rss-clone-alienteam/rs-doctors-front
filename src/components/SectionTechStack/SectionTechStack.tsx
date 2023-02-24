@@ -3,6 +3,8 @@ import style from "./SectionTechStack.module.scss";
 import reactPNG from "../../assets/react_png.png";
 import tsPNG from "../../assets/ts.png";
 import muiPNG from "../../assets/mui.png";
+import formPNG from "../../assets/form.png";
+import queryPNG from "../../assets/query.png";
 import Typography from "@mui/material/Typography";
 
 export const SectionTechStack = () => {
@@ -23,7 +25,19 @@ export const SectionTechStack = () => {
       <Grid className={style.imageWrapper}>
         <Box component={"img"} src={muiPNG} className={style.image} />
         <Typography color="black">
-          Typescript
+          Material UI
+        </Typography>
+      </Grid>
+      <Grid className={style.imageWrapper}>
+        <Box component={"img"} src={formPNG} className={style.image} />
+        <Typography color="black">
+          React-hook-form
+        </Typography>
+      </Grid>
+      <Grid className={style.imageWrapper}>
+        <Box component={"img"} src={queryPNG} className={style.image} />
+        <Typography color="black">
+          React-query
         </Typography>
       </Grid>
 
