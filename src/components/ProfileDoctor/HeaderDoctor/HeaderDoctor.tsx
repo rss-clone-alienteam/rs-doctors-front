@@ -57,7 +57,13 @@ const HeaderDoctor = ({ data }: HeaderDoctorProp) => {
               </Grid>
               <Grid item>
                 {data.reviews && (
-                  <Link href="#" display={"flex"}>
+                  <Link
+                    display={"flex"}
+                    underline="hover"
+                    onClick={() => {
+                      navigate(`/doctor/${data.id}/3`);
+                    }}
+                  >
                     {`${data.reviews.length} Review`}
                   </Link>
                 )}

@@ -9,16 +9,24 @@ import { AddressDoctor } from "../AddressDoctor/AddressDoctor";
 import { ReviewsDoctor } from "../ReviewsDoctor/ReviewsDoctor";
 import { ServicesDoctor } from "../ServicesDoctor/ServicesDoctor";
 import { IDoctor } from "../../../api/doctors";
+import { useNavigate, useParams } from "react-router-dom";
 
 interface InfoDoctorProp {
   data: IDoctor;
 }
 
 const InfoDoctor = ({ data }: InfoDoctorProp) => {
-  const [value, setValue] = useState("1");
+  const { review } = useParams();
+  const navigate = useNavigate();
+  console.log(review);
+
+  const current = review ? review : "1";
+
+  const [value, setValue] = useState(current);
 
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
+    navigate(`/doctor/${data.id}`);
   };
 
   return (

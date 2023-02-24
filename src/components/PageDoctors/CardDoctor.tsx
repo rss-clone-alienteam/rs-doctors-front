@@ -39,10 +39,17 @@ export const CardDoctor = ({ doctor, coords, modalHandler }: DoctorProps) => {
           <Grid item>
             <Card sx={{ boxShadow: "none" }}>
               <CardHeader
-                avatar={<Avatar alt="complex" src={doctor.photo || "../../assets/default-avatar.png"} sx={{ width: 65, height: 65 }} />}
+                avatar={
+                  <Avatar
+                    alt="complex"
+                    src={doctor.photo || "../../assets/default-avatar.png"}
+                    sx={{ width: 65, height: 65 }}
+                    onClick={() => navigate(`/doctor/${doctor.id}`)}
+                  />
+                }
                 sx={{ cursor: "pointer", fontSize: "31px" }}
                 title={
-                  <Typography variant="body2" color="black" fontSize="17px">
+                  <Typography variant="body2" color="black" fontSize="17px" onClick={() => navigate(`/doctor/${doctor.id}`)}>
                     {`${doctor.nameDoctor} ${doctor.surname}`}
                   </Typography>
                 }
@@ -68,15 +75,17 @@ export const CardDoctor = ({ doctor, coords, modalHandler }: DoctorProps) => {
                       {doctor.reviews && (
                         <Grid item container className={style.avatarFeedback} ml={1}>
                           <Grid item mr={0.5}>
-                            <Box component="span">{doctor.reviews.length}</Box>
+                            <Link underline="hover" onClick={() => navigate(`/doctor/${doctor.id}/3`)}>
+                              {`${doctor.reviews.length} Feedback`}
+                            </Link>
+                            {/* <Box component="span">{doctor.reviews.length}</Box> */}
                           </Grid>
-                          <Box component="span">Feedback</Box>
+                          {/* <Box component="span">Feedback</Box> */}
                         </Grid>
                       )}
                     </Grid>
                   </>
                 }
-                onClick={() => navigate(`/doctor/${doctor.id}`)}
               />
               <CardContent>
                 <Grid container direction="column" spacing={2}>

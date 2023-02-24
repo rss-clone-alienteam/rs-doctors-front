@@ -60,7 +60,7 @@ function App() {
         profile,
         setProfile,
         appointment,
-        setAppointment
+        setAppointment,
       }}
     >
       <QueryClientProvider client={queryClient}>
@@ -70,6 +70,7 @@ function App() {
               <Route index element={<Home />}></Route>
               <Route path="ask-doctor" element={<AskDoctor />}></Route>
               <Route path="doctors" element={<FindDoctors />}></Route>
+              <Route path="doctor/:id/:review" element={<DoctorProfile />}></Route>
               <Route path="doctor/:id" element={<DoctorProfile />}></Route>
               <Route path="review/:id" element={<ModalReview />}></Route>
               <Route path="auth">
