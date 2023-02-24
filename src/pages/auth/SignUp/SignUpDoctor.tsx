@@ -1,7 +1,6 @@
 import style from "./SignUpDoctor.module.scss";
 import { useMutation } from "react-query";
 import { NavLink, useNavigate } from "react-router-dom";
-import { useState } from "react";
 import { API } from "aws-amplify";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -13,16 +12,16 @@ import {
   TextField,
   Button,
   Link,
-  Snackbar,
-  Alert,
   SelectChangeEvent,
   FormControl,
   InputLabel,
   Select,
   MenuItem,
   FormHelperText,
+  CircularProgress
 } from "@mui/material";
 import React from "react";
+import { showToastMessage } from "../../../utils/showToastMessage";
 
 interface FormData {
   category: string;
@@ -57,7 +56,6 @@ const schema = object({
 });
 
 export const SignUpDoctor = () => {
-  const [openErrorMessage, setOpenErrorMessage] = useState(false);
   const navigate = useNavigate();
   const {
     register,
@@ -98,7 +96,7 @@ export const SignUpDoctor = () => {
     },
     {
       onError: () => {
-        setOpenErrorMessage(true);
+        showToastMessage(mutationAuth.error instanceof Error ? mutationAuth.error.message : "", "error");
       },
     }
   );
@@ -121,7 +119,7 @@ export const SignUpDoctor = () => {
           });
         })
         .catch((error) => {
-          console.log(error);
+          showToastMessage(error, "error");
         });
     }
   );
@@ -146,7 +144,7 @@ export const SignUpDoctor = () => {
   return (
     <>
       {mutationDB.isLoading ? (
-        "Loading..."
+        <CircularProgress size={80} sx={{ position: "fixed", top: "45vh", left: "45vw" }} />
       ) : (
         <>
           <Box component="form" onSubmit={onSubmit} className={style.form}>
@@ -191,7 +189,13 @@ export const SignUpDoctor = () => {
                     <MenuItem value={"Gynecology"}>Gynecology</MenuItem>
                     <MenuItem value={"Surgery"}>Surgery</MenuItem>
                     <MenuItem value={"Cardiology"}>Cardiology</MenuItem>
+                    <MenuItem value={"Therapeutology"}>Therapeutology</MenuItem>
                     <MenuItem value={"Pediatrics"}>Pediatrics</MenuItem>
+                    <MenuItem value={"Allergology"}>Allergology</MenuItem>
+                    <MenuItem value={"Dermatology"}>Dermatology</MenuItem>
+                    <MenuItem value={"Dentistry"}>Dentistry</MenuItem>
+                    <MenuItem value={"Psychology"}>Psychology</MenuItem>
+                    <MenuItem value={"Neurology"}>Neurology</MenuItem>
                   </Select>
                   {errorCategory && (
                     <FormHelperText>This is required!</FormHelperText>
@@ -210,10 +214,14 @@ export const SignUpDoctor = () => {
                   >
                     <MenuItem value={"Warsaw"}>Warsaw</MenuItem>
                     <MenuItem value={"Krakow"}>Krakow</MenuItem>
-                    <MenuItem value={"Minsk"}>Minsk</MenuItem>
-                    <MenuItem value={"Gomel"}>Gomel</MenuItem>
-                    <MenuItem value={"Voronezh"}>Voronezh</MenuItem>
-                    <MenuItem value={"New York"}>New York</MenuItem>
+                    <MenuItem value={"Wroclaw"}>Wroclaw</MenuItem>
+                    <MenuItem value={"Gdansk"}>Gdansk</MenuItem>
+                    <MenuItem value={"Poznan"}>Poznan</MenuItem>
+                    <MenuItem value={"Katowice"}>Katowice</MenuItem>
+                    <MenuItem value={"Bialystok"}>Bialystok</MenuItem>
+                    <MenuItem value={"Szczecin"}>Szczecin</MenuItem>
+                    <MenuItem value={"Lublin"}>Lublin</MenuItem>
+                    <MenuItem value={"Rzeszow"}>Rzeszow</MenuItem>
                   </Select>
                   {errorCity && (
                     <FormHelperText>This is required!</FormHelperText>
@@ -299,18 +307,6 @@ export const SignUpDoctor = () => {
               </Link>
             </Box>
           </Box>
-          <Snackbar
-            open={openErrorMessage}
-            autoHideDuration={6000}
-            onClose={() => setOpenErrorMessage(false)}
-            anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-          >
-            <Alert onClose={() => setOpenErrorMessage(false)} severity="error">
-              {mutationAuth.error instanceof Error
-                ? mutationAuth.error.message
-                : ""}
-            </Alert>
-          </Snackbar>
         </>
       )}
     </>

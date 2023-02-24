@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
+import { useMutation, useQueryClient } from "react-query";
 import { useParams } from "react-router-dom";
 import { Dayjs } from "dayjs";
 import { BasicDatePicker, BasicTimePicker } from "./DatePicker";
-import { AlertType } from "../types";
-import { SelectChangeEvent, Box, Typography, Grid, Button, Chip, Alert, Snackbar } from "@mui/material";
 import { SelectInput } from "../../../components/SectionFindDoctors/SelectInput/SelectInput";
 import { ITimes, addSchedule, IAppointments } from "../../../api/schedule";
-import { useMutation, useQueryClient } from "react-query";
+import { showToastMessage } from "../../../utils/showToastMessage";
+import { SelectChangeEvent, Box, Typography, Grid, Button, Chip, Alert } from "@mui/material";
+
 
 
 export const EditDataModal = ({ data }: {data: IAppointments} ) => {
@@ -18,14 +19,13 @@ export const EditDataModal = ({ data }: {data: IAppointments} ) => {
   const periodOptions = ["10", "15", "20", "30", "60"];
   const [period, setPeriod] = useState(periodOptions[2]);
   const [times, setTimes] = useState<ITimes>({});
-  const [alert, setAlert] = useState<AlertType | null>(null);
 
   const mutation = useMutation(
     (appointments: IAppointments) => addSchedule(appointments, id),
     {
       onSuccess: () => {
         queryClient.invalidateQueries(["schedule", id]);
-        setAlert({ severity: "success", message: "The schedule for the selected date has been successfully added" });
+        showToastMessage("The schedule for the selected date has been successfully added", "success");
       }
     }
   );
@@ -73,7 +73,7 @@ export const EditDataModal = ({ data }: {data: IAppointments} ) => {
 
   return (
     <Box sx={{display: "flex", flexDirection: "column"}}>
-      <Alert severity="info" sx={{fontSize: "18px", marginBottom: "50px"}}>
+      <Alert severity="info" sx={{fontSize: "18px", margin: "20px 0 50px 0"}}>
         {"Select the date, time of work and duration of one appointment"}
       </Alert>
       <Box sx={{display: "flex", flexDirection: {xs: "column", md: "row"}, alignItems: "center"}}>
@@ -121,8 +121,7 @@ export const EditDataModal = ({ data }: {data: IAppointments} ) => {
                   <Typography mb={1.5}>{date.format("DD-MM-YYYY")}</Typography>
                   {
                     Object.prototype.hasOwnProperty.call(data, date.format("DD-MM-YYYY"))
-                    && !Object.keys(times).length
-                    ?
+                    && !Object.keys(times).length ?
                       <>
                         <Alert severity="error" sx={{marginBottom: "20px"}}>
                           {"You already have a schedule for the selected date, check appointments"}
@@ -134,25 +133,39 @@ export const EditDataModal = ({ data }: {data: IAppointments} ) => {
                             - (Number(time2?.split(":")[0]) * 60 + Number(time2?.split(":")[1]))
                           )
                           .map((item, index) =>
-                            <Grid item xs={4} key={index}>
-                              <Chip
-                                label={item}
-                                variant="outlined"
-                                onDelete={deleteItem(item)}
-                              />
-                            </Grid>
+                            data[date.format("DD-MM-YYYY")][item] === null ?
+                              <Grid item xs={4} key={index}>
+                                <Chip
+                                  label={item}
+                                  variant="outlined"
+                                  onDelete={deleteItem(item)}
+                                />
+                              </Grid>
+                            : <Grid item xs={4} key={index}>
+                                <Chip
+                                  label={item}
+                                  sx={{ border: "1px solid #00afbd", width: "78px" }}
+                                />
+                              </Grid>
                           )}
                         </Grid>
                       </>
                     :
                       <Grid container spacing={1} mb={2} sx={{width: {sm: "400px"}}}>
-                        {Object.keys(times).map((item, index) =>
+                        {Object.entries(times).map((item, index) =>
                           <Grid item xs={4} key={index}>
-                            <Chip
-                              label={item}
-                              variant="outlined"
-                              onDelete={deleteItem(item)}
-                            />
+                            {
+                              item[1] === null || item[1] === "" ?
+                                <Chip
+                                  label={item[0]}
+                                  variant="outlined"
+                                  onDelete={deleteItem(item[0])}
+                                />
+                              : <Chip
+                                  label={item[0]}
+                                  sx={{ border: "1px solid #00afbd", width: "78px" }}
+                                />
+                            }
                           </Grid>
                         )}
                       </Grid>
@@ -163,14 +176,6 @@ export const EditDataModal = ({ data }: {data: IAppointments} ) => {
           {Object.keys(times).length ? <Button sx={{fontSize: "18px"}} onClick={saveSchedule}>Update</Button> : null}
         </Box>
       </Box>
-      <Snackbar
-        open={!!alert}
-        autoHideDuration={3000}
-        onClose={() => setAlert(null)}
-        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-      >
-        <Alert onClose={() => setAlert(null)} severity={alert?.severity || "success"}>{alert?.message}</Alert>
-      </Snackbar>
     </Box>
   );
 };

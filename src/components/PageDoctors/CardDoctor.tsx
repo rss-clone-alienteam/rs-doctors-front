@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import { useContext } from "react";
 import style from "./CardDoctor.module.scss";
 import Box from "@mui/material/Box";
 import { Avatar, Card, CardContent, CardHeader, CircularProgress, Grid, Link, Rating, Typography } from "@mui/material";
@@ -10,6 +10,7 @@ import { SectionSchedule } from "../SectionSchedule/SectionSchedule";
 import { useQuery } from "react-query";
 import MedicalServicesIcon from "@mui/icons-material/MedicalServices";
 import { Context } from "../../Context/Context";
+import { showToastMessage } from "../../utils/showToastMessage";
 
 interface DoctorProps {
   doctor: IDoctor;
@@ -21,15 +22,28 @@ export const CardDoctor = ({ doctor, coords, modalHandler }: DoctorProps) => {
   const navigate = useNavigate();
 
   const { isLoading, data } = useQuery(`schedule-${doctor.id}`, () => getSchedule(doctor.id));
-  const { setAppointment } = useContext(Context);
+  const { setAppointment, isUserLogIn, profile } = useContext(Context);
 
   const clickHandler = (date: string, time: string) => {
-    setAppointment({
-      doctor,
-      date,
-      time,
-    });
-    modalHandler(true);
+    if (!isUserLogIn) {
+      showToastMessage("Please sign in", "error");
+      navigate("/auth/sign-in");
+      return;
+    }
+    if (profile === "doctor") {
+      showToastMessage("Please register as a patient", "error");
+      return;
+    }
+    if (data?.schedule[date][time] === null) {
+      setAppointment({
+        doctor,
+        date,
+        time,
+      });
+      modalHandler(true);
+    } else {
+      showToastMessage("Sorry, this time is already taken", "error");
+    }
   };
 
   return (
