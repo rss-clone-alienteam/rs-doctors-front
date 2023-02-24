@@ -7,7 +7,7 @@ const Layout = () => {
   return (
     <Box className={style.container}>
       <Header />
-      <Container component="main">
+      <Container sx={{padding: 0}} component="main">
         <Outlet />
       </Container>
       <Footer />

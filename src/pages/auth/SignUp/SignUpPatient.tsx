@@ -30,7 +30,7 @@ interface FormData {
   password: string;
 }
 
-export interface IPatient {
+export interface IFormPatient {
   id: string;
   name: string;
   lastName: string;
@@ -70,7 +70,7 @@ export const SignUpPatient = () => {
   });
 
   const mutation = useMutation(
-    (data: IPatient) => {
+    (data: IFormPatient) => {
       return API.post("rs-doctors-back", "/patients/add-patient", {
         body: data,
       });

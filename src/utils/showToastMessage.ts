@@ -6,7 +6,7 @@ export const showToastMessage = (message: string, type: TypeToast) => {
   switch (type) {
     case "success":
       toast.success(message, {
-        autoClose: 2000,
+        autoClose: 2500,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -18,7 +18,7 @@ export const showToastMessage = (message: string, type: TypeToast) => {
 
     default:
       toast.error(message, {
-        autoClose: 2000,
+        autoClose: 2500,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
