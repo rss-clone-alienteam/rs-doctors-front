@@ -12,11 +12,16 @@ interface HeaderDoctorProp {
 }
 
 const HeaderDoctor = ({ data }: HeaderDoctorProp) => {
-  const { isUserLogIn } = useContext(Context);
+  const { isUserLogIn, profile } = useContext(Context);
+  console.log(profile);
   const navigate = useNavigate();
   const url = useLocation();
 
   const addReview = () => {
+    if (profile === "doctor") {
+      showToastMessage("Please register as a patient", "error");
+      return;
+    }
     if (!isUserLogIn) {
       window.sessionStorage.setItem("path", url.pathname);
       showToastMessage("Please sign in", "error");

@@ -8,11 +8,12 @@ import style from "./LogOutBanner.module.scss";
 
 export const LogOutBanner = () => {
 
-  const { setIsUserLogIn, userEmail } = useContext(Context);
+  const { setIsUserLogIn, userEmail, setProfile } = useContext(Context);
   const navigate = useNavigate();
   const logOut = () => {
     AuthService.signOut();
     setIsUserLogIn(false);
+    setProfile("");
     navigate("/");
   };
 

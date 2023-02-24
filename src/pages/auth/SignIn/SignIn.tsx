@@ -52,13 +52,15 @@ export const SignIn = () => {
         setProfile(user.attributes.profile);
         showToastMessage("You are successfully login", "success");
 
-        user.attributes.profile === "doctor"
-          ? navigate(`/doctor-account/${user.attributes.sub}`)
-          : window.sessionStorage.getItem("path") ?
-            navigate(`${window.sessionStorage.getItem("path")}`)
-            :
-            navigate(`/patient-account/${user.attributes.sub}`);
-
+        if (user.attributes.profile === "doctor") {
+          navigate(`/doctor-account/${user.attributes.sub}`);
+        }
+        if (window.sessionStorage.getItem("path")) {
+          navigate(`${window.sessionStorage.getItem("path")}`);
+          sessionStorage.clear();
+        } else {
+          navigate(`/patient-account/${user.attributes.sub}`);
+        }
       },
       onError: () => {
         showToastMessage("Incorrect login or password!", "error");
