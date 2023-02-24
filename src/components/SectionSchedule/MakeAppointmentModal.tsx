@@ -67,7 +67,7 @@ export const MakeAppointmentModal = ({ close }: IProps) => {
       const checkDuplication = new Set(body);
 
       if (checkDuplication.size !== body.length) {
-        showToastMessage("Please cancel appointment before make the new one!", "error");
+        showToastMessage("You already have an appointment with this doctor, please cancel the previous one!", "error");
         return false;
       }
       console.log("goes");
@@ -79,6 +79,7 @@ export const MakeAppointmentModal = ({ close }: IProps) => {
           time: appointment.time
         }]
       });
+      addAppointmentSchedule();
       showToastMessage("Success!", "success");
       clientQuery.invalidateQueries(["patient"]);
       return data;
@@ -91,7 +92,6 @@ export const MakeAppointmentModal = ({ close }: IProps) => {
       <Typography>{`You are trying to make an appointment on ${appointment.date} at ${appointment.time}. Your doctor is ${appointment.doctor.nameDoctor}`}</Typography>
       <Typography>Do you confirm your appointment?</Typography>
       <Button variant="contained" color="success" onClick={() => {
-        addAppointmentSchedule();
         makeAppointment();
         setTimeout(() => {
           close();

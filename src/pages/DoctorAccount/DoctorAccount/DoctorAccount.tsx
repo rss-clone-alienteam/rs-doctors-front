@@ -12,7 +12,7 @@ import { SectionSchedule } from "../../../components/SectionSchedule/SectionSche
 import { LogOutBanner } from "../../../components/LogOutBanner/LogOutBanner";
 import { InfoDoctor } from "../../../components/ProfileDoctor/InfoDoctor/InfoDoctor";
 import { AlertType } from "../types";
-import { Button, Snackbar, Alert, Box, Typography, Grid } from "@mui/material";
+import { Button, Snackbar, Alert, Box, Typography, Grid,  Modal as MuiModal } from "@mui/material";
 import MedicalInformation from "@mui/icons-material/MedicalInformation";
 import LocationCity from "@mui/icons-material/LocationCity";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -55,7 +55,6 @@ export const DoctorAccount = () => {
   const [isModalOpen, setModalOpen] = useState(false);
   const [typeModal, setTypeModal] = useState("");
   const [time, setTime] = useState("");
-  console.log(time);
 
   const handleModalOpen = (event: React.MouseEvent) => {
     setTypeModal(`${event.currentTarget.id}`);
@@ -72,13 +71,18 @@ export const DoctorAccount = () => {
 
   return (
     <>
+      {
+        isLoadingDoctor && (
+          <CircularProgress size={120} sx={{ position: "fixed", top: "45vh", left: "45vw" }} />
+        )
+      }
       {isSuccessDoctor && (
         <>
           <LogOutBanner />
           <Box className={style.wrapper}>
             <Box className={style.photoBlock}>
               <PhotoWithUpload isLoading={isLoadingDoctor} onUpload={onUploadAvatar} image={doctor.photo} />
-              <Typography variant="h3" color={"primary"}>
+              <Typography color={"primary"} sx={{fontSize: {xs: "30px", sm: "50px"}}}>
                 {doctor.nameDoctor} {doctor.surname}
               </Typography>
             </Box>
@@ -110,20 +114,29 @@ export const DoctorAccount = () => {
           </Box>
         </>
       )}
-      <Modal
-        open={isModalOpen}
-        onClose={handleModalClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        {
-          typeModal === "time" && isSuccessSchedule
-            ? <EditDataModal data={infoAppointments.schedule} />
-            : typeModal === "appointment" && isSuccessSchedule
-                ? <AppointmentModal />
-                : <></>
-        }
-      </Modal>
+      {
+        typeModal === "time" && isSuccessSchedule
+          ? <Modal
+              open={isModalOpen}
+              onClose={handleModalClose}
+              aria-labelledby="modal-modal-title"
+              aria-describedby="modal-modal-description"
+            >
+              <EditDataModal data={infoAppointments.schedule} />
+            </Modal>
+          : typeModal === "appointment" && isSuccessSchedule
+              ? <MuiModal
+                  open={isModalOpen}
+                  onClose={handleModalClose}
+                  aria-labelledby="modal-modal-title"
+                  aria-describedby="modal-modal-description"
+                >
+                  <Box className={style.infoPatientWrapper}>
+                    <AppointmentModal data={infoAppointments.schedule} dateTime={time}/>
+                  </Box>
+                </MuiModal>
+              : <></>
+      }
       <Snackbar
         open={!!alert}
         autoHideDuration={3000}

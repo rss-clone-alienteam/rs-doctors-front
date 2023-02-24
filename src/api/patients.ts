@@ -12,7 +12,7 @@ export interface IPatient {
   email: string;
   id: string;
   name: string;
-  surname: string;
+  lastName: string;
   appointments: Appointment[];
 }
 
