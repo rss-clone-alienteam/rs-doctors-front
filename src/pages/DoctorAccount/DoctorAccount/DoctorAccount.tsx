@@ -55,7 +55,6 @@ export const DoctorAccount = () => {
   const [isModalOpen, setModalOpen] = useState(false);
   const [typeModal, setTypeModal] = useState("");
   const [time, setTime] = useState("");
-  console.log(time);
 
   const handleModalOpen = (event: React.MouseEvent) => {
     setTypeModal(`${event.currentTarget.id}`);
@@ -72,6 +71,11 @@ export const DoctorAccount = () => {
 
   return (
     <>
+      {
+        isLoadingDoctor && (
+          <CircularProgress size={120} sx={{ position: "fixed", top: "45vh", left: "45vw" }} />
+        )
+      }
       {isSuccessDoctor && (
         <>
           <LogOutBanner />
@@ -120,7 +124,7 @@ export const DoctorAccount = () => {
           typeModal === "time" && isSuccessSchedule
             ? <EditDataModal data={infoAppointments.schedule} />
             : typeModal === "appointment" && isSuccessSchedule
-                ? <AppointmentModal />
+                ? <AppointmentModal data={infoAppointments.schedule} dateTime={time}/>
                 : <></>
         }
       </Modal>
