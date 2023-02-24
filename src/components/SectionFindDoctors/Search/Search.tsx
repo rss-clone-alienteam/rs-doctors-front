@@ -1,4 +1,4 @@
-import { Box, Grid, SelectChangeEvent } from "@mui/material";
+import { Grid, SelectChangeEvent } from "@mui/material";
 import { SearchButton } from "../SearchButton/SearchButton";
 import { SelectInput } from "../SelectInput/SelectInput";
 import { useState } from "react";
