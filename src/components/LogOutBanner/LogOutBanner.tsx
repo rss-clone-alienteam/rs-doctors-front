@@ -21,7 +21,7 @@ export const LogOutBanner = () => {
       <Typography className={style.text}>
         You logged in as {userEmail}
       </Typography>
-      <Button color="error" variant="contained" onClick={() => logOut()}>
+      <Button color="secondary" variant="contained" onClick={() => logOut()}>
         Log Out
       </Button>
     </Box>

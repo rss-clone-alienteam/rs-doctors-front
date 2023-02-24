@@ -55,6 +55,8 @@ export const PatientAccount = () => {
   };
 
   const { userID } = useContext(Context);
+
+
   const { data, isSuccess } = useQuery<IPatient>("patient", () => getPatient(userID));
 
   const clientQuery = useQueryClient();
@@ -83,7 +85,7 @@ export const PatientAccount = () => {
       schedule: scheduleDoctor.schedule,
       id: doctorID,
     });
-    if(data) {
+    if (data) {
       const body = data.appointments.filter((appointment) => appointment.doctorID !== doctorID);
       mutationPatient.mutate(body);
     }
@@ -139,7 +141,7 @@ export const PatientAccount = () => {
         <TabPanel value={value} index={2}>
           <Box sx={{ color: "red" }}> {data?.name}</Box>
         </TabPanel>
-      </Box >
-    </Box >
+      </Box>
+    </Box>
   );
 };

@@ -1,11 +1,14 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useMutation } from "react-query";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { object, string } from "yup";
 import { AuthService } from "../../../services/AuthService";
-import { Snackbar, Alert, Button, Box } from "@mui/material";
+import { Button, Box, TextField } from "@mui/material";
+import style from "./SignUpConfirmation.module.scss";
+import { showToastMessage } from "../../../utils/showToastMessage";
+import { ToastContainer } from "react-toastify";
 
 interface ConfirmationData {
   code: string;
@@ -16,7 +19,6 @@ const schema = object({
 });
 
 export const SignUpConfirmation = () => {
-  const [openErrorMessage, setOpenErrorMessage] = useState(false);
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const email = searchParams.get("email") || "";
@@ -42,10 +44,13 @@ export const SignUpConfirmation = () => {
     },
     {
       onSuccess: () => {
-        navigate("/");
+        showToastMessage("Success", "success");
+        setTimeout(() => {
+          navigate("/");
+        }, 2000);
       },
       onError: () => {
-        setOpenErrorMessage(true);
+        showToastMessage("Wrong code", "error");
       },
     }
   );
@@ -58,31 +63,33 @@ export const SignUpConfirmation = () => {
     }
   });
 
-  const resend = () => AuthService.resendSignUp({ email });
+  const resend = () => {
+    showToastMessage("New code has sent!", "success");
+    AuthService.resendSignUp({ email });
+  };
 
   return (
-    <>
-      <form onSubmit={onSubmit}>
-        <input type="text" placeholder="code" {...register("code")} />
-        <p>{errors.code?.message}</p>
-        <button type="submit">Submit</button>
-      </form>
-      <Box component={"span"} sx={{ color: "black" }}>
-        Did not get the code?
+    <Box className={style.container}>
+      <Box component={"form"} onSubmit={onSubmit} className={style.form}>
+        <TextField
+          size="small"
+          required
+          id="outlined-required"
+          label="Code"
+          error={!!errors.code}
+          helperText={errors.code?.message}
+          {...register("code")} />
+        <Button variant="contained" sx={{ color: "white" }} type="submit">Submit</Button>
       </Box>
-      <Button variant="contained" sx={{ color: "white" }} onClick={resend}>
-        Resend code
-      </Button>
-      <Snackbar
-        open={openErrorMessage}
-        autoHideDuration={6000}
-        onClose={() => setOpenErrorMessage(false)}
-        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-      >
-        <Alert onClose={() => setOpenErrorMessage(false)} severity="error">
-          {mutation.error instanceof Error ? mutation.error.message : ""}
-        </Alert>
-      </Snackbar>
-    </>
+      <Box>
+        <Box component={"span"} sx={{ color: "black" }}>
+          Did not get the code?
+        </Box>
+        <Button variant="text" color="primary" onClick={resend}>
+          Resend code
+        </Button>
+      </Box>
+      <ToastContainer />
+    </Box>
   );
 };
