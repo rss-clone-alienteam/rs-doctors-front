@@ -1,5 +1,6 @@
 .container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  position: relative;
+  display: grid;
+  grid-template-rows: min-content 1fr min-content;
+  min-height: 100vh;
 }

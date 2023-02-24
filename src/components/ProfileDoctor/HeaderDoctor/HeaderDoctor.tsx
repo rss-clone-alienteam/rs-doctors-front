@@ -1,10 +1,11 @@
 import style from "./HeaderDoctor.module.scss";
-import { Alert, Avatar, Button, Grid, Link, Rating, Snackbar, Typography } from "@mui/material";
+import { Avatar, Button, Grid, Link, Rating, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import { IDoctor, IReview } from "../../../api/doctors";
-import { useContext, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Context } from "../../../Context/Context";
+import { showToastMessage } from "../../../utils/showToastMessage";
 
 interface HeaderDoctorProp {
   data: IDoctor;
@@ -12,12 +13,14 @@ interface HeaderDoctorProp {
 
 const HeaderDoctor = ({ data }: HeaderDoctorProp) => {
   const { isUserLogIn } = useContext(Context);
-  const [openMessage, setOpenMessage] = useState(false);
   const navigate = useNavigate();
+  const url = useLocation();
+
   const addReview = () => {
     if (!isUserLogIn) {
-      setOpenMessage(true);
-      setTimeout(() => navigate("/auth/sign-in"), 2000);
+      window.sessionStorage.setItem("path", url.pathname);
+      showToastMessage("Please sign in", "error");
+      navigate("/auth/sign-in");
     } else {
       navigate(`/review/${data?.id}`);
     }
@@ -49,7 +52,7 @@ const HeaderDoctor = ({ data }: HeaderDoctorProp) => {
                   value={
                     data.reviews
                       ? Number(data.reviews?.map((item: IReview) => item.rating).reduce((item, acc) => Number(item) + Number(acc), 0)) /
-                        data.reviews.length
+                      data.reviews.length
                       : 0
                   }
                   readOnly
@@ -77,16 +80,6 @@ const HeaderDoctor = ({ data }: HeaderDoctorProp) => {
           </Grid>
         </Grid>
       </Box>
-      <Snackbar
-        open={openMessage}
-        autoHideDuration={2000}
-        onClose={() => setOpenMessage(false)}
-        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-      >
-        <Alert onClose={() => setOpenMessage(false)} severity="error">
-          Please Sign In
-        </Alert>
-      </Snackbar>
     </>
   );
 };

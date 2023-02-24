@@ -10,6 +10,7 @@ import { ResetPasswordModal } from "./ResetPasswordModal";
 import { Modal } from "../../../components/Modal/Modal";
 import style from "./SignIn.module.scss";
 import { Context } from "../../../Context/Context";
+import { showToastMessage } from "../../../utils/showToastMessage";
 
 interface UserData {
   email: string;
@@ -38,6 +39,7 @@ export const SignIn = () => {
   });
 
   const { isLoading, mutate } = useMutation(
+
     async ({ email, password }: UserData) => {
       const user = await AuthService.signIn({ email, password });
       return user;
@@ -48,19 +50,25 @@ export const SignIn = () => {
         setUserID(user.attributes.sub);
         setUserEmail(user.attributes.email);
         setProfile(user.attributes.profile);
+        showToastMessage("You are successfully login", "success");
 
         user.attributes.profile === "doctor"
           ? navigate(`/doctor-account/${user.attributes.sub}`)
-          : navigate(`/patient-account/${user.attributes.sub}`);
+          : window.sessionStorage.getItem("path") ?
+            navigate(`${window.sessionStorage.getItem("path")}`)
+            :
+            navigate(`/patient-account/${user.attributes.sub}`);
+
       },
-      onError: (errorAuth) => {
-        console.log(errorAuth);
+      onError: () => {
+        showToastMessage("Incorrect login or password!", "error");
         setIsUserLogIn(false);
       },
     }
   );
 
   const onSubmit = handleSubmit(({ email, password }) => {
+    email = email.toLowerCase();
     mutate({
       email,
       password,

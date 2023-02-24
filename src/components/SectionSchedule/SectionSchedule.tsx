@@ -4,7 +4,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 interface IProps {
   data: IAppointments;
-  onClick: () => void;
+  onClick: (event: React.MouseEvent) => void;
   onClickAppointment?: (date: string, time: string) => void;
 }
 
@@ -21,7 +21,7 @@ export const SectionSchedule = ({ data, onClick, onClickAppointment }: IProps) =
                 {date}
               </Typography>
             </AccordionSummary>
-            <AccordionDetails>
+            <AccordionDetails sx={{display: "flex", flexWrap: "wrap", gap: "5px"}}>
               {Object.entries(timeObj)
                 .sort(
                   (a, b) =>
@@ -29,9 +29,9 @@ export const SectionSchedule = ({ data, onClick, onClickAppointment }: IProps) =
                 )
                 .map(([time, patientId]) =>
                   patientId !== null ? (
-                    <Chip key={`${date}-${time}`} sx={{ cursor: "pointer" }} label={time} onClick={() => onClickAppointment ? onClickAppointment(date, time) : onClick()} />
+                    <Chip key={`${date}-${time}`} id={`${date}-${time}`} sx={{ cursor: "pointer", border: "1px solid #00afbd"}} label={time} onClick={onClickAppointment ? () => onClickAppointment(date, time) : onClick} />
                   ) : (
-                    <Chip key={`${date}-${time}`} sx={{ cursor: "pointer", margin: "5px" }} label={time} variant="outlined" onClick={() => onClickAppointment ? onClickAppointment(date, time) : onClick()} />
+                    <Chip key={`${date}-${time}`} id={`${date}-${time}`} sx={{ cursor: "pointer"}} label={time} variant="outlined" onClick={onClickAppointment ? () => onClickAppointment(date, time) : onClick} />
                   ),
                 )}
             </AccordionDetails>

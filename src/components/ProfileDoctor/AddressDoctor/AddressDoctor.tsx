@@ -29,7 +29,7 @@ const AddressDoctor = ({ data, onShowAll }: AddressDoctorProp) => {
     <Box className={style.container}>
       <Grid container direction="column">
         <Grid item mb={3} xs={12} className={style.containerTitle}>
-          <Typography variant="body1" fontSize={22} color={"rgb(0 0 0)"}>
+          <Typography variant="body1" sx={{fontSize: {xs: "16px", sm: "22px"}}} color={"rgb(0 0 0)"}>
             Address
           </Typography>
         </Grid>
@@ -39,7 +39,7 @@ const AddressDoctor = ({ data, onShowAll }: AddressDoctorProp) => {
               <LocationOnIcon />
             </Grid>
             <Grid item xs display={"flex"} alignItems={"center"}>
-              <Typography variant="body2" fontSize="16px" mr={1}>
+              <Typography variant="body2" sx={{fontSize: {xs: "14px", sm: "16px"}}} mr={1}>
                 {data.address}
               </Typography>
               {coords && (
@@ -57,12 +57,12 @@ const AddressDoctor = ({ data, onShowAll }: AddressDoctorProp) => {
               </Grid>
               <Grid item container spacing={1} direction="column" xs>
                 <Grid item>
-                  <Typography variant="body2" fontSize="16px" mr={1}>
+                  <Typography variant="body2" sx={{fontSize: {xs: "14px", sm: "16px"}}} mr={1}>
                     Insurance accepted at this address
                   </Typography>
                 </Grid>
                 <Grid item>
-                  <Typography variant="body2" fontSize="16px" mr={1}>
+                  <Typography variant="body2" sx={{fontSize: {xs: "14px", sm: "16px"}}} mr={1}>
                     Private patients (without insurance)
                   </Typography>
                 </Grid>

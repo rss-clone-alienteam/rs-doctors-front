@@ -8,7 +8,7 @@ import { SignIn } from "./pages/auth/SignIn/SignIn";
 import { ThemeProvider } from "@mui/material/styles";
 import { appTheme } from "./themes/appTheme";
 import { QueryClient, QueryClientProvider } from "react-query";
-import { AskDoctor } from "./pages/AskDoctor/AskDoctor";
+// import { AskDoctor } from "./pages/AskDoctor/AskDoctor";
 import { SignUpConfirmation } from "./pages/auth/SignUpConfirmation/SignUpConfirmation";
 import { FindDoctors } from "./pages/FindDoctors/FindDoctors";
 import { DoctorProfile } from "./pages/DoctorProfile/DoctorProfile";
@@ -19,6 +19,8 @@ import { EditDoctor } from "./pages/DoctorAccount/EditDoctor/EditDoctor";
 import { Context, IPatientAppointment } from "./Context/Context";
 import { useEffect, useState } from "react";
 import { getUserInfo } from "./utils/getUserInfo";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   const [isUserLogIn, setIsUserLogIn] = useState(false);
@@ -68,7 +70,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Layout />}>
               <Route index element={<Home />}></Route>
-              <Route path="ask-doctor" element={<AskDoctor />}></Route>
+              {/* <Route path="ask-doctor" element={<AskDoctor />}></Route> */}
               <Route path="doctors" element={<FindDoctors />}></Route>
               <Route path="doctor/:id/:review" element={<DoctorProfile />}></Route>
               <Route path="doctor/:id" element={<DoctorProfile />}></Route>
@@ -87,6 +89,7 @@ function App() {
               <Route path="*" element={<Notfound />}></Route>
             </Route>
           </Routes>
+          <ToastContainer position="bottom-left" />
         </ThemeProvider>
       </QueryClientProvider>
     </Context.Provider>
