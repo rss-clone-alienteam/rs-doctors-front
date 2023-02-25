@@ -47,6 +47,7 @@ export const MakeAppointmentModal = ({ close }: IProps) => {
       const body = [...patientAppointments, {
         doctorID: appointment.doctor.id,
         doctorName: appointment.doctor.nameDoctor,
+        doctorSurname: appointment.doctor.surname,
         day: appointment.date,
         time: appointment.time
       }]
@@ -58,11 +59,12 @@ export const MakeAppointmentModal = ({ close }: IProps) => {
         showToastMessage("You already have an appointment with this doctor, please cancel the previous one!", "error");
         return false;
       }
-      
+
       const data = await updatePatient(userID, {
         appointments: [...patientAppointments, {
           doctorID: appointment.doctor.id,
           doctorName: appointment.doctor.nameDoctor,
+          doctorSurname: appointment.doctor.surname,
           day: appointment.date,
           time: appointment.time
         }]
@@ -77,14 +79,15 @@ export const MakeAppointmentModal = ({ close }: IProps) => {
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", color: "red" }}>
-      <Typography>{`You are trying to make an appointment on ${appointment.date} at ${appointment.time}. Your doctor is ${appointment.doctor.nameDoctor}`}</Typography>
+      <Typography>
+        {`You are trying to make an appointment on ${appointment.date} at ${appointment.time}. Your doctor is ${appointment.doctor.nameDoctor}${appointment.doctor.surname}`}
+      </Typography>
       <Typography>Do you confirm your appointment?</Typography>
       <Button variant="contained" color="success" onClick={() => {
         makeAppointment();
         setTimeout(() => {
           close();
         }, 1500);
-
       }
       }>Confirm</Button>
       <Button variant="contained" color="error" onClick={close}>Cancel</Button>
