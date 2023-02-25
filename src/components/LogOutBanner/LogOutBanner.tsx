@@ -19,10 +19,16 @@ export const LogOutBanner = () => {
 
   return (
     <Box className={style.caption}>
-      <Typography className={style.text}>
-        You logged in as {userEmail}
-      </Typography>
-      <Button color="secondary" variant="contained" onClick={() => logOut()}>
+      <Box sx={{ display: "flex", flexDirection: "column", fontSize: { xs: "11px", sm: "15px" } }}>
+        <Typography color="secondary" sx={{ fontSize: { xs: "13px", sm: "20px" }, fontWeight: 300 }}>
+          You logged in as:
+        </Typography>
+        <Typography sx={{ fontSize: { xs: "13px", sm: "20px" }, fontWeight: 300 }}>
+          {userEmail}
+        </Typography>
+      </Box>
+
+      <Button color="secondary" variant="contained" sx={{ fontSize: { xs: "10px", sm: "15px" } }} onClick={() => logOut()}>
         Log Out
       </Button>
     </Box>

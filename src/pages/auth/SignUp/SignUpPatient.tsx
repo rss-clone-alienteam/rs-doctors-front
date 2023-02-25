@@ -19,7 +19,8 @@ import {
 } from "@mui/material";
 import { Button } from "@mui/material";
 import { Link } from "@mui/material";
-import React from "react";
+import React, { useContext } from "react";
+import { Context } from "../../../Context/Context";
 
 interface FormData {
   name: string;
@@ -51,6 +52,8 @@ const schema = object({
 });
 
 export const SignUpPatient = () => {
+
+  const { isUserLogIn, profile, userID } = useContext(Context);
   const navigate = useNavigate();
   const {
     register,
@@ -227,7 +230,9 @@ export const SignUpPatient = () => {
         </Grid>
         <Box sx={{ color: "black", mt: 2, mb: 2, display: "flex", gap: 0.5 }}>
           <span>Already have an account?</span>
-          <Link to={"/auth/sign-in"} component={NavLink}>
+          <Link to={isUserLogIn ?
+            profile === "patient" ? `/patient-account/${userID}` : `/doctor-account/${userID}`
+            : "/auth/sign-in"} component={NavLink}>
             Sign In
           </Link>
         </Box>

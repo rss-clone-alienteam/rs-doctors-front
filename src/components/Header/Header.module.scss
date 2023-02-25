@@ -23,5 +23,21 @@
 .navWrapper {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 5px;
+}
+
+.logoImg {
+  width: 250px;
+
+  @media (max-width: 570px) {
+    width: 200px;
+  }
+
+  @media (max-width: 500px) {
+    width: 150px;
+  }
+
+  @media (max-width: 400px) {
+    width: 120px;
+  }
 }
