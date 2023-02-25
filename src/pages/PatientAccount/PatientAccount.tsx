@@ -1,12 +1,17 @@
-import { Box, Button, CircularProgress, Tab, Tabs, Typography } from "@mui/material";
-import Chip from "@mui/material/Chip";
-import { useContext, useState } from "react";
+import { Box, Button, Card, CardActions, CardContent, CircularProgress, Divider, Grid, Tab, Tabs, Typography } from "@mui/material";
+import { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
+import { useParams } from "react-router-dom";
 import { Appointment, getPatient, IPatient, updatePatient } from "../../api/patients";
 import { getSchedule, addSchedule, IAppointments } from "../../api/schedule";
 import { LogOutBanner } from "../../components/LogOutBanner/LogOutBanner";
-import { Context } from "../../Context/Context";
+import { showToastMessage } from "../../utils/showToastMessage";
 import style from "./PatientAccount.module.scss";
+import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
+import QuestionAnswerIcon from "@mui/icons-material/QuestionAnswer";
+import SettingsIcon from "@mui/icons-material/Settings";
+
+
 
 interface IDataSchedule {
   schedule: IAppointments
@@ -54,20 +59,19 @@ export const PatientAccount = () => {
     setValue(newValue);
   };
 
-  const { userID } = useContext(Context);
+  const { id } = useParams();
 
-
-  const { data, isSuccess } = useQuery<IPatient>("patient", () => getPatient(userID));
+  const { data, isSuccess, isLoading, refetch: refetchPatient } = useQuery<IPatient>("patient", () => getPatient(id));
 
   const clientQuery = useQueryClient();
 
   const mutationPatient = useMutation(
-    (body: Appointment[]) => updatePatient(userID, {
+    (body: Appointment[]) => updatePatient(id, {
       appointments: body
     }),
     {
       onSuccess: () => {
-        clientQuery.invalidateQueries(["patient"]);
+        refetchPatient();
       },
       onError: () => console.log("Something goes wrong, try again!"),
     }
@@ -88,6 +92,9 @@ export const PatientAccount = () => {
     if (data) {
       const body = data.appointments.filter((appointment) => appointment.doctorID !== doctorID);
       mutationPatient.mutate(body);
+      clientQuery.invalidateQueries(["patient"]);
+      console.log("data", data, body);
+      showToastMessage("You canceled appointment", "success");
     }
   };
 
@@ -99,7 +106,7 @@ export const PatientAccount = () => {
           flexGrow: 1,
           bgcolor: "background.paper",
           display: "flex",
-          height: 224,
+          height: "fit-content"
         }}
       >
         <Tabs
@@ -108,35 +115,53 @@ export const PatientAccount = () => {
           value={value}
           onChange={handleChange}
           aria-label="Vertical tabs example"
-          sx={{ borderRight: 1, borderColor: "divider" }}
+          sx={{ borderRight: 1, borderColor: "divider", minWidth: "min-content" }}
         >
-          <Tab label="Appointments" {...a11yProps(0)} />
-          <Tab label="Questions" {...a11yProps(1)} />
-          <Tab label="Settings" {...a11yProps(2)} />
+          <Tab icon={<CalendarMonthIcon />} label="Appointments" {...a11yProps(0)} sx={{ fontSize: "10px" }} />
+          <Tab icon={<SettingsIcon />} label="Settings" {...a11yProps(1)} sx={{ fontSize: "10px" }} />
+          <Tab icon={<QuestionAnswerIcon />} label="Questions" {...a11yProps(2)} sx={{ fontSize: "10px" }} disabled />
         </Tabs>
-        <TabPanel value={value} index={0} >
-          <Box sx={{ color: "red", display: "flex", flexDirection: "column", gap: 3 }}>
-            {data?.appointments.length === 0 && <Box>You don&apos;t have appointments yet</Box>}
-            {mutationPatient.isLoading && <CircularProgress size={120} sx={{ position: "fixed", top: "45vh", left: "45vw" }} />}
+        <TabPanel value={value} index={0}>
+          <Grid container spacing={2}>
+            {data?.appointments.length === 0 && <Box color="black">You don&apos;t have appointments yet</Box>}
+            {mutationPatient.isLoading || isLoading && <CircularProgress size={120} sx={{ position: "fixed", top: "45vh", left: "45vw" }} />}
             {isSuccess && data.appointments.map((appointment, i) =>
-              <Box sx={{ color: "red", display: "flex", gap: 2 }} key={i}>
-                <Chip label={`${appointment.doctorName}`} color="primary" />
-                <Chip label={`${appointment.day}`} color="success" />
-                <Chip label={`${appointment.time}`} color="success" />
-                <Button
-                  variant="contained"
-                  color="error"
-                  onClick={() => deleteAppointment(appointment.doctorID, appointment.day, appointment.time)}
-                >
-                  Cancel
-                </Button>
-              </Box>
+              <Grid item sx={{ color: "red", display: "flex", gap: 2 }} key={i}>
+                <Card>
+                  <CardContent>
+                    <Typography sx={{ fontSize: 14 }} color="secondary" gutterBottom>
+                      Doctor: {appointment.doctorName}
+                    </Typography>
+                    <Typography variant="h5" component="div" color="secondary">
+                      {appointment.day}
+                    </Typography>
+                    <Typography sx={{ mb: 1.5 }} color="primary">
+                      at {appointment.time}
+                    </Typography>
+                    <Divider />
+                  </CardContent>
+                  <CardActions sx={{ flexDirection: "column", alignItems: "center", px: 2, paddingBottom: 2 }}>
+                    <Typography color="error" sx={{ fontSize: 12, mb: 1, textAlign: "center" }}>
+                      If your plans change,
+                      <br />
+                      please cancel the meeting
+                    </Typography>
+                    <Button
+                      variant="outlined"
+                      size="small"
+                      color="error"
+                      onClick={() => deleteAppointment(appointment.doctorID, appointment.day, appointment.time)}
+                    >
+                      Cancel
+                    </Button>
+                  </CardActions>
+                </Card>
+              </Grid>
             )}
-
-          </Box>
+          </Grid>
         </TabPanel>
         <TabPanel value={value} index={1}>
-          <Box sx={{ color: "red" }}>{data?.email}</Box>
+          <Button variant="contained" color="error">Delete account</Button>
         </TabPanel>
         <TabPanel value={value} index={2}>
           <Box sx={{ color: "red" }}> {data?.name}</Box>

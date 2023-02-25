@@ -1,7 +1,7 @@
 import style from "./SignUpDoctor.module.scss";
 import { useMutation } from "react-query";
 import { NavLink, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { API } from "aws-amplify";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -23,6 +23,7 @@ import {
   FormHelperText,
 } from "@mui/material";
 import React from "react";
+import { Context } from "../../../Context/Context";
 
 interface FormData {
   category: string;
@@ -57,6 +58,8 @@ const schema = object({
 });
 
 export const SignUpDoctor = () => {
+
+  const { isUserLogIn, profile, userID } = useContext(Context);
   const [openErrorMessage, setOpenErrorMessage] = useState(false);
   const navigate = useNavigate();
   const {
@@ -294,7 +297,9 @@ export const SignUpDoctor = () => {
               sx={{ color: "black", mt: 2, mb: 2, display: "flex", gap: 0.5 }}
             >
               <span>Already have an account?</span>
-              <Link to={"/auth/sign-in"} component={NavLink}>
+              <Link to={isUserLogIn ?
+                profile === "patient" ? `/patient-account/${userID}` : `/doctor-account/${userID}`
+                : "/auth/sign-in"} component={NavLink}>
                 Sign In
               </Link>
             </Box>
