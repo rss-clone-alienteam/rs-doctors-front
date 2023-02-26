@@ -6,6 +6,7 @@ import { getPatient, IPatient, updatePatient } from "../../api/patients";
 import { addSchedule, getSchedule, ISchedule, IAppointments } from "../../api/schedule";
 import { Context } from "../../Context/Context";
 import { showToastMessage } from "../../utils/showToastMessage";
+import style from "./MakeAppointmentModal.module.scss";
 
 interface IProps {
   close: () => void
@@ -78,11 +79,11 @@ export const MakeAppointmentModal = ({ close }: IProps) => {
   };
 
   return (
-    <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", color: "red" }}>
-      <Typography>
-        {`You are trying to make an appointment on ${appointment.date} at ${appointment.time}. Your doctor is ${appointment.doctor.nameDoctor}${appointment.doctor.surname}`}
+    <Box className={style.container}>
+      <Typography color="secondary">
+        {`You are trying to make an appointment on ${appointment.date} at ${appointment.time}. Your doctor is ${appointment.doctor.nameDoctor} ${appointment.doctor.surname}`}
       </Typography>
-      <Typography>Do you confirm your appointment?</Typography>
+      <Typography color="primary">Do you confirm your appointment?</Typography>
       <Button variant="contained" color="success" onClick={() => {
         makeAppointment();
         setTimeout(() => {

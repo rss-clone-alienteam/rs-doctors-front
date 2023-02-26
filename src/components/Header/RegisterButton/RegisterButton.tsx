@@ -24,7 +24,7 @@ export default function RegisterButton() {
         aria-haspopup="true"
         aria-expanded={open ? "true" : undefined}
         onClick={handleClick}
-        sx={{ ml: " auto", fontSize: { xs: "11px", sm: "15px" } }}
+        sx={{ ml: " auto", fontSize: { xs: "8px", sm: "15px" } }}
       >
         Register
       </Button>

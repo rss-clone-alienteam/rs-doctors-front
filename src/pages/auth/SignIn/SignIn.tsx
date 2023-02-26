@@ -87,23 +87,19 @@ export const SignIn = () => {
     <>
       {!isLoading && (
         <Box component="form" onSubmit={onSubmit} className={style.form}>
+          <h1 className={style.caption}>Enter to your account</h1>
           <Grid
             container
             sx={{
-              mt: 1,
-              pl: 2,
-              pr: 3.5,
-              pt: 3,
-              pb: 4,
+              p: 3,
               width: "100%",
               maxWidth: "400px",
               boxShadow: "0px 0px 24px -11px rgba(0, 0, 0, 0.3);",
-              zIndex: 100,
               borderRadius: 3,
               display: "flex",
               justifyContent: "center",
+              gap: "10px",
             }}
-            spacing={2}
           >
             <Grid item sx={{ width: "100%" }}>
               <TextField
@@ -156,7 +152,7 @@ export const SignIn = () => {
       {isLoading && (
         <CircularProgress
           size={120}
-          sx={{ position: "fixed", top: "45vh", left: "45vw" }}
+          sx={{ position: "fixed", top: "45vh", left: "35vw" }}
         />
       )}
     </>

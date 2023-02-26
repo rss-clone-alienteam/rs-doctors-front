@@ -2,4 +2,13 @@ form {
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin: 20px;
+}
+
+.caption {
+  margin-bottom: 15px;
+  font-weight: 300;
+  font-size: 1.5rem;
+  text-align: center;
+  color: rgb(0 0 0);
 }
