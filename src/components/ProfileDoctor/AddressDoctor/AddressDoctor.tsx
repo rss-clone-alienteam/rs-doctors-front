@@ -4,6 +4,8 @@ import React, { useState } from "react";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import SecurityIcon from "@mui/icons-material/Security";
 import LocalPhoneIcon from "@mui/icons-material/LocalPhone";
+import PaymentsIcon from "@mui/icons-material/Payments";
+import LanguageIcon from "@mui/icons-material/Language";
 import Button from "@mui/material/Button";
 import MedicalServicesIcon from "@mui/icons-material/MedicalServices";
 import { IDoctor } from "../../../api/doctors";
@@ -29,7 +31,7 @@ const AddressDoctor = ({ data, onShowAll }: AddressDoctorProp) => {
     <Box className={style.container}>
       <Grid container direction="column">
         <Grid item mb={3} xs={12} className={style.containerTitle}>
-          <Typography variant="body1" sx={{fontSize: {xs: "16px", sm: "22px"}}} color={"rgb(0 0 0)"}>
+          <Typography variant="body1" sx={{ fontSize: { xs: "16px", sm: "22px" } }} color={"rgb(0 0 0)"}>
             Address
           </Typography>
         </Grid>
@@ -39,7 +41,7 @@ const AddressDoctor = ({ data, onShowAll }: AddressDoctorProp) => {
               <LocationOnIcon />
             </Grid>
             <Grid item xs display={"flex"} alignItems={"center"}>
-              <Typography variant="body2" sx={{fontSize: {xs: "14px", sm: "16px"}}} mr={1}>
+              <Typography variant="body2" sx={{ fontSize: { xs: "14px", sm: "16px" } }} mr={1}>
                 {data.address}
               </Typography>
               {coords && (
@@ -49,7 +51,6 @@ const AddressDoctor = ({ data, onShowAll }: AddressDoctorProp) => {
               )}
             </Grid>
           </Grid>
-
           <Grid item>
             <Grid container direction="row">
               <Grid item className={style.infoMapIconContainer} mr={1}>
@@ -57,15 +58,41 @@ const AddressDoctor = ({ data, onShowAll }: AddressDoctorProp) => {
               </Grid>
               <Grid item container spacing={1} direction="column" xs>
                 <Grid item>
-                  <Typography variant="body2" sx={{fontSize: {xs: "14px", sm: "16px"}}} mr={1}>
+                  <Typography variant="body2" sx={{ fontSize: { xs: "14px", sm: "16px" } }} mr={1}>
                     Insurance accepted at this address
                   </Typography>
                 </Grid>
                 <Grid item>
-                  <Typography variant="body2" sx={{fontSize: {xs: "14px", sm: "16px"}}} mr={1}>
+                  <Typography variant="body2" sx={{ fontSize: { xs: "14px", sm: "16px" } }} mr={1}>
                     Private patients (without insurance)
                   </Typography>
                 </Grid>
+              </Grid>
+            </Grid>
+          </Grid>
+
+          <Grid item>
+            <Grid container direction="row">
+              <Grid item className={style.infoMapIconContainer} mr={1}>
+                <PaymentsIcon />
+              </Grid>
+              <Grid item xs>
+                <Typography variant="body2" sx={{ fontSize: { xs: "14px", sm: "16px" } }} mr={1}>
+                  {data.paymentMethod}
+                </Typography>
+              </Grid>
+            </Grid>
+          </Grid>
+
+          <Grid item>
+            <Grid container direction="row">
+              <Grid item className={style.infoMapIconContainer} mr={1}>
+                <LanguageIcon />
+              </Grid>
+              <Grid item xs>
+                <Typography variant="body2" sx={{ fontSize: { xs: "14px", sm: "16px" } }} mr={1}>
+                  {data.languages}
+                </Typography>
               </Grid>
             </Grid>
           </Grid>
@@ -85,7 +112,6 @@ const AddressDoctor = ({ data, onShowAll }: AddressDoctorProp) => {
               </Grid>
             </Grid>
           </Grid>
-
           <Grid item container>
             <Grid item className={style.infoMapIconContainer} mr={1}>
               <MedicalServicesIcon />

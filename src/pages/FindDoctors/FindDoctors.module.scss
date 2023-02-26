@@ -16,6 +16,10 @@
   height: 80vh;
 
   @extend %flex-column;
+
+  @media (max-width: 899.9px) {
+    height: 200px;
+  }
 }
 
 .modalHeader {

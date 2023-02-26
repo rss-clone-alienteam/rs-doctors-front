@@ -78,9 +78,7 @@ export const CardDoctor = ({ doctor, coords, modalHandler }: DoctorProps) => {
                             <Link underline="hover" onClick={() => navigate(`/doctor/${doctor.id}/3`)}>
                               {`${doctor.reviews.length} Feedback`}
                             </Link>
-                            {/* <Box component="span">{doctor.reviews.length}</Box> */}
                           </Grid>
-                          {/* <Box component="span">Feedback</Box> */}
                         </Grid>
                       )}
                     </Grid>
@@ -127,7 +125,7 @@ export const CardDoctor = ({ doctor, coords, modalHandler }: DoctorProps) => {
             </Card>
           </Grid>
         </Grid>
-        <Grid item xs={6} sx={{ width: "50%", height: "300px", overflow: "scroll", position: "relative" }}>
+        <Grid item xs={6} sx={{ height: "300px", overflow: "scroll", position: "relative" }}>
           {isLoading && <CircularProgress size={80} sx={{ position: "absolute", top: "40%", left: "45%" }} />}
           {data !== undefined && (
             <SectionSchedule data={data.schedule} onClick={() => modalHandler(true)} onClickAppointment={clickHandler} key={data.id} />
