@@ -39,10 +39,10 @@ const InfoDoctor = ({ data, feedback, changeSetFeedback }: InfoDoctorProp) => {
       <TabContext value={value}>
         <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
           <TabList onChange={handleChange} aria-label="lab API tabs example">
-            <Tab sx={{ fontSize: { xs: "11px", sm: "16px" } }} label="Address" value="1" />
-            <Tab sx={{ fontSize: { xs: "11px", sm: "16px" } }} label="Services" value="2" />
-            <Tab sx={{ fontSize: { xs: "11px", sm: "16px" } }} label="Reviews" value="3" />
-            <Tab sx={{ fontSize: { xs: "11px", sm: "16px" } }} label="About" value="4" />
+            <Tab sx={{ fontSize: { xs: "11px", sm: "14px", md: "16px" }, minWidth: 0 }} label="Address" value="1" />
+            <Tab sx={{ fontSize: { xs: "11px", sm: "14px", md: "16px" }, minWidth: 0 }} label="Services" value="2" />
+            <Tab sx={{ fontSize: { xs: "11px", sm: "14px", md: "16px" }, minWidth: 0 }} label="Reviews" value="3" />
+            <Tab sx={{ fontSize: { xs: "11px", sm: "14px", md: "16px" }, minWidth: 0 }} label="About" value="4" />
           </TabList>
         </Box>
         <TabPanel value="1">

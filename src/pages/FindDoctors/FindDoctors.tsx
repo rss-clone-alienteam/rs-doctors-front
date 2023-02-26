@@ -85,7 +85,7 @@ const FindDoctors = () => {
           direction={{ xs: "column-reverse", sm: "column-reverse", md: "row" }}
           flexWrap="nowrap"
         >
-          <Grid item container spacing={3} flexDirection="column" alignContent={"center"} xs={12} md={12}>
+          <Grid item container spacing={3} flexDirection="column" alignContent={"center"} xs={12} md={9}>
             {listDoctors !== undefined &&
               listCoords !== undefined &&
               listDoctors.map((doc: IDoctor, index: number) => (

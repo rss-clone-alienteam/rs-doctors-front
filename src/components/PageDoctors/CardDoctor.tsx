@@ -49,7 +49,7 @@ export const CardDoctor = ({ doctor, coords, modalHandler }: DoctorProps) => {
   return (
     <Box className={style.container}>
       <Grid container>
-        <Grid item container xs={6}>
+        <Grid item container xs={8} sm={7} md={7}>
           <Grid item>
             <Card sx={{ boxShadow: "none" }}>
               <CardHeader
@@ -123,7 +123,6 @@ export const CardDoctor = ({ doctor, coords, modalHandler }: DoctorProps) => {
                       </Grid>
                     </Grid>
                   </Grid>
-
                   <Grid item container direction="row" flexWrap="nowrap">
                     <Grid item className={style.infoMapIconContainer} mr={1}>
                       <MedicalServicesIcon className={style.infoMapIcon} />
@@ -139,7 +138,7 @@ export const CardDoctor = ({ doctor, coords, modalHandler }: DoctorProps) => {
             </Card>
           </Grid>
         </Grid>
-        <Grid item xs={6} sx={{ height: "300px", overflow: "scroll", position: "relative" }}>
+        <Grid item xs sm md sx={{ height: "300px", overflow: "scroll", position: "relative" }}>
           {isLoading && <CircularProgress size={80} sx={{ position: "absolute", top: "40%", left: "45%" }} />}
           {data !== undefined && (
             <SectionSchedule data={data.schedule} onClick={() => modalHandler(true)} onClickAppointment={clickHandler} key={data.id} />

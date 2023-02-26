@@ -30,9 +30,9 @@ const DoctorProfile = () => {
 
   return (
     <>
-      <Box width={"100%"} marginTop={"20px"}>
-        <Grid container direction="row" justifyContent="center" alignItems="flex-start">
-          <Grid item xs={7}>
+      <Box width={"100%"} display="flex" justifyContent={"center"}>
+        <Grid width={"100%"} container direction={{ xs: "row", sm: "row", md: "row" }} spacing={2} alignItems={{ sm: "flex-start", xs: "center" }}>
+          <Grid item xs={12} sm={8.5} md={7} lg={6}>
             {data && (
               <>
                 <HeaderDoctor data={data} changeSetFeedback={changeSetFeedback} />
@@ -41,7 +41,7 @@ const DoctorProfile = () => {
             )}
           </Grid>
 
-          <Grid item xs ml={3}>
+          <Grid item xs={12} sm md lg>
             {isFetching ? (
               <CircularProgress size={80} sx={{ position: "fixed", top: "45vh", left: "75vw" }} />
             ) : (
