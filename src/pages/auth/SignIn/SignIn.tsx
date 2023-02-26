@@ -156,7 +156,7 @@ export const SignIn = () => {
       {mutation.isLoading && (
         <CircularProgress
           size={120}
-          sx={{ position: "fixed", top: "45vh", left: "35vw" }}
+          sx={{ position: "fixed", top: "45vh", left: { xs: "35vw", md: "45vw" } }}
         />
       )}
     </>

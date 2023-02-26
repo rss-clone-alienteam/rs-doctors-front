@@ -9,11 +9,11 @@ import { showToastMessage } from "../../../utils/showToastMessage";
 
 interface HeaderDoctorProp {
   data: IDoctor;
+  changeSetFeedback: (value: string) => void;
 }
 
-const HeaderDoctor = ({ data }: HeaderDoctorProp) => {
+const HeaderDoctor = ({ data, changeSetFeedback }: HeaderDoctorProp) => {
   const { isUserLogIn, profile } = useContext(Context);
-  console.log(profile);
   const navigate = useNavigate();
   const url = useLocation();
 
@@ -57,7 +57,7 @@ const HeaderDoctor = ({ data }: HeaderDoctorProp) => {
                   value={
                     data.reviews
                       ? Number(data.reviews?.map((item: IReview) => item.rating).reduce((item, acc) => Number(item) + Number(acc), 0)) /
-                      data.reviews.length
+                        data.reviews.length
                       : 0
                   }
                   readOnly
@@ -65,8 +65,16 @@ const HeaderDoctor = ({ data }: HeaderDoctorProp) => {
               </Grid>
               <Grid item>
                 {data.reviews && (
-                  <Link href="#" display={"flex"}>
-                    {`${data.reviews.length} Review`}
+                  <Link
+                    display={"flex"}
+                    underline="hover"
+                    sx={{ cursor: "pointer" }}
+                    onClick={() => {
+                      changeSetFeedback("3");
+                      navigate(`/doctor/${data.id}`);
+                    }}
+                  >
+                    {data.reviews.length === 1 ? `${data.reviews.length} Review` : `${data.reviews.length} Reviews`}
                   </Link>
                 )}
               </Grid>

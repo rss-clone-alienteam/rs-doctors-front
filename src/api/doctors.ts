@@ -1,11 +1,11 @@
 import { API, Storage } from "aws-amplify";
 
 export interface IReview {
-  id: string,
-  date: string,
-  namePatient: string
-  review: string,
-  rating: number | null
+  id: string;
+  date: string;
+  namePatient: string;
+  review: string;
+  rating: number | null | string;
 }
 
 export interface IDoctor {
@@ -57,6 +57,7 @@ export const getMap = async (address: string) => {
 
   const coords = res.response.GeoObjectCollection.featureMember[0].GeoObject.Point.pos.split(" ").reverse();
   const newCoords = coords.map((item: string) => Number(item));
+
   return newCoords;
 };
 

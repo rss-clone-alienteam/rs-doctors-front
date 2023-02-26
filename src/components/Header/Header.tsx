@@ -25,7 +25,7 @@ const Header = () => {
         </NavLink>
         {/* <NavLink to="/ask-doctor">Ask the Doctor</NavLink> */}
         <Grid item className={style.navWrapper}>
-          <RegisterButton />
+          {!isUserLogIn && <RegisterButton />}
           {isUserLogIn ? (
             <NavLink to={`/${profile}-account/${userID}`}>
               <HeaderButton text="Profile" />
