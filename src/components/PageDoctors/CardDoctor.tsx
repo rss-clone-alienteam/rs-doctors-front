@@ -49,14 +49,21 @@ export const CardDoctor = ({ doctor, coords, modalHandler }: DoctorProps) => {
   return (
     <Box className={style.container}>
       <Grid container>
-        <Grid item container xs={6}>
+        <Grid item container xs={8} sm={7} md={7}>
           <Grid item>
             <Card sx={{ boxShadow: "none" }}>
               <CardHeader
-                avatar={<Avatar alt="complex" src={doctor.photo || "../../assets/default-avatar.png"} sx={{ width: 65, height: 65 }} />}
+                avatar={
+                  <Avatar
+                    alt="complex"
+                    src={doctor.photo || "../../assets/default-avatar.png"}
+                    sx={{ width: 65, height: 65 }}
+                    onClick={() => navigate(`/doctor/${doctor.id}`)}
+                  />
+                }
                 sx={{ cursor: "pointer", fontSize: "31px" }}
                 title={
-                  <Typography variant="body2" color="black" fontSize="17px">
+                  <Typography variant="body2" color="black" fontSize="17px" onClick={() => navigate(`/doctor/${doctor.id}`)}>
                     {`${doctor.nameDoctor} ${doctor.surname}`}
                   </Typography>
                 }
@@ -82,15 +89,15 @@ export const CardDoctor = ({ doctor, coords, modalHandler }: DoctorProps) => {
                       {doctor.reviews && (
                         <Grid item container className={style.avatarFeedback} ml={1}>
                           <Grid item mr={0.5}>
-                            <Box component="span">{doctor.reviews.length}</Box>
+                            <Link underline="hover" onClick={() => navigate(`/doctor/${doctor.id}/3`)}>
+                              {`${doctor.reviews.length} Feedback`}
+                            </Link>
                           </Grid>
-                          <Box component="span">Feedback</Box>
                         </Grid>
                       )}
                     </Grid>
                   </>
                 }
-                onClick={() => navigate(`/doctor/${doctor.id}`)}
               />
               <CardContent>
                 <Grid container direction="column" spacing={2}>
@@ -116,7 +123,6 @@ export const CardDoctor = ({ doctor, coords, modalHandler }: DoctorProps) => {
                       </Grid>
                     </Grid>
                   </Grid>
-
                   <Grid item container direction="row" flexWrap="nowrap">
                     <Grid item className={style.infoMapIconContainer} mr={1}>
                       <MedicalServicesIcon className={style.infoMapIcon} />
@@ -132,7 +138,7 @@ export const CardDoctor = ({ doctor, coords, modalHandler }: DoctorProps) => {
             </Card>
           </Grid>
         </Grid>
-        <Grid item xs={6} sx={{ width: "50%", height: "300px", overflow: "scroll", position: "relative" }}>
+        <Grid item xs sm md sx={{ height: "300px", overflow: "scroll", position: "relative" }}>
           {isLoading && <CircularProgress size={80} sx={{ position: "absolute", top: "40%", left: "45%" }} />}
           {data !== undefined && (
             <SectionSchedule data={data.schedule} onClick={() => modalHandler(true)} onClickAppointment={clickHandler} key={data.id} />

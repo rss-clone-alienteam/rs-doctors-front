@@ -15,7 +15,13 @@
   justify-content: center;
   height: 80vh;
 
+  // max-width: 100%;
+
   @extend %flex-column;
+
+  @media (max-width: 899.9px) {
+    height: 200px;
+  }
 }
 
 .modalHeader {

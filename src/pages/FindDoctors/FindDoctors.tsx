@@ -36,6 +36,7 @@ const FindDoctors = () => {
     isLoading: CoordsIsLoading,
     data: listCoords,
     refetch: refreshListCoords,
+    isSuccess,
   } = useQuery(
     "coords",
     async () => {
@@ -55,10 +56,12 @@ const FindDoctors = () => {
       onSuccess(data) {
         console.log(data);
         setCoordsData(data);
-        setDefaultState({ center: data[0], zoom: 10 });
+        setDefaultState({ center: data[0], zoom: 9 });
       },
     },
   );
+
+  console.log(isSuccess);
 
   useEffect(() => {
     if (listDoctors) refreshListDoctors();
@@ -68,54 +71,64 @@ const FindDoctors = () => {
   if (doctorsIsLoading || CoordsIsLoading) return <CircularProgress size={120} sx={{ position: "fixed", top: "45vh", left: "45vw" }} />;
 
   return (
-    <>
-      <Box>
-        <Search />
-      </Box>
-      <Box className={style.container}>
-        <Grid container spacing={5} flexDirection="column" alignContent={"center"} width="70%">
-          {listDoctors !== undefined &&
-            listCoords !== undefined &&
-            listDoctors.map((doc: IDoctor, index: number) => (
-              <Grid item key={doc.id}>
-                <CardDoctor doctor={doc} key={doc.id} coords={listCoords[index]} modalHandler={setIsModalOpen} />
-              </Grid>
-            ))}
+    <Box>
+      <Grid container direction="column" spacing={2} p={1}>
+        <Grid item alignContent="start" xs={12}>
+          <Search />
         </Grid>
-        <Box width={"30%"} marginLeft={"30px"}>
-          <YMaps>
-            {defaultState?.center !== undefined && (
-              <Map state={defaultState} className={style.mapYandex}>
-                {coordsData != undefined &&
-                  listDoctors != undefined &&
-                  listDoctors.length &&
-                  coordsData.map((item: [number, number], index: number) => (
-                    <Placemark
-                      geometry={item}
-                      key={listDoctors[index]?.id}
-                      options={{
-                        preset: "islands#darkGreenStretchyIcon",
-                      }}
-                      properties={{
-                        iconContent: `${listDoctors[index]?.nameDoctor} ${listDoctors[index]?.surname}`,
-                      }}
-                      onClick={() => navigate(`/doctor/${listDoctors[index]?.id}`)}
-                    />
-                  ))}
-              </Map>
-            )}
-          </YMaps>
-        </Box>
-        <Modal
-          open={isModalOpen}
-          onClose={() => setIsModalOpen(false)}
-          aria-labelledby="modal-modal-title"
-          aria-describedby="modal-modal-description"
+
+        <Grid
+          item
+          container
+          className={style.container}
+          spacing={1}
+          direction={{ xs: "column-reverse", sm: "column-reverse", md: "row" }}
+          flexWrap="nowrap"
         >
-          <MakeAppointmentModal close={() => setIsModalOpen(false)} />
-        </Modal>
-      </Box>
-    </>
+          <Grid item container spacing={3} flexDirection="column" alignContent={"center"} xs={12} md={9}>
+            {listDoctors !== undefined &&
+              listCoords !== undefined &&
+              listDoctors.map((doc: IDoctor, index: number) => (
+                <Grid item key={doc.id}>
+                  <CardDoctor doctor={doc} key={doc.id} coords={listCoords[index]} modalHandler={setIsModalOpen} />
+                </Grid>
+              ))}
+          </Grid>
+          <Grid item xs={12} md>
+            <YMaps>
+              {defaultState?.center !== undefined && (
+                <Map state={defaultState} className={style.mapYandex}>
+                  {coordsData != undefined &&
+                    listDoctors != undefined &&
+                    listDoctors.length &&
+                    coordsData.map((item: [number, number], index: number) => (
+                      <Placemark
+                        geometry={item}
+                        key={listDoctors[index]?.id}
+                        options={{
+                          preset: "islands#darkGreenStretchyIcon",
+                        }}
+                        properties={{
+                          iconContent: `${listDoctors[index]?.nameDoctor} ${listDoctors[index]?.surname}`,
+                        }}
+                        onClick={() => navigate(`/doctor/${listDoctors[index]?.id}`)}
+                      />
+                    ))}
+                </Map>
+              )}
+            </YMaps>
+          </Grid>
+          <Modal
+            open={isModalOpen}
+            onClose={() => setIsModalOpen(false)}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description"
+          >
+            <MakeAppointmentModal close={() => setIsModalOpen(false)} />
+          </Modal>
+        </Grid>
+      </Grid>
+    </Box>
   );
 };
 
