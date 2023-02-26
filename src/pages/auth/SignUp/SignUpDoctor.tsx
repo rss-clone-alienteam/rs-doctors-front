@@ -156,7 +156,7 @@ export const SignUpDoctor = () => {
                 color: "black",
                 mt: 2,
                 mb: 2,
-                fontSize: "2rem",
+                fontSize: "1.5rem",
                 fontWeight: 300,
               }}
             >
@@ -165,18 +165,14 @@ export const SignUpDoctor = () => {
             <Grid
               container
               sx={{
-                mt: 1,
-                pl: 2,
-                pr: 3.5,
-                pt: 3,
-                pb: 4,
+                p: 3,
+                gap: 2,
                 width: "100%",
                 maxWidth: "500px",
                 boxShadow: "0px 0px 24px -11px rgba(0, 0, 0, 0.3);",
                 zIndex: 100,
-                borderRadius: 1,
+                borderRadius: 2,
               }}
-              spacing={2}
             >
               <Grid item sx={{ width: "100%" }}>
                 <FormControl fullWidth required>

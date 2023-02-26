@@ -95,24 +95,19 @@ export const ResetPasswordModal = () => {
   });
 
   return (
-    <Box>
+    <Box sx={{ display: "flex", alignItems: "center" }} >
       <Grid
-        container
         sx={{
-          mt: 1,
-          pl: 2,
-          pr: 3.5,
-          pt: 3,
-          pb: 4,
+          m: 2,
+          p: 2,
           width: "100%",
           maxWidth: "400px",
           boxShadow: "0px 0px 24px -11px rgba(0, 0, 0, 0.3);",
-          zIndex: 100,
           borderRadius: 3,
           display: "flex",
+          flexDirection: "column",
           justifyContent: "center",
         }}
-        spacing={2}
       >
         <Grid item sx={{ width: "100%" }}>
           <TextField
@@ -131,7 +126,7 @@ export const ResetPasswordModal = () => {
         </Grid>
         <Button onClick={passRecovery}>Change password</Button>
         {error && (
-          <Box component="span" sx={{ color: "red" }}>
+          <Box component="span" sx={{ color: "red", textAlign: "center" }}>
             We do not have this e-mail
           </Box>
         )}
@@ -200,6 +195,6 @@ export const ResetPasswordModal = () => {
           </Alert>
         )}
       </Snackbar>
-    </Box>
+    </Box >
   );
 };
