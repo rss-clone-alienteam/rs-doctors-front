@@ -25,8 +25,6 @@ const AddressDoctor = ({ data, onShowAll }: AddressDoctorProp) => {
     return getMap(data.address);
   });
 
-  console.log(coords);
-
   return (
     <Box className={style.container}>
       <Grid container direction="column">

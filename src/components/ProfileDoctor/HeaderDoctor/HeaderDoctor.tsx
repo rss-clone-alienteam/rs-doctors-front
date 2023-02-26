@@ -14,7 +14,6 @@ interface HeaderDoctorProp {
 
 const HeaderDoctor = ({ data, changeSetFeedback }: HeaderDoctorProp) => {
   const { isUserLogIn, profile } = useContext(Context);
-  console.log(profile);
   const navigate = useNavigate();
   const url = useLocation();
 
