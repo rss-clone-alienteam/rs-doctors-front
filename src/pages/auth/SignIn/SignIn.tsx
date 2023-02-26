@@ -54,6 +54,7 @@ export const SignIn = () => {
 
         if (user.attributes.profile === "doctor") {
           navigate(`/doctor-account/${user.attributes.sub}`);
+          return;
         }
         if (window.sessionStorage.getItem("path")) {
           navigate(`${window.sessionStorage.getItem("path")}`);
