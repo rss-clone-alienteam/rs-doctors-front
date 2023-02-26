@@ -36,7 +36,6 @@ export const getDoctors = async (specialization: string, city: string) => {
         city: city,
       },
     });
-    console.log(data);
     return data;
   } catch (error) {
     console.log(error);
@@ -93,4 +92,10 @@ export const updateDoctorImage = async (file: File, id?: string) => {
       photo,
     },
   });
+};
+
+export const deleteDoctor = async (
+  id?: string,
+): Promise<void> => {
+  await API.del("rs-doctors-back", `/doctors/delete-doctor/${id}`, {});
 };

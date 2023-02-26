@@ -98,8 +98,8 @@ export const SignUpDoctor = () => {
       });
     },
     {
-      onError: () => {
-        showToastMessage(mutationAuth.error instanceof Error ? mutationAuth.error.message : "", "error");
+      onError: (error) => {
+        showToastMessage(error instanceof Error ? error.message : "", "error");
       },
     }
   );
