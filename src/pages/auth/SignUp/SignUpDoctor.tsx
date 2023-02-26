@@ -1,7 +1,7 @@
 import style from "./SignUpDoctor.module.scss";
 import { useMutation } from "react-query";
 import { NavLink, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { API } from "aws-amplify";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -13,16 +13,16 @@ import {
   TextField,
   Button,
   Link,
-  Snackbar,
-  Alert,
   SelectChangeEvent,
   FormControl,
   InputLabel,
   Select,
   MenuItem,
   FormHelperText,
+  CircularProgress
 } from "@mui/material";
-import React from "react";
+import { showToastMessage } from "../../../utils/showToastMessage";
+import { Context } from "../../../Context/Context";
 
 interface FormData {
   category: string;
@@ -57,7 +57,8 @@ const schema = object({
 });
 
 export const SignUpDoctor = () => {
-  const [openErrorMessage, setOpenErrorMessage] = useState(false);
+
+  const { isUserLogIn, profile, userID } = useContext(Context);
   const navigate = useNavigate();
   const {
     register,
@@ -98,7 +99,7 @@ export const SignUpDoctor = () => {
     },
     {
       onError: () => {
-        setOpenErrorMessage(true);
+        showToastMessage(mutationAuth.error instanceof Error ? mutationAuth.error.message : "", "error");
       },
     }
   );
@@ -121,32 +122,32 @@ export const SignUpDoctor = () => {
           });
         })
         .catch((error) => {
-          console.log(error);
+          showToastMessage(error, "error");
         });
     }
   );
 
-  const [category, setCategory] = React.useState("");
+  const [category, setCategory] = useState("");
 
   const handleChangeCategory = (event: SelectChangeEvent) => {
     setCategory(event.target.value);
     setErrorCategory(false);
   };
 
-  const [city, setCity] = React.useState("");
+  const [city, setCity] = useState("");
 
   const handleChangeCity = (event: SelectChangeEvent) => {
     setCity(event.target.value);
     setErrorCity(false);
   };
 
-  const [errorCity, setErrorCity] = React.useState(true);
-  const [errorCategory, setErrorCategory] = React.useState(true);
+  const [errorCity, setErrorCity] = useState(true);
+  const [errorCategory, setErrorCategory] = useState(true);
 
   return (
     <>
       {mutationDB.isLoading ? (
-        "Loading..."
+        <CircularProgress size={80} sx={{ position: "fixed", top: "45vh", left: "45vw" }} />
       ) : (
         <>
           <Box component="form" onSubmit={onSubmit} className={style.form}>
@@ -191,7 +192,13 @@ export const SignUpDoctor = () => {
                     <MenuItem value={"Gynecology"}>Gynecology</MenuItem>
                     <MenuItem value={"Surgery"}>Surgery</MenuItem>
                     <MenuItem value={"Cardiology"}>Cardiology</MenuItem>
+                    <MenuItem value={"Therapeutology"}>Therapeutology</MenuItem>
                     <MenuItem value={"Pediatrics"}>Pediatrics</MenuItem>
+                    <MenuItem value={"Allergology"}>Allergology</MenuItem>
+                    <MenuItem value={"Dermatology"}>Dermatology</MenuItem>
+                    <MenuItem value={"Dentistry"}>Dentistry</MenuItem>
+                    <MenuItem value={"Psychology"}>Psychology</MenuItem>
+                    <MenuItem value={"Neurology"}>Neurology</MenuItem>
                   </Select>
                   {errorCategory && (
                     <FormHelperText>This is required!</FormHelperText>
@@ -210,10 +217,14 @@ export const SignUpDoctor = () => {
                   >
                     <MenuItem value={"Warsaw"}>Warsaw</MenuItem>
                     <MenuItem value={"Krakow"}>Krakow</MenuItem>
-                    <MenuItem value={"Minsk"}>Minsk</MenuItem>
-                    <MenuItem value={"Gomel"}>Gomel</MenuItem>
-                    <MenuItem value={"Voronezh"}>Voronezh</MenuItem>
-                    <MenuItem value={"New York"}>New York</MenuItem>
+                    <MenuItem value={"Wroclaw"}>Wroclaw</MenuItem>
+                    <MenuItem value={"Gdansk"}>Gdansk</MenuItem>
+                    <MenuItem value={"Poznan"}>Poznan</MenuItem>
+                    <MenuItem value={"Katowice"}>Katowice</MenuItem>
+                    <MenuItem value={"Bialystok"}>Bialystok</MenuItem>
+                    <MenuItem value={"Szczecin"}>Szczecin</MenuItem>
+                    <MenuItem value={"Lublin"}>Lublin</MenuItem>
+                    <MenuItem value={"Rzeszow"}>Rzeszow</MenuItem>
                   </Select>
                   {errorCity && (
                     <FormHelperText>This is required!</FormHelperText>
@@ -294,23 +305,13 @@ export const SignUpDoctor = () => {
               sx={{ color: "black", mt: 2, mb: 2, display: "flex", gap: 0.5 }}
             >
               <span>Already have an account?</span>
-              <Link to={"/auth/sign-in"} component={NavLink}>
+              <Link to={isUserLogIn ?
+                profile === "patient" ? `/patient-account/${userID}` : `/doctor-account/${userID}`
+                : "/auth/sign-in"} component={NavLink}>
                 Sign In
               </Link>
             </Box>
           </Box>
-          <Snackbar
-            open={openErrorMessage}
-            autoHideDuration={6000}
-            onClose={() => setOpenErrorMessage(false)}
-            anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-          >
-            <Alert onClose={() => setOpenErrorMessage(false)} severity="error">
-              {mutationAuth.error instanceof Error
-                ? mutationAuth.error.message
-                : ""}
-            </Alert>
-          </Snackbar>
         </>
       )}
     </>

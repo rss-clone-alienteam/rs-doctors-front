@@ -1,4 +1,5 @@
 import Button from "@mui/material/Button";
+import style from "./HeaderButton.module.scss";
 
 interface IProps {
   text: string;
@@ -6,7 +7,7 @@ interface IProps {
 
 export const HeaderButton = ({ text }: IProps) => {
   return (
-    <Button color="primary" variant="outlined" sx={{ ml: " auto" }}>
+    <Button className={style.button} color="primary" variant="outlined" sx={{ ml: " auto", fontSize: { xs: "11px", sm: "15px" } }}>
       {text}
     </Button>
   );

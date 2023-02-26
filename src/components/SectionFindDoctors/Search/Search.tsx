@@ -1,8 +1,9 @@
-import { Box, SelectChangeEvent } from "@mui/material";
+import { Grid, SelectChangeEvent } from "@mui/material";
 import { SearchButton } from "../SearchButton/SearchButton";
 import { SelectInput } from "../SelectInput/SelectInput";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import style from "./Search.module.scss";
 
 export const Search = () => {
   const [specialization, setSpecialization] = useState("");
@@ -10,16 +11,18 @@ export const Search = () => {
   const navigate = useNavigate();
 
   return (
-    <Box
+    <Grid container spacing={2}
+      className={style.container}
       sx={{
-        height: "100px",
-        padding: "10px",
-        backgroundColor: "rgba(0 0 0 /5%)",
         display: "flex",
         alignItems: "center",
         gap: "5px",
+        height: { sx: "200px", md: "100px" },
+        padding: "10px",
+        backgroundColor: "rgba(0 0 0 /5%)",
       }}
     >
+
       <SelectInput
         placeholder="Specialization"
         options={["Alergolog", "Surgery", "Gynecology", "Neurology"]}
@@ -32,11 +35,14 @@ export const Search = () => {
         value={city}
         onChange={(event: SelectChangeEvent) => setCity(event.target.value)}
       />
-      <SearchButton
-        onClick={() => {
-          navigate(`/doctors?specialization=${specialization}&city=${city}`);
-        }}
-      />
-    </Box>
+      <Grid>
+        <SearchButton
+          onClick={() => {
+            navigate(`/doctors?specialization=${specialization}&city=${city}`);
+          }}
+        />
+        <Grid />
+      </Grid>
+    </Grid>
   );
 };

@@ -4,10 +4,11 @@ import SearchIcon from "@mui/icons-material/Search";
 import EventAvailableIcon from "@mui/icons-material/EventAvailable";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
+import style from "./SectionBenefits.module.scss";
 
 export const SectionBenefits = () => {
   return (
-    <Grid container sx={{ mt: 1, px: "10px" }} spacing={2}>
+    <Grid container className={style.container}>
       <Benefit
         caption={"Search Specialists"}
         text={

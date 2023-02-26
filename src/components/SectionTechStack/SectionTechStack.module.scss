@@ -1,0 +1,19 @@
+.image {
+  width: 40px;
+}
+
+.imageWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 30px;
+  padding-top: 35px;
+  gap: 50px;
+}

@@ -1,24 +1,23 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useParams } from "react-router";
 import { useForm, FormProvider } from "react-hook-form";
 import { useQuery, useMutation, useQueryClient  } from "react-query";
 import { IDoctor, updateDoctor, getDoctor } from "../../../api/doctors";
-import { AlertType } from "../types";
 import { filterData, pick } from "../../../utils/object";
-import { Grid, Box, Button, Snackbar, Alert } from "@mui/material";
-import CircularProgress from "@mui/material/CircularProgress";
+import { showToastMessage } from "../../../utils/showToastMessage";
 import { ControlledTextField } from "../../../components/ControlledTextField/ControlledTextField";
 import { DoctorServices } from "./DoctorServices";
+import { Grid, Box, Button } from "@mui/material";
+import CircularProgress from "@mui/material/CircularProgress";
 
 export const EditDoctor = () => {
-  const [alert, setAlert] = useState<AlertType | null>(null);
   const { id } = useParams();
   const queryClient = useQueryClient();
 
   const { data: doctor, isLoading: isLoadingDoctor } =
     useQuery<IDoctor, Error>(["doctor", id], () => getDoctor(id), {
       onError: () => {
-        setAlert({ severity: "error", message: "Error during fetching data" });
+        showToastMessage("Error during fetching data", "error");
       }
     });
 
@@ -37,7 +36,7 @@ export const EditDoctor = () => {
     {
       onSuccess: () => {
         queryClient.invalidateQueries("doctor");
-        setAlert({ severity: "success", message: "Doctor data has been successfully updated" });
+        showToastMessage("Doctor data has been successfully updated", "success");
       },
     }
   );
@@ -104,14 +103,6 @@ export const EditDoctor = () => {
           </Box>
         </FormProvider>
       )}
-      <Snackbar
-        open={!!alert}
-        autoHideDuration={6000}
-        onClose={() => setAlert(null)}
-        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-      >
-        <Alert onClose={() => setAlert(null)} severity={alert?.severity || "success"}>{alert?.message}</Alert>
-      </Snackbar>
     </Box>
   );
 };

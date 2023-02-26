@@ -1,5 +1,6 @@
-import { Box, Grid, SvgIconTypeMap, Typography } from "@mui/material";
+import { Box, SvgIconTypeMap, Typography } from "@mui/material";
 import { OverridableComponent } from "@mui/material/OverridableComponent";
+import style from "./Benefit.module.scss";
 
 interface IProps {
   caption: string;
@@ -12,10 +13,10 @@ interface IProps {
 export function Benefit({ caption, text, icon }: IProps) {
   const Icon = icon;
   return (
-    <Grid item xs={12} md={6} lg={3}>
-      <Box sx={{ display: "flex", gap: 1, height: "55%" }}>
+    <Box className={style.container}>
+      <Box className={style.topContainer}>
         <Icon color="primary" />
-        <Typography color="primary" sx={{ width: "70%" }}>
+        <Typography color="primary" >
           {caption}
         </Typography>
       </Box>
@@ -24,10 +25,10 @@ export function Benefit({ caption, text, icon }: IProps) {
         fontSize="0.8rem"
         aria-describedby="card-description"
         mb={1}
-        color="black"
+        color="secondary"
       >
         {text}
       </Typography>
-    </Grid>
+    </Box>
   );
 }

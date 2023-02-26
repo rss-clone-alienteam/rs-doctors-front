@@ -11,8 +11,8 @@ import { DescriptionField } from "./components/DescriptionField";
 import { SectionSchedule } from "../../../components/SectionSchedule/SectionSchedule";
 import { LogOutBanner } from "../../../components/LogOutBanner/LogOutBanner";
 import { InfoDoctor } from "../../../components/ProfileDoctor/InfoDoctor/InfoDoctor";
-import { AlertType } from "../types";
-import { Button, Snackbar, Alert, Box, Typography, Grid,  Modal as MuiModal } from "@mui/material";
+import { showToastMessage } from "../../../utils/showToastMessage";
+import { Button, Box, Typography, Grid,  Modal as MuiModal } from "@mui/material";
 import MedicalInformation from "@mui/icons-material/MedicalInformation";
 import LocationCity from "@mui/icons-material/LocationCity";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -28,7 +28,7 @@ export const DoctorAccount = () => {
     {
       onSuccess: () => {
         queryClient.invalidateQueries(["doctor", id]);
-        setAlert({ severity: "success", message: "Image has been successfully updated" });
+        showToastMessage("Image has been successfully updated", "success");
       },
     }
   );
@@ -36,7 +36,7 @@ export const DoctorAccount = () => {
   const { data: doctor, isLoading: isLoadingDoctor, isSuccess: isSuccessDoctor } =
     useQuery<IDoctor, Error>(["doctor", id], () => getDoctor(id), {
       onError: () => {
-        setAlert({ severity: "error", message: "Error during fetching data" });
+        showToastMessage("Error during fetching data", "error");
       }
     });
 
@@ -47,11 +47,10 @@ export const DoctorAccount = () => {
   const { data: infoAppointments, isLoading: isLoadingSchedule, isSuccess: isSuccessSchedule } =
     useQuery<ISchedule, Error>(["schedule", id], () => getSchedule(id), {
       onError: () => {
-        setAlert({ severity: "error", message: "Error during fetching data" });
+        showToastMessage("Error during fetching data", "error");
       }
     });
 
-  const [alert, setAlert] = useState<AlertType | null>(null);
   const [isModalOpen, setModalOpen] = useState(false);
   const [typeModal, setTypeModal] = useState("");
   const [time, setTime] = useState("");
@@ -137,14 +136,6 @@ export const DoctorAccount = () => {
                 </MuiModal>
               : <></>
       }
-      <Snackbar
-        open={!!alert}
-        autoHideDuration={3000}
-        onClose={() => setAlert(null)}
-        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-      >
-        <Alert onClose={() => setAlert(null)} severity={alert?.severity || "success"}>{alert?.message}</Alert>
-      </Snackbar>
     </>
   );
 };

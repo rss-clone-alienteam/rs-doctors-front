@@ -1,22 +1,17 @@
-import { Avatar, Button, Rating, TextField, Box, Typography, Container, Snackbar, Alert } from "@mui/material";
+import { Avatar, Button, Rating, TextField, Box, Typography, Container, Alert } from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
 import { useQuery, useMutation } from "react-query";
 import { useParams } from "react-router-dom";
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { Context } from "../../Context/Context";
 import { getDoctor, updateDoctor } from "../../api/doctors";
 import { getPatient, IPatient } from "../../api/patients";
 import style from "./ModalReview.module.scss";
 import { IDoctor, IReview } from "../../api/doctors";
-
-type AlertType = {
-  severity: "error" | "success";
-  message: string;
-};
+import { showToastMessage } from "../../utils/showToastMessage";
 
 export const ModalReview = () => {
-  const [alert, setAlert] = useState<AlertType | null>(null);
   const { id } = useParams();
   const { userID } = useContext(Context);
   const { control, register, formState: { errors }, handleSubmit } = useForm();
@@ -24,7 +19,7 @@ export const ModalReview = () => {
   const { data: doctor, isLoading: isLoadingDoctor } =
     useQuery<IDoctor>("doctor", () => getDoctor(id), {
       onError: () => {
-        setAlert({ severity: "error", message: "Error during fetching data" });
+        showToastMessage("Error during fetching data", "error");
       }
     }
   );
@@ -36,7 +31,7 @@ export const ModalReview = () => {
     (data: Partial<IDoctor>) => updateDoctor(id, data),
     {
       onSuccess: () => {
-        setAlert({ severity: "success", message: "Review has been successfully added" });
+        showToastMessage("Review has been successfully added", "success");
       },
     }
   );
@@ -114,14 +109,6 @@ export const ModalReview = () => {
             </Button>
           </Box>
         </Container>
-        <Snackbar
-          open={!!alert}
-          autoHideDuration={3000}
-          onClose={() => setAlert(null)}
-          anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-        >
-          <Alert onClose={() => setAlert(null)} severity={alert?.severity || "success"}>{alert?.message}</Alert>
-        </Snackbar>
       </>
     )
   );

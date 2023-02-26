@@ -3,6 +3,7 @@ import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import { NavLink } from "react-router-dom";
+import style from "./RegisterButton.module.scss";
 
 export default function RegisterButton() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -17,11 +18,13 @@ export default function RegisterButton() {
   return (
     <div>
       <Button
+        className={style.button}
         id="basic-button"
         aria-controls={open ? "basic-menu" : undefined}
         aria-haspopup="true"
         aria-expanded={open ? "true" : undefined}
         onClick={handleClick}
+        sx={{ ml: " auto", fontSize: { xs: "11px", sm: "15px" } }}
       >
         Register
       </Button>

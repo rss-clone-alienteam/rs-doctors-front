@@ -18,7 +18,7 @@ const Header = () => {
           <Grid
             item
             component="img"
-            sx={{ width: "250px" }}
+            className={style.logoImg}
             src={logo}
             alt="logo"
           />
@@ -28,7 +28,7 @@ const Header = () => {
           <RegisterButton />
           {isUserLogIn ? (
             <NavLink to={`/${profile}-account/${userID}`}>
-              <HeaderButton text="My Profile" />
+              <HeaderButton text="Profile" />
             </NavLink>
           ) : (
             <NavLink to="/auth/sign-in">
