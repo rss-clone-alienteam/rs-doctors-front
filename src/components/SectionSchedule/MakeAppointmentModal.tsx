@@ -41,7 +41,6 @@ export const MakeAppointmentModal = ({ close }: IProps) => {
   };
 
   const makeAppointment = async () => {
-    console.log(dataPatient?.appointments);
     const patientAppointments = dataPatient?.appointments || [];
 
     const checkDuplicateAppointment = async () => {
@@ -86,9 +85,7 @@ export const MakeAppointmentModal = ({ close }: IProps) => {
       <Typography color="primary">Do you confirm your appointment?</Typography>
       <Button variant="contained" color="success" onClick={() => {
         makeAppointment();
-        setTimeout(() => {
-          close();
-        }, 1500);
+        close();
       }
       }>Confirm</Button>
       <Button variant="contained" color="error" onClick={close}>Cancel</Button>
