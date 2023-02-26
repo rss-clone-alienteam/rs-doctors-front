@@ -26,7 +26,6 @@ const FindDoctors = () => {
 
   const city = searchParams.get("city") || "";
   const specialization = searchParams.get("specialization") || "";
-  console.log(city, specialization);
 
   const navigate = useNavigate();
 
@@ -36,7 +35,6 @@ const FindDoctors = () => {
     isLoading: CoordsIsLoading,
     data: listCoords,
     refetch: refreshListCoords,
-    isSuccess,
   } = useQuery(
     "coords",
     async () => {
@@ -54,14 +52,11 @@ const FindDoctors = () => {
     {
       enabled: !!listDoctors,
       onSuccess(data) {
-        console.log(data);
         setCoordsData(data);
         setDefaultState({ center: data[0], zoom: 9 });
       },
     },
   );
-
-  console.log(isSuccess);
 
   useEffect(() => {
     if (listDoctors) refreshListDoctors();

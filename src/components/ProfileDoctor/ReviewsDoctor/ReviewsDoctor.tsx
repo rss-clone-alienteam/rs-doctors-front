@@ -9,8 +9,6 @@ interface ReviewsDoctorProps {
 }
 
 const ReviewsDoctor = ({ data }: ReviewsDoctorProps) => {
-  console.log(data);
-
   return (
     <Box color={"black"}>
       <Grid container direction={"column"}>
