@@ -115,7 +115,6 @@ export const ResetPasswordModal = () => {
             size="small"
             required
             type={email}
-            id="outlined-required"
             label="Email"
             value={email}
             error={!!errors.email}
@@ -145,7 +144,6 @@ export const ResetPasswordModal = () => {
                   fullWidth
                   size="small"
                   required
-                  id="outlined-required"
                   label="Code"
                   value={code}
                   {...register("code")}
@@ -160,7 +158,6 @@ export const ResetPasswordModal = () => {
                   size="small"
                   type={"password"}
                   required
-                  id="outlined-required"
                   label="New Password"
                   value={newPassword}
                   {...register("newPassword")}
