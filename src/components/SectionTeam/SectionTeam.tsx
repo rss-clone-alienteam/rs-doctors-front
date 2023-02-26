@@ -9,7 +9,7 @@ import { Link } from "react-router-dom";
 
 export const SectionTeam = () => {
   return (
-    <Grid container className={style.container} spacing={2}>
+    <Grid container className={style.container}>
       <Link to={"https://github.com/ShArPman13"}>
         <Grid container className={style.card} spacing={2}>
           <Grid sx={{ display: "flex", justifyContent: "center" }}>

@@ -1,7 +1,7 @@
 import { Box, Button, Card, CardActions, CardContent, CircularProgress, Divider, Grid, Tab, Tabs, Typography } from "@mui/material";
 import { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Appointment, getPatient, IPatient, updatePatient } from "../../api/patients";
 import { getSchedule, addSchedule, IAppointments } from "../../api/schedule";
 import { LogOutBanner } from "../../components/LogOutBanner/LogOutBanner";
@@ -54,6 +54,8 @@ export const PatientAccount = () => {
   }
 
   const [value, setValue] = useState(0);
+
+  const navigate = useNavigate();
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
@@ -127,10 +129,10 @@ export const PatientAccount = () => {
             {mutationPatient.isLoading || isLoading && <CircularProgress size={120} sx={{ position: "fixed", top: "45vh", left: "45vw" }} />}
             {isSuccess && data.appointments.map((appointment, i) =>
               <Grid item sx={{ color: "red", display: "flex", gap: 2 }} key={i}>
-                <Card>
+                <Card sx={{ cursor: "pointer" }} onClick={() => navigate(`/doctor/${appointment.doctorID}`)}>
                   <CardContent>
                     <Typography sx={{ fontSize: 14 }} color="secondary" gutterBottom>
-                      Doctor: {appointment.doctorName}
+                      Doctor: {appointment.doctorName} {appointment.doctorSurname}
                     </Typography>
                     <Typography variant="h5" component="div" color="secondary">
                       {appointment.day}
@@ -150,7 +152,10 @@ export const PatientAccount = () => {
                       variant="outlined"
                       size="small"
                       color="error"
-                      onClick={() => deleteAppointment(appointment.doctorID, appointment.day, appointment.time)}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        deleteAppointment(appointment.doctorID, appointment.day, appointment.time);
+                      }}
                     >
                       Cancel
                     </Button>

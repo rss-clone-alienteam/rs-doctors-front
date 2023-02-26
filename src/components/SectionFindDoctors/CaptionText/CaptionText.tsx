@@ -4,10 +4,10 @@ import style from "./CaptionText.module.scss";
 export const CaptionText = () => {
   return (
     <Box className={style.container}>
-      <Box component="span" style={{ fontSize: "5rem" }}>
+      <Box component="span" className={style.topText}>
         Find the doctor{" "}
       </Box>
-      <Box component="span" style={{ fontSize: "3rem" }}>
+      <Box component="span" className={style.bottomText}>
         and make an appointment
       </Box>
     </Box>

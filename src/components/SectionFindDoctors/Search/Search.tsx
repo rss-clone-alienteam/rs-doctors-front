@@ -3,6 +3,7 @@ import { SearchButton } from "../SearchButton/SearchButton";
 import { SelectInput } from "../SelectInput/SelectInput";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import style from "./Search.module.scss";
 
 export const Search = () => {
   const [specialization, setSpecialization] = useState("");
@@ -11,29 +12,29 @@ export const Search = () => {
 
   return (
     <Grid container spacing={2}
+      className={style.container}
       sx={{
-        height: { sx: "200px", md: "100px" },
-        padding: "10px",
-        backgroundColor: "rgba(0 0 0 /5%)",
         display: "flex",
         alignItems: "center",
         gap: "5px",
+        height: { sx: "200px", md: "100px" },
+        padding: "10px",
+        backgroundColor: "rgba(0 0 0 /5%)",
       }}
     >
-      <Grid sx={{ display: "flex", gap: "5px", flexDirection: { sx: "column", md: "row" } }}>
-        <SelectInput
-          placeholder="Specialization"
-          options={["Alergolog", "Surgery", "Gynecology", "Neurology"]}
-          value={specialization}
-          onChange={(event: SelectChangeEvent) => setSpecialization(event.target.value)}
-        />
-        <SelectInput
-          placeholder="City"
-          options={["Krakow", "Minsk", "Voronezh", "Warsaw"]}
-          value={city}
-          onChange={(event: SelectChangeEvent) => setCity(event.target.value)}
-        />
-      </Grid>
+
+      <SelectInput
+        placeholder="Specialization"
+        options={["Alergolog", "Surgery", "Gynecology", "Neurology"]}
+        value={specialization}
+        onChange={(event: SelectChangeEvent) => setSpecialization(event.target.value)}
+      />
+      <SelectInput
+        placeholder="City"
+        options={["Krakow", "Minsk", "Voronezh", "Warsaw"]}
+        value={city}
+        onChange={(event: SelectChangeEvent) => setCity(event.target.value)}
+      />
       <Grid>
         <SearchButton
           onClick={() => {
