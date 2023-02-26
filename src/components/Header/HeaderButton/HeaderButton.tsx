@@ -7,7 +7,7 @@ interface IProps {
 
 export const HeaderButton = ({ text }: IProps) => {
   return (
-    <Button className={style.button} color="primary" variant="outlined" sx={{ ml: " auto", fontSize: { xs: "11px", sm: "15px" } }}>
+    <Button className={style.button} color="primary" variant="outlined" sx={{ fontSize: { xs: "8px", sm: "15px" } }}>
       {text}
     </Button>
   );
