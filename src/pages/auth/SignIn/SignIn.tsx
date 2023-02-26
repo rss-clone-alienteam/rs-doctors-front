@@ -152,7 +152,7 @@ export const SignIn = () => {
       {isLoading && (
         <CircularProgress
           size={120}
-          sx={{ position: "fixed", top: "45vh", left: "45vw" }}
+          sx={{ position: "fixed", top: "45vh", left: "35vw" }}
         />
       )}
     </>
