@@ -13,17 +13,21 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 20px 10px;
+  padding: 20px 5px;
   width: 100%;
   max-width: 1150px;
   font-family: "Roboto", sans-serif;
-  gap: 20px;
+  gap: 5px;
 }
 
 .navWrapper {
   display: flex;
   align-items: center;
   gap: 5px;
+
+  @media (max-width: 570px) {
+    gap: 0;
+  }
 }
 
 .logoImg {

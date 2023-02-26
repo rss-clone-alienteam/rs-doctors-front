@@ -11,18 +11,7 @@ export const Search = () => {
   const navigate = useNavigate();
 
   return (
-    <Grid container spacing={2}
-      className={style.container}
-      sx={{
-        display: "flex",
-        alignItems: "center",
-        gap: "5px",
-        height: { sx: "200px", md: "100px" },
-        padding: "10px",
-        backgroundColor: "rgba(0 0 0 /5%)",
-      }}
-    >
-
+    <Grid container className={style.container}>
       <SelectInput
         placeholder="Specialization"
         options={["Alergolog", "Surgery", "Gynecology", "Neurology"]}
