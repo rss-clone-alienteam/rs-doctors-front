@@ -39,7 +39,7 @@ export const PatientAccount = () => {
       >
         {value === index && (
           <Box sx={{ p: 3 }}>
-            <Typography>{children}</Typography>
+            <Box>{children}</Box>
           </Box>
         )}
       </div>
@@ -86,7 +86,6 @@ export const PatientAccount = () => {
   const deleteAppointment = async (doctorID: string, day: string, time: string) => {
     const scheduleDoctor = await getSchedule(doctorID);
     scheduleDoctor.schedule[day][time] = null;
-    console.log(scheduleDoctor.schedule);
     mutationSchedule.mutate({
       schedule: scheduleDoctor.schedule,
       id: doctorID,
@@ -95,7 +94,6 @@ export const PatientAccount = () => {
       const body = data.appointments.filter((appointment) => appointment.doctorID !== doctorID);
       mutationPatient.mutate(body);
       clientQuery.invalidateQueries(["patient"]);
-      console.log("data", data, body);
       showToastMessage("You canceled appointment", "success");
     }
   };
