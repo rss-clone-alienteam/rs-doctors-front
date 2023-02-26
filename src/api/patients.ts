@@ -3,6 +3,7 @@ import { API } from "aws-amplify";
 export type Appointment = {
   doctorID: string;
   doctorName: string;
+  doctorSurname: string;
   day: string;
   time: string;
 };

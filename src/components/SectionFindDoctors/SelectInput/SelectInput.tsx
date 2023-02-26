@@ -7,6 +7,7 @@ import {
   SelectChangeEvent,
 } from "@mui/material";
 import { FC } from "react";
+import style from "./SelectInput.module.scss";
 
 interface IProps {
   placeholder: string;
@@ -22,10 +23,11 @@ export const SelectInput: FC<IProps> = ({
   value,
 }) => {
   return (
-    <Box sx={{ minWidth: 270, backgroundColor: "white" }}>
+    <Box className={style.input}>
       <FormControl fullWidth>
         <InputLabel id="demo-simple-select-label">{placeholder}</InputLabel>
         <Select
+          sx={{ bgcolor: "white" }}
           labelId="demo-simple-select-label"
           id="demo-simple-select"
           value={value}

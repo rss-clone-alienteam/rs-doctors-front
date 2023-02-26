@@ -1,46 +1,31 @@
-import { Box, Grid } from "@mui/material";
-import style from "./SectionTechStack.module.scss";
-import reactPNG from "../../assets/react_png.png";
-import tsPNG from "../../assets/ts.png";
-import muiPNG from "../../assets/mui.png";
-import formPNG from "../../assets/form.png";
-import queryPNG from "../../assets/query.png";
+import { Box } from "@mui/material";
+
 import Typography from "@mui/material/Typography";
+import { TECHNOLOGIES } from "../../constants/tech/TECH";
 
 export const SectionTechStack = () => {
-  return (
-    <Grid container className={style.container} spacing={2}>
-      <Grid className={style.imageWrapper}>
-        <Box component={"img"} src={reactPNG} className={style.image} />
-        <Typography color="black">
-          React
-        </Typography>
-      </Grid>
-      <Grid className={style.imageWrapper}>
-        <Box component={"img"} src={tsPNG} className={style.image} />
-        <Typography color="black">
-          Typescript
-        </Typography>
-      </Grid>
-      <Grid className={style.imageWrapper}>
-        <Box component={"img"} src={muiPNG} className={style.image} />
-        <Typography color="black">
-          Material UI
-        </Typography>
-      </Grid>
-      <Grid className={style.imageWrapper}>
-        <Box component={"img"} src={formPNG} className={style.image} />
-        <Typography color="black">
-          React-hook-form
-        </Typography>
-      </Grid>
-      <Grid className={style.imageWrapper}>
-        <Box component={"img"} src={queryPNG} className={style.image} />
-        <Typography color="black">
-          React-query
-        </Typography>
-      </Grid>
 
-    </Grid>
+  const techs = TECHNOLOGIES.map((tech) => (
+    <Box
+      key={tech.name}
+      sx={{
+        display: "flex",
+        alignItems: "center",
+        gap: 1,
+        borderRadius: 50,
+        py: 1,
+        px: 2,
+        bgcolor: "#fafafa",
+      }}
+    >
+      <Box component="img" src={tech.image} alt={tech.name} sx={{ width: 40 }} />
+      <Typography color="secondary">
+        {tech.name}
+      </Typography>
+    </Box>
+  ));
+
+  return (
+    <Box sx={{ display: "flex", gap: 2, flexWrap: "wrap", justifyContent: "center", px: 2, py: 6 }}>{techs}</Box>
   );
 };
