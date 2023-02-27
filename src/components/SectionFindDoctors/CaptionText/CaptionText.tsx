@@ -5,7 +5,7 @@ export const CaptionText = () => {
   return (
     <Box className={style.container}>
       <Box component="span" className={style.topText}>
-        Find the doctor{" "}
+        Find the Doctor{" "}
       </Box>
       <Box component="span" className={style.bottomText}>
         and make an appointment

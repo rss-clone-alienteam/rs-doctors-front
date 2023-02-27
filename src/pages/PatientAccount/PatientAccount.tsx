@@ -15,6 +15,7 @@ import {
   DialogContent,
   DialogContentText,
   DialogActions,
+  Chip,
 } from "@mui/material";
 import { useState, useContext } from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
@@ -205,13 +206,30 @@ export const PatientAccount = () => {
             </Grid>
           </TabPanel>
           <TabPanel value={value} index={1}>
-            <Button variant="contained" color="error" onClick={openDialog}>Delete account</Button>
+            <Box sx={{ display: "flex", flexDirection: "column", gap: 3 }}>
+              <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
+                <Box sx={{ display: "flex", gap: 1, alignItems: "center", justifyContent: "space-between" }}>
+                  <Typography sx={{ width: "85px" }} color="secondary">Name:</Typography>
+                  <Chip variant="outlined" label={data?.name} />
+                </Box>
+                <Box sx={{ display: "flex", gap: 1, alignItems: "center", justifyContent: "space-between" }}>
+                  <Typography sx={{ width: "85px" }} color="secondary">Last name:</Typography>
+                  <Chip variant="outlined" label={data?.lastName} />
+                </Box>
+                <Box sx={{ display: "flex", gap: 1, alignItems: "center", justifyContent: "space-between" }}>
+                  <Typography sx={{ width: "85px" }} color="secondary">Your city:</Typography>
+                  <Chip variant="outlined" label={data?.city} />
+                </Box>
+                <Divider />
+              </Box>
+              <Button variant="contained" color="error" onClick={openDialog}>Delete account</Button>
+            </Box>
           </TabPanel>
           <TabPanel value={value} index={2}>
             <Box sx={{ color: "red" }}> {data?.name}</Box>
           </TabPanel>
-        </Box>
-      </Box>
+        </Box >
+      </Box >
       <Dialog
         open={isDialogOpen}
         onClose={closeDialog}

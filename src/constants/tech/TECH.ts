@@ -11,7 +11,7 @@ import imgServerless from "../../assets/tech_images/serverless.png";
 export const TECHNOLOGIES = [
   { name: "React", image: imgReact },
   { name: "Typescript", image: imgTs },
-  { name: "Amazon", image: imgAws },
+  { name: "AWS", image: imgAws },
   { name: "Serverless", image: imgServerless },
   { name: "Material UI", image: imgMui },
   // { name: "React-hook-form", image: imgForm },

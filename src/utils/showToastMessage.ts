@@ -12,7 +12,7 @@ export const showToastMessage = (message: string, type: TypeToast) => {
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-        theme: "light",
+        theme: "colored",
       });
       break;
 
@@ -24,7 +24,7 @@ export const showToastMessage = (message: string, type: TypeToast) => {
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-        theme: "light",
+        theme: "colored",
       });
       break;
   }
