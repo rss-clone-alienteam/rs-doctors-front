@@ -124,8 +124,8 @@ export const DoctorAccount = () => {
               <DescriptionField icon={MedicalInformation} caption={"Category:"} text={doctor.category} />
               <DescriptionField icon={LocationCity} caption={"City:"} text={doctor.city} />
             </Box>
-            <Button onClick={() => navigate("edit")} sx={{fontSize: "16px"}}>Edit</Button>
-            <Button onClick={openDialog} sx={{fontSize: "16px", marginLeft: 2}}>Delete account</Button>
+            <Button onClick={openDialog} sx={{fontSize: "16px", marginRight: 3, color: "red"}}>Delete account</Button>
+            <Button onClick={() => navigate("edit")} sx={{fontSize: "16px"}}>Edit Info</Button>
             <Grid className={style.containerInfo} container gap={2}>
               <Grid className={style.infoBlock} item xs>
                 <InfoDoctor data={doctor}></InfoDoctor>
