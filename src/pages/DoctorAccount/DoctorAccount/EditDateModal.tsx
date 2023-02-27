@@ -65,7 +65,7 @@ export const EditDataModal = ({ data }: {data: IAppointments} ) => {
 
   const saveSchedule = () => {
     const appointments = date ? {[date.format("DD-MM-YYYY")]: times} : {};
-    const schedule = data ? {...data, ...appointments} : {};
+    const schedule = data ? {...data, ...appointments} : {...appointments};
     mutation.mutate(schedule);
     setTimes({});
     setStartTime(null);
@@ -121,37 +121,7 @@ export const EditDataModal = ({ data }: {data: IAppointments} ) => {
                 <>
                   <Typography mb={1.5}>{date.format("DD-MM-YYYY")}</Typography>
                   {
-                    Object.prototype.hasOwnProperty.call(data, date.format("DD-MM-YYYY"))
-                    && !Object.keys(times).length ?
-                      <>
-                        <Alert severity="error" sx={{marginBottom: "20px"}}>
-                          {"You already have a schedule for the selected date, check appointments"}
-                        </Alert>
-                        <Grid container spacing={1} mb={2} sx={{width: {sm: "400px"}}}>
-                          {Object.keys(data[date.format("DD-MM-YYYY")])
-                          .sort((time1, time2) =>
-                            Number(time1?.split(":")[0]) * 60 + Number(time1?.split(":")[1])
-                            - (Number(time2?.split(":")[0]) * 60 + Number(time2?.split(":")[1]))
-                          )
-                          .map((item, index) =>
-                            data[date.format("DD-MM-YYYY")][item] === null ?
-                              <Grid item xs={4} key={index}>
-                                <Chip
-                                  label={item}
-                                  variant="outlined"
-                                  onDelete={deleteItem(item)}
-                                />
-                              </Grid>
-                            : <Grid item xs={4} key={index}>
-                                <Chip
-                                  label={item}
-                                  sx={{ border: "1px solid #00afbd", width: "78px" }}
-                                />
-                              </Grid>
-                          )}
-                        </Grid>
-                      </>
-                    :
+                    !data ?
                       <Grid container spacing={1} mb={2} sx={{width: {sm: "400px"}}}>
                         {Object.entries(times).map((item, index) =>
                           <Grid item xs={4} key={index}>
@@ -170,6 +140,56 @@ export const EditDataModal = ({ data }: {data: IAppointments} ) => {
                           </Grid>
                         )}
                       </Grid>
+                    :
+                      Object.prototype.hasOwnProperty.call(data, date.format("DD-MM-YYYY"))
+                      && !Object.keys(times).length ?
+                        <>
+                          <Alert severity="error" sx={{marginBottom: "20px"}}>
+                            {"You already have a schedule for the selected date, check appointments"}
+                          </Alert>
+                          <Grid container spacing={1} mb={2} sx={{width: {sm: "400px"}}}>
+                            {Object.keys(data[date.format("DD-MM-YYYY")])
+                            .sort((time1, time2) =>
+                              Number(time1?.split(":")[0]) * 60 + Number(time1?.split(":")[1])
+                              - (Number(time2?.split(":")[0]) * 60 + Number(time2?.split(":")[1]))
+                            )
+                            .map((item, index) =>
+                              data[date.format("DD-MM-YYYY")][item] === null ?
+                                <Grid item xs={4} key={index}>
+                                  <Chip
+                                    label={item}
+                                    variant="outlined"
+                                    onDelete={deleteItem(item)}
+                                  />
+                                </Grid>
+                              : <Grid item xs={4} key={index}>
+                                  <Chip
+                                    label={item}
+                                    sx={{ border: "1px solid #00afbd", width: "78px" }}
+                                  />
+                                </Grid>
+                            )}
+                          </Grid>
+                        </>
+                      :
+                        <Grid container spacing={1} mb={2} sx={{width: {sm: "400px"}}}>
+                          {Object.entries(times).map((item, index) =>
+                            <Grid item xs={4} key={index}>
+                              {
+                                item[1] === null || item[1] === "" ?
+                                  <Chip
+                                    label={item[0]}
+                                    variant="outlined"
+                                    onDelete={deleteItem(item[0])}
+                                  />
+                                : <Chip
+                                    label={item[0]}
+                                    sx={{ border: "1px solid #00afbd", width: "78px" }}
+                                  />
+                              }
+                            </Grid>
+                          )}
+                        </Grid>
                   }
                 </>
               : <Alert severity="info" sx={{fontSize: "18px"}}>{"No selected dates yet"}</Alert>
