@@ -1,7 +1,6 @@
-
 import { Box, Button, Typography } from "@mui/material";
 import { useContext } from "react";
-import { useMutation, useQuery, useQueryClient } from "react-query";
+import { QueryObserverResult, RefetchOptions, RefetchQueryFilters, useMutation, useQuery, useQueryClient } from "react-query";
 import { getPatient, IPatient, updatePatient } from "../../api/patients";
 import { addSchedule, getSchedule, ISchedule, IAppointments } from "../../api/schedule";
 import { Context } from "../../Context/Context";
@@ -9,28 +8,27 @@ import { showToastMessage } from "../../utils/showToastMessage";
 import style from "./MakeAppointmentModal.module.scss";
 
 interface IProps {
-  close: () => void
+  close: () => void;
+  update?:
+    | ((options?: (RefetchOptions & RefetchQueryFilters<unknown>) | undefined) => Promise<QueryObserverResult<ISchedule, unknown>>)
+    | (<TPageData>(options?: (RefetchOptions & RefetchQueryFilters<TPageData>) | undefined) => Promise<QueryObserverResult<unknown>>);
 }
 
-export const MakeAppointmentModal = ({ close }: IProps) => {
-
+export const MakeAppointmentModal = ({ close, update }: IProps) => {
   const { userID } = useContext(Context);
 
   const { appointment } = useContext(Context);
 
   const { data: dataPatient } = useQuery<IPatient>("patient", () => getPatient(userID));
-  const { data: scheduleDoctor } =
-    useQuery<ISchedule>("schedule-doctor", () => getSchedule(appointment.doctor.id), {
-      onError: () => {
-        showToastMessage("Error during fetching schedule", "error");
-      }
-    });
+  const { data: scheduleDoctor } = useQuery<ISchedule>("schedule-doctor", () => getSchedule(appointment.doctor.id), {
+    onError: () => {
+      showToastMessage("Error during fetching schedule", "error");
+    },
+  });
 
   const clientQuery = useQueryClient();
 
-  const mutationSchedule = useMutation(
-    (schedule: IAppointments) => addSchedule(schedule, appointment.doctor.id),
-  );
+  const mutationSchedule = useMutation((schedule: IAppointments) => addSchedule(schedule, appointment.doctor.id));
 
   const addAppointmentSchedule = () => {
     if (scheduleDoctor) {
@@ -44,14 +42,16 @@ export const MakeAppointmentModal = ({ close }: IProps) => {
     const patientAppointments = dataPatient?.appointments || [];
 
     const checkDuplicateAppointment = async () => {
-      const body = [...patientAppointments, {
-        doctorID: appointment.doctor.id,
-        doctorName: appointment.doctor.nameDoctor,
-        doctorSurname: appointment.doctor.surname,
-        day: appointment.date,
-        time: appointment.time
-      }]
-        .map((appointment) => appointment.doctorID);
+      const body = [
+        ...patientAppointments,
+        {
+          doctorID: appointment.doctor.id,
+          doctorName: appointment.doctor.nameDoctor,
+          doctorSurname: appointment.doctor.surname,
+          day: appointment.date,
+          time: appointment.time,
+        },
+      ].map((appointment) => appointment.doctorID);
 
       const checkDuplication = new Set(body);
 
@@ -61,16 +61,20 @@ export const MakeAppointmentModal = ({ close }: IProps) => {
       }
 
       const data = await updatePatient(userID, {
-        appointments: [...patientAppointments, {
-          doctorID: appointment.doctor.id,
-          doctorName: appointment.doctor.nameDoctor,
-          doctorSurname: appointment.doctor.surname,
-          day: appointment.date,
-          time: appointment.time
-        }]
+        appointments: [
+          ...patientAppointments,
+          {
+            doctorID: appointment.doctor.id,
+            doctorName: appointment.doctor.nameDoctor,
+            doctorSurname: appointment.doctor.surname,
+            day: appointment.date,
+            time: appointment.time,
+          },
+        ],
       });
       addAppointmentSchedule();
       showToastMessage("Success!", "success");
+
       clientQuery.invalidateQueries(["patient"]);
       return data;
     };
@@ -83,12 +87,20 @@ export const MakeAppointmentModal = ({ close }: IProps) => {
         {`You are trying to make an appointment on ${appointment.date} at ${appointment.time}. Your doctor is ${appointment.doctor.nameDoctor} ${appointment.doctor.surname}`}
       </Typography>
       <Typography color="primary">Do you confirm your appointment?</Typography>
-      <Button variant="contained" color="success" onClick={() => {
-        makeAppointment();
-        close();
-      }
-      }>Confirm</Button>
-      <Button variant="contained" color="error" onClick={close}>Cancel</Button>
+      <Button
+        variant="contained"
+        color="success"
+        onClick={() => {
+          makeAppointment();
+          close();
+          if (update) update();
+        }}
+      >
+        Confirm
+      </Button>
+      <Button variant="contained" color="error" onClick={close}>
+        Cancel
+      </Button>
     </Box>
   );
 };

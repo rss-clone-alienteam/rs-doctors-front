@@ -11,6 +11,7 @@ import { Context } from "../../Context/Context";
 import { showToastMessage } from "../../utils/showToastMessage";
 import { Modal } from "../../components/Modal/Modal";
 import { MakeAppointmentModal } from "../../components/SectionSchedule/MakeAppointmentModal";
+import style from "../../components/PageDoctors/CardDoctor.module.scss";
 
 const DoctorProfile = () => {
   const navigate = useNavigate();
@@ -32,7 +33,7 @@ const DoctorProfile = () => {
 
   useEffect(() => {
     refetchDoc();
-  }, [doctor, refetchDoc]);
+  }, [doctor, doctorSchedule, refetchDoc]);
 
   if (isLoading || isFetching) return <CircularProgress size={120} sx={{ position: "fixed", top: "45vh", left: "45vw" }} />;
 
@@ -60,7 +61,7 @@ const DoctorProfile = () => {
 
   return (
     <>
-      <Box width={"100%"} display="flex" justifyContent={"center"}>
+      <Box width={"100%"} display="flex" justifyContent={"center"} className={style.scroll}>
         <Grid width={"100%"} container direction={{ xs: "row", sm: "row", md: "row" }} spacing={2} alignItems={{ sm: "flex-start", xs: "center" }}>
           <Grid item xs={12} sm={8.5} md={7} lg={6}>
             {doctor && (
@@ -71,7 +72,7 @@ const DoctorProfile = () => {
             )}
           </Grid>
 
-          <Grid item xs={12} sm md lg>
+          <Grid item xs={12} sm md lg maxHeight="60vh" overflow="scroll" p={2}>
             {isFetching ? (
               <CircularProgress size={80} sx={{ position: "fixed", top: "45vh", left: "75vw" }} />
             ) : (
@@ -83,7 +84,7 @@ const DoctorProfile = () => {
         </Grid>
       </Box>
       <Modal open={isModalOpen} onClose={() => setIsModalOpen(false)} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
-        <MakeAppointmentModal close={() => setIsModalOpen(false)} />
+        <MakeAppointmentModal update={refetchDoc} close={() => setIsModalOpen(false)} />
       </Modal>
     </>
   );

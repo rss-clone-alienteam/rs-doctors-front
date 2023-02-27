@@ -100,14 +100,24 @@ const AddressDoctor = ({ data, onShowAll }: AddressDoctorProp) => {
               <LocalPhoneIcon />
             </Grid>
             <Grid item container xs>
-              <Grid item>
-                {number ? <Link href={`tel:${data.phone}`}>{data.phone}</Link> : <Box component={"span"}>{`${data?.phone?.slice(0, -5)}...`}</Box>}
-              </Grid>
-              <Grid item>
-                <Button sx={{ height: "10px" }} variant="text" onClick={() => setNumber((prev) => !prev)}>
-                  {number ? "Hide" : "Show"}
-                </Button>
-              </Grid>
+              {data.phone ? (
+                <>
+                  <Grid item>
+                    {number ? (
+                      <Link href={`tel:${data.phone}`}>{data.phone}</Link>
+                    ) : (
+                      <Box component={"span"}>{`${data?.phone?.slice(0, -5)}...`}</Box>
+                    )}
+                  </Grid>
+                  <Grid item>
+                    <Button sx={{ height: "10px" }} variant="text" onClick={() => setNumber((prev) => !prev)}>
+                      {number ? "Hide" : "Show"}
+                    </Button>
+                  </Grid>
+                </>
+              ) : (
+                <Grid item></Grid>
+              )}
             </Grid>
           </Grid>
           <Grid item container>
