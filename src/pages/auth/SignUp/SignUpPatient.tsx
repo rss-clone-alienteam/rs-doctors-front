@@ -151,10 +151,14 @@ export const SignUpPatient = () => {
               >
                 <MenuItem value={"Warsaw"}>Warsaw</MenuItem>
                 <MenuItem value={"Krakow"}>Krakow</MenuItem>
-                <MenuItem value={"Minsk"}>Minsk</MenuItem>
-                <MenuItem value={"Gomel"}>Gomel</MenuItem>
-                <MenuItem value={"Voronezh"}>Voronezh</MenuItem>
-                <MenuItem value={"New York"}>New York</MenuItem>
+                <MenuItem value={"Wroclaw"}>Wroclaw</MenuItem>
+                <MenuItem value={"Gdansk"}>Gdansk</MenuItem>
+                <MenuItem value={"Poznan"}>Poznan</MenuItem>
+                <MenuItem value={"Katowice"}>Katowice</MenuItem>
+                <MenuItem value={"Bialystok"}>Bialystok</MenuItem>
+                <MenuItem value={"Szczecin"}>Szczecin</MenuItem>
+                <MenuItem value={"Lublin"}>Lublin</MenuItem>
+                <MenuItem value={"Rzeszow"}>Rzeszow</MenuItem>
               </Select>
               {errorCity && <FormHelperText>This is required!</FormHelperText>}
             </FormControl>
@@ -164,7 +168,6 @@ export const SignUpPatient = () => {
               fullWidth
               size="small"
               required
-              id="outlined-required"
               label="Name"
               error={!!errors.name?.message}
               helperText={errors.lastName?.message}
@@ -176,7 +179,6 @@ export const SignUpPatient = () => {
               fullWidth
               size="small"
               required
-              id="outlined-required"
               label="Last name"
               error={!!errors.lastName?.message}
               helperText={errors.lastName?.message}
@@ -189,7 +191,6 @@ export const SignUpPatient = () => {
               size="small"
               required
               type="email"
-              id="outlined-required"
               label="Email"
               error={!!errors.email?.message}
               helperText={errors.email?.message}
@@ -202,7 +203,6 @@ export const SignUpPatient = () => {
               size="small"
               required
               type="password"
-              id="outlined-required"
               label="Password"
               error={!!errors.password?.message}
               helperText={errors.password?.message}
