@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { useQuery, useMutation, useQueryClient } from "react-query";
 import { useNavigate, useParams } from "react-router-dom";
-import { IDoctor, getDoctor, updateDoctorImage } from "../../../api/doctors";
+import { IDoctor, getDoctor, updateDoctorImage, deleteDoctor } from "../../../api/doctors";
 import { ISchedule, getSchedule } from "../../../api/schedule";
 import { Modal } from "../../../components/Modal/Modal";
 import { EditDataModal } from "./EditDateModal";
@@ -12,16 +12,32 @@ import { SectionSchedule } from "../../../components/SectionSchedule/SectionSche
 import { LogOutBanner } from "../../../components/LogOutBanner/LogOutBanner";
 import { InfoDoctor } from "../../../components/ProfileDoctor/InfoDoctor/InfoDoctor";
 import { showToastMessage } from "../../../utils/showToastMessage";
-import { Button, Box, Typography, Grid,  Modal as MuiModal } from "@mui/material";
+import {
+  Button,
+  Box,
+  Typography,
+  Grid,
+  Modal as MuiModal,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
+  CircularProgress,
+} from "@mui/material";
 import MedicalInformation from "@mui/icons-material/MedicalInformation";
 import LocationCity from "@mui/icons-material/LocationCity";
-import CircularProgress from "@mui/material/CircularProgress";
 import style from "./DoctorAccount.module.scss";
+import { Context } from "../../../Context/Context";
 
 export const DoctorAccount = () => {
   const { id } = useParams();
   const queryClient = useQueryClient();
   const navigate = useNavigate();
+  const { setIsUserLogIn, setProfile } = useContext(Context);
+  const [isDialogOpen, setDialogOpen] = useState(false);
+  const openDialog = () => setDialogOpen(true);
+  const closeDialog = () => setDialogOpen(false);
 
   const mutation = useMutation(
     (data: File) => updateDoctorImage(data, id),
@@ -30,6 +46,22 @@ export const DoctorAccount = () => {
         queryClient.invalidateQueries(["doctor", id]);
         showToastMessage("Image has been successfully updated", "success");
       },
+    }
+  );
+
+  const mutationDeleteAccount = useMutation(
+    async () => {
+      await deleteDoctor(id);
+    },
+    {
+      onSuccess: () => {
+        setIsUserLogIn(false);
+        setProfile("");
+        navigate("/");
+      },
+      onError: () => {
+        showToastMessage("Something goes wrong, please try again", "error");
+      }
     }
   );
 
@@ -67,6 +99,9 @@ export const DoctorAccount = () => {
     setModalOpen(true);
   };
 
+  const deleteAccount = () => {
+    mutationDeleteAccount.mutate();
+  };
 
   return (
     <>
@@ -90,6 +125,7 @@ export const DoctorAccount = () => {
               <DescriptionField icon={LocationCity} caption={"City:"} text={doctor.city} />
             </Box>
             <Button onClick={() => navigate("edit")} sx={{fontSize: "16px"}}>Edit</Button>
+            <Button onClick={openDialog} sx={{fontSize: "16px", marginLeft: 2}}>Delete account</Button>
             <Grid className={style.containerInfo} container gap={2}>
               <Grid className={style.infoBlock} item xs>
                 <InfoDoctor data={doctor}></InfoDoctor>
@@ -136,6 +172,25 @@ export const DoctorAccount = () => {
                 </MuiModal>
               : <></>
       }
+      <Dialog
+        open={isDialogOpen}
+        onClose={closeDialog}
+      >
+        <DialogTitle id="alert-dialog-title">
+          Are you sure that you want to delete account
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            {"It's unchangeable operation"}
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={closeDialog}>Disagree</Button>
+          <Button onClick={deleteAccount} autoFocus>
+            Agree
+          </Button>
+        </DialogActions>
+      </Dialog>
     </>
   );
 };

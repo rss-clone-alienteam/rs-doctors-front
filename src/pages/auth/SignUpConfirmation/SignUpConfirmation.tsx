@@ -8,7 +8,6 @@ import { AuthService } from "../../../services/AuthService";
 import { Button, Box, TextField } from "@mui/material";
 import style from "./SignUpConfirmation.module.scss";
 import { showToastMessage } from "../../../utils/showToastMessage";
-import { ToastContainer } from "react-toastify";
 
 interface ConfirmationData {
   code: string;
@@ -49,8 +48,10 @@ export const SignUpConfirmation = () => {
           navigate("/");
         }, 2000);
       },
-      onError: () => {
-        showToastMessage("Wrong code", "error");
+      onError: (error) => {
+        if (error instanceof Error) {
+          showToastMessage(error.message, "error");
+        }
       },
     }
   );
@@ -59,7 +60,9 @@ export const SignUpConfirmation = () => {
     try {
       mutation.mutate(code);
     } catch (err) {
-      console.log(err);
+      if (err instanceof Error) {
+        showToastMessage(err.message, "error");
+      }
     }
   });
 
@@ -89,7 +92,6 @@ export const SignUpConfirmation = () => {
           Resend code
         </Button>
       </Box>
-      <ToastContainer />
     </Box>
   );
 };

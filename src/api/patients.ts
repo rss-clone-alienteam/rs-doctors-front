@@ -35,3 +35,9 @@ export const updatePatient = async (
   );
   return data;
 };
+
+export const deletePatient = async (
+  id?: string,
+): Promise<void> => {
+  await API.del("rs-doctors-back", `/patients/delete-patient/${id}`, {});
+};

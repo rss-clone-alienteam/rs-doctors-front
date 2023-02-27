@@ -8,8 +8,6 @@ import { ITimes, addSchedule, IAppointments } from "../../../api/schedule";
 import { showToastMessage } from "../../../utils/showToastMessage";
 import { SelectChangeEvent, Box, Typography, Grid, Button, Chip, Alert } from "@mui/material";
 
-
-
 export const EditDataModal = ({ data }: {data: IAppointments} ) => {
   const queryClient = useQueryClient();
   const { id } = useParams();
@@ -69,6 +67,9 @@ export const EditDataModal = ({ data }: {data: IAppointments} ) => {
     const appointments = date ? {[date.format("DD-MM-YYYY")]: times} : {};
     const schedule = data ? {...data, ...appointments} : {};
     mutation.mutate(schedule);
+    setTimes({});
+    setStartTime(null);
+    setEndTime(null);
   };
 
   return (

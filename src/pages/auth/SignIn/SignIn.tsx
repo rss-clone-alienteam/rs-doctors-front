@@ -38,7 +38,7 @@ export const SignIn = () => {
     },
   });
 
-  const { isLoading, mutate } = useMutation(
+  const mutation = useMutation(
 
     async ({ email, password }: UserData) => {
       const user = await AuthService.signIn({ email, password });
@@ -54,6 +54,7 @@ export const SignIn = () => {
 
         if (user.attributes.profile === "doctor") {
           navigate(`/doctor-account/${user.attributes.sub}`);
+          return;
         }
         if (window.sessionStorage.getItem("path")) {
           navigate(`${window.sessionStorage.getItem("path")}`);
@@ -62,8 +63,13 @@ export const SignIn = () => {
           navigate(`/patient-account/${user.attributes.sub}`);
         }
       },
-      onError: () => {
-        showToastMessage("Incorrect login or password!", "error");
+      onError: (error, variables) => {
+        if (error instanceof Error && error.message === "User is not confirmed.") {
+          showToastMessage(error.message, "error");
+          navigate(`/auth/sign-up-confirmation?email=${variables.email}`);
+        } else {
+          showToastMessage(error instanceof Error ? error.message : "", "error");
+        }
         setIsUserLogIn(false);
       },
     }
@@ -71,7 +77,7 @@ export const SignIn = () => {
 
   const onSubmit = handleSubmit(({ email, password }) => {
     email = email.toLowerCase();
-    mutate({
+    mutation.mutate({
       email,
       password,
     });
@@ -85,7 +91,7 @@ export const SignIn = () => {
 
   return (
     <>
-      {!isLoading && (
+      {!mutation.isLoading && (
         <Box component="form" onSubmit={onSubmit} className={style.form}>
           <h1 className={style.caption}>Enter to your account</h1>
           <Grid
@@ -106,7 +112,6 @@ export const SignIn = () => {
                 fullWidth
                 size="small"
                 required
-                id="outlined-required"
                 label="Email"
                 error={Boolean(errors.email?.message)}
                 helperText={errors.email?.message}
@@ -119,7 +124,6 @@ export const SignIn = () => {
                 fullWidth
                 size="small"
                 required
-                id="outlined-required"
                 label="Password"
                 error={Boolean(errors.password?.message)}
                 helperText={errors.password?.message}
@@ -149,10 +153,10 @@ export const SignIn = () => {
           </Modal>
         </Box>
       )}
-      {isLoading && (
+      {mutation.isLoading && (
         <CircularProgress
           size={120}
-          sx={{ position: "fixed", top: "45vh", left: "35vw" }}
+          sx={{ position: "fixed", top: "45vh", left: { xs: "35vw", md: "45vw" } }}
         />
       )}
     </>

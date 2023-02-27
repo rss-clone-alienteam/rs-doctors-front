@@ -1,7 +1,7 @@
 import { Avatar, Button, Rating, TextField, Box, Typography, Container, Alert } from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
 import { useQuery, useMutation } from "react-query";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useContext } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { Context } from "../../Context/Context";
@@ -15,6 +15,7 @@ export const ModalReview = () => {
   const { id } = useParams();
   const { userID } = useContext(Context);
   const { control, register, formState: { errors }, handleSubmit } = useForm();
+  const navigate = useNavigate();
 
   const { data: doctor, isLoading: isLoadingDoctor } =
     useQuery<IDoctor>("doctor", () => getDoctor(id), {
@@ -32,6 +33,7 @@ export const ModalReview = () => {
     {
       onSuccess: () => {
         showToastMessage("Review has been successfully added", "success");
+        navigate(`/doctor/${id}`);
       },
     }
   );

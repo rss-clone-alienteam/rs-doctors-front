@@ -37,7 +37,6 @@ export const MakeAppointmentModal = ({ close, update }: IProps) => {
   };
 
   const makeAppointment = async () => {
-    console.log(dataPatient?.appointments);
     const patientAppointments = dataPatient?.appointments || [];
 
     const checkDuplicateAppointment = async () => {
@@ -91,10 +90,8 @@ export const MakeAppointmentModal = ({ close, update }: IProps) => {
         color="success"
         onClick={() => {
           makeAppointment();
-          setTimeout(() => {
-            close();
-            if (update) update();
-          }, 1500);
+          close();
+          if (update) update();
         }}
       >
         Confirm
