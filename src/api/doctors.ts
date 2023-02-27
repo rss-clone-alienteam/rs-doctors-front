@@ -48,9 +48,9 @@ export const getDoctor = async (id?: string): Promise<IDoctor> => {
 };
 
 export const getMap = async (address: string) => {
-  const key = "c28eb37a-b0c8-44bd-b589-29629cb89fa2";
+  // const key = "c28eb37a-b0c8-44bd-b589-29629cb89fa2";
   // const key = "76383793-1243-485a-97a8-100f5e2d036f";
-  // const key = "97861e46-e717-499b-903a-d604643b259f"; //втрой мой
+  const key = "97861e46-e717-499b-903a-d604643b259f"; //втрой мой
 
   const data = await fetch(`https://geocode-maps.yandex.ru/1.x/?apikey=${key}&geocode=${address}&format=json`);
   const res = await data.json();
@@ -60,16 +60,6 @@ export const getMap = async (address: string) => {
 
   return newCoords;
 };
-
-export async function getCords(data: IDoctor[]) {
-  if (data == undefined) return;
-  const newData = await Promise.all(
-    data.map(async (doc: IDoctor) => {
-      if (doc.address !== null) return await getMap(doc.address);
-    }),
-  );
-  return newData;
-}
 
 export const updateDoctor = async (id?: string, body?: Partial<IDoctor>): Promise<IDoctor> => {
   const data = await API.patch("rs-doctors-back", `/doctors/update-doctor/${id}`, {
@@ -95,8 +85,6 @@ export const updateDoctorImage = async (file: File, id?: string) => {
   });
 };
 
-export const deleteDoctor = async (
-  id?: string,
-): Promise<void> => {
+export const deleteDoctor = async (id?: string): Promise<void> => {
   await API.del("rs-doctors-back", `/doctors/delete-doctor/${id}`, {});
 };

@@ -1,4 +1,4 @@
-import { Avatar, Card, CardContent, CardHeader, Typography } from "@mui/material";
+import { Avatar, Box, Card, CardContent, CardHeader, Rating, Typography } from "@mui/material";
 import { IReview } from "../../../api/doctors";
 
 interface ReviewCardProp {
@@ -12,11 +12,16 @@ const ReviewCard = ({ review }: ReviewCardProp) => {
     <Card sx={{ boxShadow: "1px 2px 1px -1px rgb(0 0 0 / 20%), 0 1px 1px 0 rgb(0 0 0 / 14%), 1px 1px 9px 2px rgb(0 0 0 / 12%)" }}>
       <CardHeader
         avatar={
-          <Avatar sx={{ bgcolor: getRandomColor() }} aria-label="recipe">
+          <Avatar sx={{ bgcolor: getRandomColor(), width: 54, height: 54 }} aria-label="recipe">
             {review.namePatient[0].toUpperCase()}
           </Avatar>
         }
-        title={review.namePatient}
+        title={
+          <>
+            <Box fontSize={"18px"}>{`${review.namePatient}`}</Box>
+            {review.rating && <Rating name="read-only" value={Number(review.rating)} precision={0.5} readOnly />}
+          </>
+        }
         subheader={review.date}
       />
       <CardContent>

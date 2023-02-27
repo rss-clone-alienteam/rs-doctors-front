@@ -9,7 +9,9 @@ import style from "./MakeAppointmentModal.module.scss";
 
 interface IProps {
   close: () => void;
-  update?: (options?: (RefetchOptions & RefetchQueryFilters<unknown>) | undefined) => Promise<QueryObserverResult<ISchedule, unknown>>;
+  update?:
+    | ((options?: (RefetchOptions & RefetchQueryFilters<unknown>) | undefined) => Promise<QueryObserverResult<ISchedule, unknown>>)
+    | (<TPageData>(options?: (RefetchOptions & RefetchQueryFilters<TPageData>) | undefined) => Promise<QueryObserverResult<unknown>>);
 }
 
 export const MakeAppointmentModal = ({ close, update }: IProps) => {
