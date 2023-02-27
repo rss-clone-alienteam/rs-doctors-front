@@ -27,15 +27,11 @@ const DoctorProfile = () => {
 
   const { isLoading, data: doctor, isFetching } = useQuery("doctor", () => getDoctor(id));
 
-  const docId = doctor?.id;
-
-  const { data: doctorSchedule, refetch: refetchDoc } = useQuery("schedule", () => getSchedule(docId), {
-    enabled: !!docId,
-  });
+  const { data: doctorSchedule, refetch: refetchDoc } = useQuery("schedule", () => getSchedule(id));
 
   useEffect(() => {
     refetchDoc();
-  }, [doctor, doctorSchedule, refetchDoc]);
+  }, [doctorSchedule, refetchDoc]);
 
   if (isLoading || isFetching) return <CircularProgress size={120} sx={{ position: "fixed", top: "45vh", left: "45vw" }} />;
 
