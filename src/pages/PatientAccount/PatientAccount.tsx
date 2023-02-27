@@ -98,7 +98,9 @@ export const PatientAccount = () => {
         clientQuery.invalidateQueries(["patient"]);
         showToastMessage("You canceled appointment", "success");
       },
-      onError: () => console.log("Something goes wrong, try again!"),
+      onError: () => {
+        showToastMessage("Something goes wrong, please try again", "error");
+      },
     }
   );
 

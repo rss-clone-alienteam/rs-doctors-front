@@ -90,7 +90,6 @@ export const ResetPasswordModal = () => {
       setErrorMessage(error);
       handleClick();
       setOpenErrorMessage(true);
-      console.log(13, JSON.parse(errMessage));
     }
   });
 

@@ -10,7 +10,6 @@ const userInfo = {
 export const getUserInfo = async () => {
   try {
     const currentUser = await Auth.currentAuthenticatedUser();
-    console.log("try", currentUser);
     return {
       userID: currentUser.attributes.sub,
       isLogIn: true,
