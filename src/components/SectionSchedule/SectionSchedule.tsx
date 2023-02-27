@@ -19,7 +19,7 @@ export const SectionSchedule = ({ data, onClick, onClickAppointment }: IProps) =
   return (
     <Box>
       {Object.entries(data)
-        .sort((a, b) => Number(a[0].substring(0, 2)) - Number(b[0].substring(0, 2)))
+        .sort((a, b) => Number(new Date(a[0].split("-").reverse().join("-"))) - Number(new Date(b[0].split("-").reverse().join("-"))))
         .map(([date, timeObj], index) => (
           <Accordion key={date} expanded={expanded === `panel${index}`} onChange={handleChange(`panel${index}`)}>
             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
