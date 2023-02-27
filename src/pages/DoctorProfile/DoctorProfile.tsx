@@ -27,8 +27,10 @@ const DoctorProfile = () => {
 
   const { isLoading, data: doctor, isFetching } = useQuery("doctor", () => getDoctor(id));
 
-  const { data: doctorSchedule, refetch: refetchDoc } = useQuery("schedule", () => getSchedule(doctor?.id), {
-    enabled: !!doctor?.id,
+  const docId = doctor?.id;
+
+  const { data: doctorSchedule, refetch: refetchDoc } = useQuery("schedule", () => getSchedule(docId), {
+    enabled: !!docId,
   });
 
   useEffect(() => {

@@ -93,7 +93,9 @@ export const MakeAppointmentModal = ({ close, update }: IProps) => {
         onClick={() => {
           makeAppointment();
           close();
-          if (update) update();
+          setTimeout(() => {
+            if (update) update();
+          }, 1500);
         }}
       >
         Confirm
