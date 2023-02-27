@@ -1,27 +1,26 @@
 import { useContext } from "react";
 import style from "./CardDoctor.module.scss";
 import Box from "@mui/material/Box";
-import { Avatar, Card, CardContent, CardHeader, CircularProgress, Grid, Link, Rating, Typography } from "@mui/material";
+import { Avatar, Card, CardContent, CardHeader, Grid, Link, Rating, Typography } from "@mui/material";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import { useNavigate } from "react-router-dom";
 import { IDoctor, IReview } from "../../api/doctors";
-import { getSchedule } from "../../api/schedule";
+import { ISchedule } from "../../api/schedule";
 import { SectionSchedule } from "../SectionSchedule/SectionSchedule";
-import { useQuery } from "react-query";
 import MedicalServicesIcon from "@mui/icons-material/MedicalServices";
 import { Context } from "../../Context/Context";
 import { showToastMessage } from "../../utils/showToastMessage";
 
 interface DoctorProps {
+  data: ISchedule;
   doctor: IDoctor;
   coords: [number, number];
   modalHandler: (val: boolean) => void;
 }
 
-export const CardDoctor = ({ doctor, coords, modalHandler }: DoctorProps) => {
+export const CardDoctor = ({ data, doctor, coords, modalHandler }: DoctorProps) => {
   const navigate = useNavigate();
 
-  const { isLoading, data } = useQuery(`schedule-${doctor.id}`, () => getSchedule(doctor.id));
   const { setAppointment, isUserLogIn, profile } = useContext(Context);
 
   const clickHandler = (date: string, time: string) => {
@@ -129,7 +128,7 @@ export const CardDoctor = ({ doctor, coords, modalHandler }: DoctorProps) => {
                     </Grid>
                     <Grid item container direction="column" alignItems="flex-start">
                       <Grid item>
-                        <Typography>{`${doctor.services[0].name} • ${doctor.services[0].price}`}</Typography>
+                        <Typography>{doctor.services.length > 0 ? `${doctor.services[0].name} • ${doctor.services[0].price}` : ""}</Typography>
                       </Grid>
                     </Grid>
                   </Grid>
@@ -138,8 +137,7 @@ export const CardDoctor = ({ doctor, coords, modalHandler }: DoctorProps) => {
             </Card>
           </Grid>
         </Grid>
-        <Grid item xs sm md sx={{ height: "300px", overflow: "scroll", position: "relative" }}>
-          {isLoading && <CircularProgress size={80} sx={{ position: "absolute", top: "40%", left: "45%" }} />}
+        <Grid item xs={4} sm={5} md={5} sx={{ height: "300px", overflow: "scroll", position: "relative" }}>
           {data !== undefined && (
             <SectionSchedule data={data.schedule} onClick={() => modalHandler(true)} onClickAppointment={clickHandler} key={data.id} />
           )}

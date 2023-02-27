@@ -6,11 +6,12 @@ import { CardDoctor } from "../../components/PageDoctors/CardDoctor";
 import { getDoctors } from "../../api/doctors";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { YMaps, Map, Placemark } from "@pbe/react-yandex-maps";
-import { CircularProgress, Grid } from "@mui/material";
+import { CircularProgress, Grid, Typography } from "@mui/material";
 import { Search } from "../../components/SectionFindDoctors/Search/Search";
 import { useQuery } from "react-query";
 import { Modal } from "../../components/Modal/Modal";
 import { MakeAppointmentModal } from "../../components/SectionSchedule/MakeAppointmentModal";
+import { getSchedule } from "../../api/schedule";
 
 interface ICoordinates {
   center: [number, number];
@@ -58,10 +59,26 @@ const FindDoctors = () => {
     },
   );
 
+  const { data: dataSchedule, refetch: refreshSchedule } = useQuery(
+    "schedule",
+    async () => {
+      const newData = await Promise.all(
+        listDoctors.map(async (doc: IDoctor) => {
+          return await getSchedule(doc.id);
+        }),
+      );
+      return newData;
+    },
+    {
+      enabled: !!listDoctors,
+    },
+  );
+
   useEffect(() => {
     if (listDoctors) refreshListDoctors();
     if (listCoords) refreshListCoords();
-  }, [listCoords, listDoctors, refreshListCoords, refreshListDoctors, searchParams]);
+    if (dataSchedule) refreshSchedule();
+  }, [dataSchedule, listCoords, listDoctors, refreshListCoords, refreshListDoctors, refreshSchedule, searchParams]);
 
   if (doctorsIsLoading || CoordsIsLoading) return <CircularProgress size={120} sx={{ position: "fixed", top: "45vh", left: "45vw" }} />;
 
@@ -71,57 +88,67 @@ const FindDoctors = () => {
         <Grid item alignContent="start" xs={12}>
           <Search />
         </Grid>
+        {!listDoctors.length && (
+          <Grid item mt={15}>
+            <Typography variant="body2" fontSize="50px" color={"black"} textAlign="center">
+              While there are no such doctors ....
+            </Typography>
+          </Grid>
+        )}
 
-        <Grid
-          item
-          container
-          className={style.container}
-          spacing={1}
-          direction={{ xs: "column-reverse", sm: "column-reverse", md: "row" }}
-          flexWrap="nowrap"
-        >
-          <Grid item container spacing={3} flexDirection="column" alignContent={"center"} xs={12} md={9}>
-            {listDoctors !== undefined &&
-              listCoords !== undefined &&
-              listDoctors.map((doc: IDoctor, index: number) => (
-                <Grid item key={doc.id}>
-                  <CardDoctor doctor={doc} key={doc.id} coords={listCoords[index]} modalHandler={setIsModalOpen} />
-                </Grid>
-              ))}
-          </Grid>
-          <Grid item xs={12} md>
-            <YMaps>
-              {defaultState?.center !== undefined && (
-                <Map state={defaultState} className={style.mapYandex}>
-                  {coordsData != undefined &&
-                    listDoctors != undefined &&
-                    listDoctors.length &&
-                    coordsData.map((item: [number, number], index: number) => (
-                      <Placemark
-                        geometry={item}
-                        key={listDoctors[index]?.id}
-                        options={{
-                          preset: "islands#darkGreenStretchyIcon",
-                        }}
-                        properties={{
-                          iconContent: `${listDoctors[index]?.nameDoctor} ${listDoctors[index]?.surname}`,
-                        }}
-                        onClick={() => navigate(`/doctor/${listDoctors[index]?.id}`)}
-                      />
-                    ))}
-                </Map>
-              )}
-            </YMaps>
-          </Grid>
-          <Modal
-            open={isModalOpen}
-            onClose={() => setIsModalOpen(false)}
-            aria-labelledby="modal-modal-title"
-            aria-describedby="modal-modal-description"
+        {listDoctors.length && (
+          <Grid
+            item
+            container
+            className={style.container}
+            spacing={1}
+            direction={{ xs: "column-reverse", sm: "column-reverse", md: "row" }}
+            flexWrap="nowrap"
           >
-            <MakeAppointmentModal close={() => setIsModalOpen(false)} />
-          </Modal>
-        </Grid>
+            <Grid item container spacing={3} flexDirection="column" alignContent={"center"} xs={12} md={9}>
+              {listDoctors !== undefined &&
+                listCoords !== undefined &&
+                dataSchedule !== undefined &&
+                listDoctors.map((doc: IDoctor, index: number) => (
+                  <Grid item key={doc.id}>
+                    <CardDoctor doctor={doc} key={doc.id} coords={listCoords[index]} data={dataSchedule[index]} modalHandler={setIsModalOpen} />
+                  </Grid>
+                ))}
+            </Grid>
+            <Grid item xs={12} md>
+              <YMaps>
+                {defaultState?.center !== undefined && (
+                  <Map state={defaultState} className={style.mapYandex}>
+                    {coordsData != undefined &&
+                      listDoctors != undefined &&
+                      listDoctors.length &&
+                      coordsData.map((item: [number, number], index: number) => (
+                        <Placemark
+                          geometry={item}
+                          key={listDoctors[index]?.id}
+                          options={{
+                            preset: "islands#darkGreenStretchyIcon",
+                          }}
+                          properties={{
+                            iconContent: `${listDoctors[index]?.nameDoctor} ${listDoctors[index]?.surname}`,
+                          }}
+                          onClick={() => navigate(`/doctor/${listDoctors[index]?.id}`)}
+                        />
+                      ))}
+                  </Map>
+                )}
+              </YMaps>
+            </Grid>
+            <Modal
+              open={isModalOpen}
+              onClose={() => setIsModalOpen(false)}
+              aria-labelledby="modal-modal-title"
+              aria-describedby="modal-modal-description"
+            >
+              <MakeAppointmentModal update={refreshSchedule} close={() => setIsModalOpen(false)} />
+            </Modal>
+          </Grid>
+        )}
       </Grid>
     </Box>
   );
