@@ -1,0 +1,58 @@
+%flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.modalContainer {
+  margin: 0 auto;
+  width: 80vw;
+  color: rgb(0 0 0);
+
+  @extend %flex-column;
+}
+
+.modalHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  border: 1px solid rgb(33 33 33);
+  border-radius: 10px;
+  padding: 10px 0;
+}
+
+.infoDoc {
+  margin-left: 20px;
+  font-size: 20px;
+
+  @extend %flex-column;
+}
+
+.infoDocName {
+  margin-bottom: 5px;
+}
+
+.sectionInput {
+  align-items: start;
+  margin-top: 10px;
+  border: 1px solid rgb(33 33 33);
+  border-radius: 10px;
+  padding: 20px;
+
+  @extend %flex-column;
+}
+
+.rating {
+  @extend %flex-column;
+}
+
+.ratingStar {
+  margin: 10px 0;
+}
+
+.inputBtn {
+  margin-top: 25px;
+}
+
+.form {
+  @extend %flex-column;
+}

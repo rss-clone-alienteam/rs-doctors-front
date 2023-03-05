@@ -1,0 +1,15 @@
+.container {
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  color: rgb(0 0 0 / 60%);
+}
+
+.containerTitle {
+  border-bottom: 0.06667rem solid rgb(0 0 0 / 8%);
+}
+
+.service {
+  display: flex;
+  align-items: center;
+  border-bottom: 0.06667rem solid rgb(0 0 0 / 8%);
+  padding: 5px;
+}

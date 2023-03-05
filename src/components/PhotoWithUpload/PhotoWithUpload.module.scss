@@ -1,0 +1,11 @@
+.wrapper {
+  display: flex;
+  margin-right: 30px;
+  padding: 30px;
+  width: 260px;
+  height: 240px;
+
+  @media screen and (max-width: 600px) {
+    margin-right: 0;
+  }
+}

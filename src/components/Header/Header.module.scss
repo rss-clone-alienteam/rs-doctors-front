@@ -1,0 +1,47 @@
+@import "../../scss/variables";
+
+.header {
+  position: sticky;
+  display: flex;
+  justify-content: center;
+  margin: 0 20px;
+  font-weight: 300;
+  color: $linkColor;
+}
+
+.headerWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 5px;
+  width: 100%;
+  max-width: 1150px;
+  font-family: "Roboto", sans-serif;
+  gap: 5px;
+}
+
+.navWrapper {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+
+  @media (max-width: 570px) {
+    gap: 0;
+  }
+}
+
+.logoImg {
+  width: 250px;
+
+  @media (max-width: 570px) {
+    width: 200px;
+  }
+
+  @media (max-width: 500px) {
+    width: 150px;
+  }
+
+  @media (max-width: 400px) {
+    width: 120px;
+  }
+}
