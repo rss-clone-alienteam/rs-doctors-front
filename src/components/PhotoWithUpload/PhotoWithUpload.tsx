@@ -20,12 +20,12 @@ export const PhotoWithUpload = ({ image, onUpload, isLoading }: PhotoWithUploadP
     const newImage = target?.files?.[0];
     onUpload(newImage);
   };
-
+  
   return (
     <Box className={style.wrapper}>
       {!isLoading && (
         <>
-          <Avatar style={{ width: 180, height: 180 }} src={image || "../../assets/default-avatar.png"} />
+          <Avatar style={{ width: 180, height: 180 }} src={image ? `${image}?date=${Date.now()}` : "../../assets/default-avatar.png"} />
           <input
             ref={inputFileRef}
             accept="image/*"
