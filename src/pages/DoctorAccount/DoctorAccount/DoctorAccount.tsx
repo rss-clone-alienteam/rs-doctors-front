@@ -43,7 +43,7 @@ export const DoctorAccount = () => {
     (data: File) => updateDoctorImage(data, id),
     {
       onSuccess: () => {
-        queryClient.invalidateQueries(["doctor", id]);
+        queryClient.invalidateQueries(["doctor"]);
         showToastMessage("Image has been successfully updated", "success");
       },
     }
